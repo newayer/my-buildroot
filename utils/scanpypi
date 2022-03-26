@@ -200,9 +200,10 @@ class BuildrootPackage():
             if 'bdist' in download_url['packagetype']:
                 continue
             try:
+                mirror_url = download_url['url'].replace("files.pythonhosted.org", "mirrors.aliyun.com/pypi")
                 print('Downloading package {pkg} from {url}...'.format(
-                    pkg=self.real_name, url=download_url['url']))
-                download = six.moves.urllib.request.urlopen(download_url['url'])
+                    pkg=self.real_name, url=mirror_url))
+                download = six.moves.urllib.request.urlopen(mirror_url)
             except six.moves.urllib.error.HTTPError as http_error:
                 download = http_error
             else:
