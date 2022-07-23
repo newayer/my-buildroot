@@ -21,9 +21,15 @@ LUV_DEPENDENCIES += luajit
 LUV_CONF_OPTS += \
 	-DWITH_LUA_ENGINE=LuaJIT
 else
+ifeq ($(BR2_PACKAGE_OPENRESTY_LUAJIT),y)
+LUV_DEPENDENCIES += openresty-luajit
+LUV_CONF_OPTS += \
+	-DWITH_LUA_ENGINE=LuaJIT
+else
 LUV_DEPENDENCIES += lua
 LUV_CONF_OPTS += \
 	-DWITH_LUA_ENGINE=Lua
+endif
 endif
 
 $(eval $(cmake-package))
