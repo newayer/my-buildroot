@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_GRPCIO
+	bool "python-grpcio"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  HTTP/2-based RPC framework.
+
+	  https://grpc.io

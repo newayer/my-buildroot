@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_MOSQUITTO
+	bool "lua-mosquitto"
+	select BR2_PACKAGE_MOSQUITTO
+	help
+	  lua bindings to libmosquitto MQTT client library.
+
+	  https://github.com/flukso/lua-mosquitto

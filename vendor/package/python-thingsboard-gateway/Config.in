@@ -1,0 +1,19 @@
+config BR2_PACKAGE_PYTHON_THINGSBOARD_GATEWAY
+	bool "python-thingsboard-gateway"
+	select BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_GRPCIO # runtime
+	select BR2_PACKAGE_PYTHON_JSONPATH_RW # runtime
+	select BR2_PACKAGE_PYTHON_PAHO_MQTT # runtime
+	select BR2_PACKAGE_PYTHON_PIP # runtime
+	select BR2_PACKAGE_PYTHON_PROTOBUF # runtime
+	select BR2_PACKAGE_PYTHON_PYFIGLET # runtime
+	select BR2_PACKAGE_PYTHON_PYINQUIRER # runtime
+	select BR2_PACKAGE_PYTHON_PYYAML # runtime
+	select BR2_PACKAGE_PYTHON_REGEX # runtime
+	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
+	select BR2_PACKAGE_PYTHON_SIMPLEJSON # runtime
+	select BR2_PACKAGE_PYTHON_TERMCOLOR # runtime
+	help
+	  Thingsboard Gateway for IoT devices.
+
+	  https://github.com/thingsboard/thingsboard-gateway

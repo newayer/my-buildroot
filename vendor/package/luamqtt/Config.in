@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUAMQTT
+	bool "luamqtt"
+	select BR2_PACKAGE_LUASOCKET
+	help
+	  luamqtt - Pure-lua MQTT v3.1.1 and v5.0 client.
+
+	  https://github.com/xHasKx/luamqtt

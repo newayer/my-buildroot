@@ -1,0 +1,16 @@
+menu "newayer extendsions"
+#thirtparty
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/lua-mosquitto/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/luamqtt/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/openresty/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/openresty-luajit/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-grpcio/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-jsonpath-rw/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-pyfiglet/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-pyinquirer/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-thingsboard-gateway/Config.in"
+
+#Owner
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/paver/Config.in"
+
+endmenu
