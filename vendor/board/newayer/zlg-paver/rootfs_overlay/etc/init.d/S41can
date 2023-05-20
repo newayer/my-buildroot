@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# can0        Starts can0.
+#
+
+start() {
+    printf "Starting can0: "
+    ip link set can0 type can bitrate 250000 restart-ms 1000
+    ip link set can0 up
+	cansend can0 2A8#1025C53AD17EFF9B
+    echo "OK"
+}
+
+stop() {
+    printf "Stopping can0: "
+    ip link set can0 down
+    echo "OK"
+}
+
+restart() {
+    stop
+    sleep 3
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

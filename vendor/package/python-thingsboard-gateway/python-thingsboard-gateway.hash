@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/thingsboard-gateway/json
+md5  38d2f60e96757d77aa93b20155f85052  thingsboard-gateway-3.0.1.post0.tar.gz
+sha256  ba7d765c584c087c790407ab969e9cac6707a93cf26d7eb35dcd4cd90b443a30  thingsboard-gateway-3.0.1.post0.tar.gz
+# Locally computed sha256 checksums
+sha256  b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1  LICENSE
