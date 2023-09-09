@@ -1,0 +1,55 @@
+uuu_version 1.2.39
+
+# This command will be run when i.MX6/7 i.MX8MM, i.MX8MQ
+SDP: boot -f firmware/u-boot.imx
+
+FB: ucmd setenv fastboot_buffer ${loadaddr}
+FB: download -f firmware/zImage
+FB: ucmd setenv fastboot_buffer ${fdt_addr}
+FB: download -f firmware/imx6ul-14x14-evk-a6g2c-wifi-256m.dtb
+FB: ucmd setenv fastboot_buffer ${initrd_addr}
+FB: download -f mfg/fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot
+FB: ucmd setenv bootargs ${bootargs} ${mtdparts}
+#FB: ucmd setenv bootargs console=ttymxc3,115200  ${mtdparts}
+FB: acmd ${kboot} ${loadaddr} ${initrd_addr} ${fdt_addr}
+
+FBK: ucmd cat /proc/mtd
+FBK: ucmd cat /proc/mtd | while read dev size erase name; do mtd=${dev:3}; mtd=${mtd%:}; name=${name%\"}; name=${name#\"}; echo export $name=$mtd >> /tmp/mtd.sh; done;
+
+FBK: ucmd chmod 777 /tmp/mtd.sh
+FBK: ucmd mount -t debugfs debugfs /sys/kernel/debug
+
+# write boot loader
+FBK: ucmd source /tmp/mtd.sh; flash_erase /dev/mtd${boot} 0 0
+FBK: ucp firmware/u-boot.imx t:/tmp/boot
+FBK: ucmd source /tmp/mtd.sh; cd /tmp; kobs-ng init -x -v --chip_0_device_path=/dev/mtd${boot} /tmp/boot
+
+# burn kernel
+FBK: ucmd source /tmp/mtd.sh; flash_erase /dev/mtd${kernel} 0 0
+FBK: ucp firmware/zImage t:/tmp/img
+FBK: ucmd source /tmp/mtd.sh; nandwrite -p /dev/mtd${kernel} -p /tmp/img
+
+# burn dtb
+FBK: ucmd source /tmp/mtd.sh; flash_erase /dev/mtd${dtb} 0 0
+FBK: ucp firmware/imx6ul-14x14-evk-a6g2c-wifi-256m.dtb t:/tmp/dtb
+FBK: ucmd source /tmp/mtd.sh; nandwrite -p /dev/mtd${dtb} -p /tmp/dtb
+
+# burn rootfs with tar package
+#FBK: ucmd source /tmp/mtd.sh; flash_erase /dev/mtd${rootfs} 0 0
+#FBK: ucmd source /tmp/mtd.sh; ubiattach /dev/ubi_ctrl -m ${rootfs}
+#FBK: ucmd source /tmp/mtd.sh; ubimkvol /dev/ubi0 -Nnandrootfs -m
+#FBK: ucmd source /tmp/mtd.sh; mkdir -p /mnt/mtd
+#FBK: ucmd source /tmp/mtd.sh; mount -t ubifs ubi0:nandrootfs /mnt/mtd
+#FBK: acmd export EXTRACT_UNSAFE_SYMLINKS=1; tar -jx -C /mnt/mtd
+#FBK: ucp firmware/rootfs.tar.bz2 t:-
+#FBK: sync
+#FBK: ucmd umount /mnt/mtd
+
+# burn rootfs with ufi img
+FBK: ucmd source /tmp/mtd.sh; flash_erase /dev/mtd${rootfs} 0 0
+FBK: acmd source /tmp/mtd.sh; ubiformat /dev/mtd${rootfs} -S 95813632 -f -
+FBK: ucp firmware/rootfs.ubi t:-
+FBK: sync
+
+FBK: done
+
