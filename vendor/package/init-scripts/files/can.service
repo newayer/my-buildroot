@@ -1,0 +1,15 @@
+[Unit]
+Description=can0 start
+Wants=network.target
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/sbin/ip link set can0 type can bitrate 250000 restart-ms 1000
+ExecStart=/sbin/ip link set can0 up
+ExecStartPost=/usr/bin/cansend can0 2A8#1025C53AD17EFF9B
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

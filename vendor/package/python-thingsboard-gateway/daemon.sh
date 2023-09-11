@@ -3,14 +3,14 @@
 function app_restart()
 {
     echo "`date "+%Y-%m-%d %H:%M:%S"`: main app restart..." >> /opt/logs/main_error.log
-    /etc/init.d/S90app restart >> /opt/logs/main_error.log
+    /etc/init.d/S90thingsboard-gateway restart >> /opt/logs/main_error.log
 }
 
 function app_exist()
 {
-    for i in `pidof lua`;
+    for i in `pidof python`;
     do
-        app=`grep /main/main.lua /proc/$i/cmdline`
+        app=`grep tb_gateway.pyc /proc/$i/cmdline`
         if [ "$app" ] ; then
             return 1
         fi
@@ -30,4 +30,3 @@ do
         sleep 3
     fi
 done
-

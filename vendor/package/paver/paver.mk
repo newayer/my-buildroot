@@ -18,6 +18,15 @@ define PAVER_INSTALL_TARGET_CMDS
 	$(MAKE) -C $(@D)/paver/legcy/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
 	$(MAKE) -C $(@D)/paver/legcy $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
 	echo -n $(PAVER_VERSION) > $(TARGET_DIR)/etc/version
+	$(INSTALL) -m 755 -D $(PAVER_PKGDIR)daemon.sh $(TARGET_DIR)/usr/bin/daemon-app.sh
+endef
+
+define PAVER_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D $(PAVER_PKGDIR)S90paver $(TARGET_DIR)/etc/init.d/S90paver
+endef
+
+define PAVER_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 $(PAVER_PKGDIR)paver.service $(TARGET_DIR)/usr/lib/systemd/system/paver.service
 endef
 
 $(eval $(generic-package))

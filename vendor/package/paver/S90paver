@@ -7,6 +7,10 @@ DAEMON_ARGS=/usr/local/lua/main/main.lua
 
 start() {
     printf "Starting $NAME: "
+	# ring beep
+	echo 60 > /sys/class/leds/beeper-pwm/brightness
+	usleep 200000
+	echo 0 > /sys/class/leds/beeper-pwm/brightness
     mkdir -p /opt/logs
     start-stop-daemon -S -q -m -b -p $PIDFILE --startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS >> /opt/logs/main_error.log 2>&1"
     status=$?
@@ -53,4 +57,3 @@ case "$1" in
 esac
 
 exit $?
-
