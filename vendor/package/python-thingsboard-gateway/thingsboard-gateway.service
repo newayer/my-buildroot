@@ -1,0 +1,12 @@
+[Unit]
+Description=User main app
+Wants=network.target
+After=network.target
+
+[Service]
+ExecStartPre=/bin/sh -c 'echo 60 > /sys/class/leds/beeper-pwm/brightness;usleep 200000;echo 0 > /sys/class/leds/beeper-pwm/brightness'
+ExecStart=/usb/bin/python /usr/lib/python3.10/site-packages/thingsboard_gateway/tb_gateway.pyc
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

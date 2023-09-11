@@ -1,21 +1,21 @@
 #!/bin/sh
 
 start() {
-    echo -n "Start daemon: "
-    /usr/bin/wifi-check.sh &
-    /usr/bin/daemon.sh &
+    echo -n "Start daemons: "
+    /usr/bin/daemon-wifi.sh &
+    /usr/bin/daemon-app.sh &
     echo "OK"
 }
 
 stop() {
-    echo -n "Stop daemon: "
-    kill -9 `pidof daemon.sh` > /dev/null 2>&1
-    kill -9 `pidof wifi-check.sh` > /dev/null 2>&1
+    echo -n "Stop daemons: "
+    kill -9 `pidof daemon-app.sh` > /dev/null 2>&1
+    kill -9 `pidof daemon-wifi.sh` > /dev/null 2>&1
     echo "OK"
 }
 
 restart() {
-    echo -n "restart daemon: "
+    echo -n "restart daemons: "
     stop
     start
 }
@@ -36,4 +36,3 @@ case "$1" in
 esac
 
 exit $?
-

@@ -1,0 +1,32 @@
+menuconfig BR2_PACKAGE_INIT_SCRIPTS
+	bool "init scripts"
+	help
+	  Set of scripts used by system init.
+
+if BR2_PACKAGE_INIT_SCRIPTS
+
+config BR2_PACKAGE_INIT_SCRIPT_CAN
+	bool "init scripts can"
+	default y
+	help
+	  can interface up
+
+config BR2_PACKAGE_INIT_SCRIPT_TIME
+	bool "init scripts can"
+	default y
+	help
+	  can interface up
+
+config BR2_PACKAGE_INIT_SCRIPT_MOUNT
+	bool "init scripts can"
+	default y
+	help
+	  can interface up
+
+config BR2_PACKAGE_INIT_SCRIPT_DAEMON
+	bool "init scripts can"
+	default y
+	help
+	  can interface up
+
+endif
