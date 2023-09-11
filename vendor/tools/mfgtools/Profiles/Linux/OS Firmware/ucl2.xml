@@ -50,7 +50,7 @@
 	<CMD state="Updater" type="push" body="$ ubimkvol /dev/ubi0 -N rootfs -m"/>
 	<CMD state="Updater" type="push" body="$ mkdir -p /mnt/mtd%part_rootfs%"/>
 	<CMD state="Updater" type="push" body="$ mount -t ubifs ubi0:rootfs /mnt/mtd%part_rootfs%"/>
-	<CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mtd%part_rootfs%" file="files/rootfs.tar.gz" ifdev="MX6UL MX7D">Sending and writting rootfs</CMD>
+	<CMD state="Updater" type="push" body="pipe tar -jxv -C /mnt/mtd%part_rootfs%" file="files/rootfs.tar.bz2" ifdev="MX6UL MX7D">Sending and writting rootfs</CMD>
 	<CMD state="Updater" type="push" body="frf">Finishing rootfs write</CMD>
 	<CMD state="Updater" type="push" body="$ umount /mnt/mtd%part_rootfs%">Unmounting rootfs partition</CMD>
 
