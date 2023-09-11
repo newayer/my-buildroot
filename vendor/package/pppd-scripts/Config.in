@@ -1,0 +1,5 @@
+config BR2_PACKAGE_PPPD_SCRIPTS
+	bool "pppd start scripts"
+	depends on BR2_PACKAGE_PPPD
+	help
+	  pppd scripts used by system init.
