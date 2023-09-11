@@ -1,0 +1,12 @@
+[Unit]
+Description=AutoSSH tunnel service
+After=network.target network-online.target sshd.service
+
+[Service]
+ExecStart=/usr/bin/autossh -M 1102 -NR 1178:localhost:22 root@182.92.224.57
+Restart=always
+
+ExecStop=/usr/bin/killall -s KILL autossh
+
+[Install]
+WantedBy=multi-user.target
