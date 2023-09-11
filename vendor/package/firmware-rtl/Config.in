@@ -1,0 +1,5 @@
+config BR2_PACKAGE_FIRMWARE_RTL
+	bool "firmware_rtl"
+	help
+	  Add rtl8723b wifi firmware to rootfs
+
