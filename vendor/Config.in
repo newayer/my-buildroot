@@ -13,5 +13,6 @@ menu "newayer extendsions"
 #Owner
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/paver/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/firmware-brcm/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/firmware-rtl/Config.in"
 
 endmenu
