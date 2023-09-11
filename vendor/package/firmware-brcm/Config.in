@@ -1,0 +1,5 @@
+config BR2_PACKAGE_FIRMWARE_BRCM
+	bool "firmware_brcm"
+	help
+	  Add brcmfmac43362-sdio wifi firmware to rootfs
+
