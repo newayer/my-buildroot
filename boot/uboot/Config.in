@@ -548,6 +548,24 @@ config BR2_TARGET_UBOOT_ZYNQMP_PSU_INIT_FILE
 
 endif
 
+config BR2_TARGET_UBOOT_RK
+	bool "Boot on the rockchip SoCs"
+	help
+	  Enable options specific to the rockchip family of SoCs.
+
+if BR2_TARGET_UBOOT_RK
+
+config BR2_TARGET_UBOOT_RK_LOADER_INI
+	string "rk bootloader ini file name"
+	help
+	  Location of a bootloader ini file name.
+
+config BR2_TARGET_UBOOT_RK_ENV_FILE
+        string "rk build uboot env image file name"
+        help
+          Location of build bootloader env image file name.
+endif
+
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
 	bool "CRC image for Altera SoC FPGA (mkpimage)"
 	depends on BR2_arm

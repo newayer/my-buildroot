@@ -508,6 +508,7 @@ else
 # build process.
 define LINUX_INSTALL_IMAGE
 	$(INSTALL) -m 0644 -D $(LINUX_IMAGE_PATH) $(1)/$(notdir $(LINUX_IMAGE_NAME))
+	test ! -f $(LINUX_DIR)/boot.img || cp $(LINUX_DIR)/boot.img $(BINARIES_DIR)
 endef
 endif
 

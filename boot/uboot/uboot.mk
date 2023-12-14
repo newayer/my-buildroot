@@ -145,6 +145,10 @@ UBOOT_BINS += u-boot.bin
 UBOOT_BIN_IFT = u-boot.bin.ift
 endif
 
+ifeq ($(BR2_TARGET_UBOOT_RK),y)
+UBOOT_DEPENDENCIES += host-rkbin
+endif
+
 # The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
 # we have to special case it. Similar for i386/x86_64 -> x86
 ifeq ($(NORMALIZED_ARCH),arm64)
@@ -352,6 +356,8 @@ define UBOOT_BUILD_CMDS
 	$(if $(UBOOT_CUSTOM_DTS_PATH),
 		cp -f $(UBOOT_CUSTOM_DTS_PATH) $(@D)/arch/$(UBOOT_ARCH)/dts/
 	)
+	$(if $(BR2_TARGET_UBOOT_RK),
+		pushd $(@D);./make.sh --spl-new $(BR2_TARGET_UBOOT_RK_LOADER_INI) CROSS_COMPILE="$(TARGET_CROSS)";popd,
 	$(TARGET_CONFIGURE_OPTS) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_SYSROOT_DIR="/" \
@@ -360,6 +366,7 @@ define UBOOT_BUILD_CMDS
 		PKG_CONFIG_LIBDIR="$(HOST_DIR)/lib/pkgconfig:$(HOST_DIR)/share/pkgconfig" \
 		$(UBOOT_MAKE) -C $(@D) $(UBOOT_MAKE_OPTS) \
 		$(UBOOT_MAKE_TARGET)
+	)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_SD),
 		$(@D)/tools/mxsboot sd $(@D)/u-boot.sb $(@D)/u-boot.sd)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
@@ -378,6 +385,11 @@ endef
 define UBOOT_INSTALL_IMAGES_CMDS
 	$(foreach f,$(UBOOT_BINS), \
 			cp -dpf $(@D)/$(f) $(BINARIES_DIR)/
+	)
+        $(if $(BR2_TARGET_UBOOT_RK),
+		cp -dpf $(@D)/*_download_v*.bin $(BINARIES_DIR)/download.bin
+		cp -dpf $(@D)/*_idblock_v*.img $(BINARIES_DIR)/idblock.img
+		$(UBOOT_DIR)/tools/mkenvimage -s 0x40000 -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
 	)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
 		cp -dpf $(@D)/u-boot.sb $(BINARIES_DIR))
