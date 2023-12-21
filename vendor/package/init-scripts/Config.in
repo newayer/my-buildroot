@@ -7,26 +7,32 @@ if BR2_PACKAGE_INIT_SCRIPTS
 
 config BR2_PACKAGE_INIT_SCRIPT_CAN
 	bool "init scripts can"
-	default y
+	default n
 	help
 	  can interface up
 
 config BR2_PACKAGE_INIT_SCRIPT_TIME
-	bool "init scripts can"
-	default y
+	bool "init scripts time"
+	default n
 	help
-	  can interface up
+	  system time syc
 
 config BR2_PACKAGE_INIT_SCRIPT_MOUNT
-	bool "init scripts can"
-	default y
+	bool "init scripts mount"
+	default n
 	help
-	  can interface up
+	  opt partion mount
 
 config BR2_PACKAGE_INIT_SCRIPT_DAEMON
-	bool "init scripts can"
-	default y
+	bool "init scripts app"
+	default n
 	help
-	  can interface up
+	  init app up
+
+config BR2_PACKAGE_INIT_SCRIPT_ADB
+	bool "init scripts adb tools"
+	default n
+	help
+	  adb device up
 
 endif
