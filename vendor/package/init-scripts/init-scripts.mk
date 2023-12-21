@@ -25,15 +25,22 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_MOUNT),y)
-define INSTALL_CAN_INIT_SYSV
+define INSTALL_MOUNT_INIT_SYSV
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S80mount-opt $(TARGET_DIR)/etc/init.d/S80mount-opt
 endef
 endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_DAEMON),y)
-define INSTALL_CAN_INIT_SYSV
+define INSTALL_DAEMON_INIT_SYSV
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S99daemons $(TARGET_DIR)/etc/init.d/S99daemons
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/daemon-wifi.sh $(TARGET_DIR)/etc/init.d/daemon-wifi.sh
+endef
+endif
+
+ifeq ($(BR2_PACKAGE_INIT_SCRIPT_ADB),y)
+define INSTALL_ADB_INIT_SYSV
+	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S50usbdevice $(TARGET_DIR)/etc/init.d/S50usbdevice
+	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S90usb0config $(TARGET_DIR)/etc/init.d/S90usb0config
 endef
 endif
 
@@ -42,6 +49,7 @@ define INIT_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL_TIME_INIT_SYSV)
 	$(INSTALL_MOUNT_INIT_SYSV)
 	$(INSTALL_DAEMON_INIT_SYSV)
+	$(INSTALL_ADB_INIT_SYSV)
 endef
 
 define INIT_SCRIPTS_INSTALL_INIT_SYSTEMD
