@@ -1,0 +1,5 @@
+config BR2_PACKAGE_KERNEL_MODULE_ROCKIT
+	bool "kernel-module-rockit"
+	depends on BR2_LINUX_KERNEL
+	help
+	  rv1106 rockit kernel module.

@@ -1,0 +1,23 @@
+obj-$(CONFIG_ROCKCHIP_RV1106_ROCKIT) += rockit.o
+rockit-objs += ./module.o
+rockit-objs += ./mpi/mpi.o
+rockit-objs += ./mpi/mpi_log.o
+rockit-objs += ./mpi/mpi_list.o
+rockit-objs += ./mpi/mpi_ioctl.o
+rockit-objs += ./mpi/mpi_queue.o
+rockit-objs += ./mpi/mpi_job.o
+rockit-objs += ./mpi/mpi_dev.o
+rockit-objs += ./mpi/mpi_sysfs.o
+rockit-objs += ./mpi/mpi_buf.o
+rockit-objs += ./mcu/mcu.o
+rockit-objs += ./isp/rockit_isp.o
+rockit-objs += ./rockit_init.o
+rockit-objs += ./vpss/vpss.o
+rockit-objs += ./rga/vrga.o
+rockit-objs += ./rga/rga_utils.o
+rockit-objs += ./sys/vsys.o
+rockit-objs += ./venc/venc.o
+rockit-objs += ./vrgn/vrgn.o
+rockit-objs += ./valloc/valloc.o
+rockit-objs += ./vi/vvi.o
+

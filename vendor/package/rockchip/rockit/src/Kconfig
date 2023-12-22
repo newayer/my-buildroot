@@ -1,0 +1,5 @@
+config ROCKCHIP_RV1106_ROCKIT
+        tristate "rockchip rv1106 rockit"
+        default n
+        help
+          buildroot.rockchip rv1106 rockit

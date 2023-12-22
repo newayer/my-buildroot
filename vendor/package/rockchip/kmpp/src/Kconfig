@@ -1,0 +1,5 @@
+config ROCKCHIP_RV1106_MPP
+        tristate "rockchip rv1106 mpp"
+        default n
+        help
+          buildroot.rockchip rv1106 mpp
