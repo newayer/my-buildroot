@@ -1,0 +1,5 @@
+config BR2_PACKAGE_KERNEL_MODULE_KMPP
+	bool "kernel-module-kmpp"
+	depends on BR2_LINUX_KERNEL
+	help
+	  rv1106 mpp kernel module.

@@ -1,0 +1,3 @@
+source "$BR2_EXTERNAL_NEWAYER_PATH/package/rockchip/kmpp/Config.in"
+source "$BR2_EXTERNAL_NEWAYER_PATH/package/rockchip/rkbin/Config.in"
+source "$BR2_EXTERNAL_NEWAYER_PATH/package/rockchip/rockit/Config.in"
