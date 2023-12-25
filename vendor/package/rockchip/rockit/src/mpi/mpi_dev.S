@@ -3299,7 +3299,7 @@ ___modver_attr:
 	.word	.LC31
 	.short	292
 	.space	2
-	.word	__modver_version_show
+	.word	0 //__modver_version_show
 	.space	16
 	.word	.LC32
 	.word	.LC33
