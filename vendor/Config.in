@@ -10,6 +10,7 @@ menu "newayer extendsions"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-pyinquirer/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/python-thingsboard-gateway/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/rockchip/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/opencv-mobile/Config.in"
 
 #Owner
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/paver/Config.in"
