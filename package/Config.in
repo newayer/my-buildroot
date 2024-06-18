@@ -2253,7 +2253,6 @@ endif
 	source "package/mpfr/Config.in"
 	source "package/mpir/Config.in"
 	source "package/msgpack/Config.in"
-	source "package/mtp/Config.in"
 	source "package/musl-compat-headers/Config.in"
 	source "package/musl-fts/Config.in"
 	source "package/mynt-eye-d-sdk/Config.in"
