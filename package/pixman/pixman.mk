@@ -26,8 +26,8 @@ endef
 PIXMAN_POST_INSTALL_TARGET_HOOKS += PIXMAN_INSTALL_TARGET_ENV
 endif
 
-# don't build gtk based demos and tests
-PIXMAN_CONF_OPTS = -Dgtk=disabled -Dtests=disabled
+# don't build demos and tests
+PIXMAN_CONF_OPTS = -Ddemos=disabled -Dtests=disabled
 
 # Affects only tests, and we don't build tests (see
 # 0001-Disable-tests.patch). See
