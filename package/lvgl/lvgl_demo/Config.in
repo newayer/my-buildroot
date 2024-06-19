@@ -53,6 +53,7 @@ choice
 			bool "RK demo enable multimedia"
 			select BR2_PACKAGE_RKWIFIBT_APP
 			select BR2_PACKAGE_RKADK
+			select BR2_PACKAGE_RKADK_PLAYER
 			select BR2_PACKAGE_COMMON_ALGORITHM
 			select BR2_PACKAGE_COMMON_ALGORITHM_RKAPPLUS
 			help
