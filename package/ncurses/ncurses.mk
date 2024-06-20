@@ -34,7 +34,9 @@ NCURSES_CONF_OPTS = \
 	--disable-stripping \
 	--with-pkg-config-libdir="/usr/lib/pkgconfig" \
 	$(if $(BR2_PACKAGE_NCURSES_TARGET_PROGS),,--without-progs) \
-	--without-manpages
+	--without-manpages \
+	--with-default-terminfo-dir=/usr/local/ncurses/share/terminfo \
+	--with-terminfo-dirs=/usr/local/ncurses/share/terminfo:/lib/terminfo:/usr/share/terminfo
 
 ifeq ($(BR2_STATIC_LIBS),y)
 NCURSES_CONF_OPTS += --without-shared --with-normal
