@@ -59,6 +59,9 @@ export WESTON_DRM_KEEP_RATIO=1
 # Tag file for freezing weston display
 export WESTON_FREEZE_DISPLAY=/tmp/.freeze_weston
 
+# Wrap pointer around the outputs
+# export WESTON_WRAP_POINTER=1
+
 # Try to pin views to the assigned output
 # export WESTON_OUTPUT_PIN=1
 

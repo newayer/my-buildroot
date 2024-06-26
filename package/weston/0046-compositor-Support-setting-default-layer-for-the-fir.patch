@@ -1,8 +1,8 @@
-From 2e21609353a5e61faaf49353e29d01c7d462d016 Mon Sep 17 00:00:00 2001
+From 43d1148b85499bf8a5e31ea5a46c512a8bc2dd67 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 15 Oct 2020 12:43:00 +0800
-Subject: [PATCH 46/95] compositor: Support setting default layer for the first
- app
+Subject: [PATCH 046/100] compositor: Support setting default layer for the
+ first app
 
 Set env "WESTON_FIRST_APP_LAYER" to "top" or "bottom".
 
@@ -13,7 +13,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 20 insertions(+), 1 deletion(-)
 
 diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
-index 4eec906..75aeebc 100644
+index 4eec9063..75aeebc3 100644
 --- a/include/libweston/libweston.h
 +++ b/include/libweston/libweston.h
 @@ -1877,6 +1877,9 @@ enum weston_surface_flags {
@@ -27,7 +27,7 @@ index 4eec906..75aeebc 100644
  	struct wl_resource *resource;
  	struct wl_signal destroy_signal; /* callback argument: this surface */
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 26dda1a..1a8bbf5 100644
+index 26dda1a4..1a8bbf5a 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -3418,14 +3418,30 @@ weston_compositor_build_view_list(struct weston_compositor *compositor)

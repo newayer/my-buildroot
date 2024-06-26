@@ -1,7 +1,8 @@
 From 8c7bfe089c4b78f71604266d1f60bcb0caee659f Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 3 Jul 2020 12:37:37 +0800
-Subject: [PATCH 43/97] backend-drm: Support controlling compositor dynamically
+Subject: [PATCH 043/100] backend-drm: Support controlling compositor
+ dynamically
 
 Use config file to control compositor's state.
 
@@ -31,7 +32,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 82 insertions(+), 18 deletions(-)
 
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index c6542f7..9b2f057 100644
+index c6542f74..9b2f0571 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -213,32 +213,28 @@ close_src:
@@ -166,7 +167,7 @@ index c6542f7..9b2f057 100644
  
  	fclose(conf_fp);
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index afc71ad..26dda1a 100644
+index afc71adc..26dda1a4 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -5857,6 +5857,10 @@ weston_compositor_wake(struct weston_compositor *compositor)

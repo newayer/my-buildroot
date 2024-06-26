@@ -1,8 +1,8 @@
-From bbd5aa1997123cc6951474ccbfe68fccaca452d6 Mon Sep 17 00:00:00 2001
+From 0af604e78f41b5783955fd229834365f6bcbb4cb Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 6 Dec 2018 18:53:05 +0800
-Subject: [PATCH 28/95] HACK: gl-renderer: Workaround dmabuf import/attach for
- old mali
+Subject: [PATCH 028/100] HACK: gl-renderer: Workaround dmabuf import/attach
+ for old mali
 
 Tested on px3se with libmali-utgard-400-r7p0-r3p0-wayland.so, the
 mpp + waylandsink works.
@@ -14,7 +14,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/libweston/renderer-gl/gl-renderer-internal.h b/libweston/renderer-gl/gl-renderer-internal.h
-index 103e7cc6c..aef307f19 100644
+index 103e7cc6..aef307f1 100644
 --- a/libweston/renderer-gl/gl-renderer-internal.h
 +++ b/libweston/renderer-gl/gl-renderer-internal.h
 @@ -231,6 +231,8 @@ struct gl_renderer {
@@ -27,7 +27,7 @@ index 103e7cc6c..aef307f19 100644
  
  static inline struct gl_renderer *
 diff --git a/libweston/renderer-gl/gl-renderer.c b/libweston/renderer-gl/gl-renderer.c
-index 8439f7344..fd39ad6c3 100644
+index 8439f734..fd39ad6c 100644
 --- a/libweston/renderer-gl/gl-renderer.c
 +++ b/libweston/renderer-gl/gl-renderer.c
 @@ -2645,6 +2645,14 @@ import_simple_dmabuf(struct gl_renderer *gr,

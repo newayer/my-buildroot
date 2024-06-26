@@ -1,8 +1,8 @@
-From ca3dc94dd455cd9cd9dee8cf337fd984a6b4d6f1 Mon Sep 17 00:00:00 2001
+From 33c81c36478e1846e10bdaad1098c2ec2122b7a3 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Tue, 1 Sep 2020 08:51:17 +0800
-Subject: [PATCH 45/95] HACK: backend-drm: Consider linear and invalid modifier
- are the same
+Subject: [PATCH 045/100] HACK: backend-drm: Consider linear and invalid
+ modifier are the same
 
 That is true with Rockchip BSP drivers and packages.
 
@@ -20,7 +20,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  9 files changed, 20 insertions(+), 14 deletions(-)
 
 diff --git a/clients/simple-dmabuf-egl.c b/clients/simple-dmabuf-egl.c
-index 77573129d..d15d71453 100644
+index 77573129..d15d7145 100644
 --- a/clients/simple-dmabuf-egl.c
 +++ b/clients/simple-dmabuf-egl.c
 @@ -267,7 +267,8 @@ create_fbo_for_buffer(struct display *display, struct buffer *buffer)
@@ -43,7 +43,7 @@ index 77573129d..d15d71453 100644
  		d->modifiers = realloc(d->modifiers,
  				       d->modifiers_count * sizeof(*d->modifiers));
 diff --git a/clients/simple-dmabuf-v4l.c b/clients/simple-dmabuf-v4l.c
-index 41fe89573..d44cfa70d 100644
+index 41fe8957..d44cfa70 100644
 --- a/clients/simple-dmabuf-v4l.c
 +++ b/clients/simple-dmabuf-v4l.c
 @@ -919,7 +919,7 @@ dmabuf_modifier(void *data, struct zwp_linux_dmabuf_v1 *zwp_linux_dmabuf,
@@ -56,7 +56,7 @@ index 41fe89573..d44cfa70d 100644
  }
  
 diff --git a/libweston/backend-drm/drm-gbm.c b/libweston/backend-drm/drm-gbm.c
-index 62f82e3f1..8fd2529e9 100644
+index 62f82e3f..8fd2529e 100644
 --- a/libweston/backend-drm/drm-gbm.c
 +++ b/libweston/backend-drm/drm-gbm.c
 @@ -197,7 +197,8 @@ create_gbm_surface(struct gbm_device *gbm, struct drm_output *output)
@@ -70,7 +70,7 @@ index 62f82e3f1..8fd2529e9 100644
  		output->gbm_surface =
  			gbm_surface_create_with_modifiers(gbm,
 diff --git a/libweston/backend-drm/fb.c b/libweston/backend-drm/fb.c
-index 8c200b880..7df1198f8 100644
+index 8c200b88..7df1198f 100644
 --- a/libweston/backend-drm/fb.c
 +++ b/libweston/backend-drm/fb.c
 @@ -219,7 +219,7 @@ drm_fb_addfb(struct drm_device *device, struct drm_fb *fb)
@@ -108,7 +108,7 @@ index 8c200b880..7df1198f8 100644
  
  		if (weston_drm_format_has_modifier(fmt, fb->modifier))
 diff --git a/libweston/linux-dmabuf.c b/libweston/linux-dmabuf.c
-index ea781cdfe..72acee3a1 100644
+index ea781cdf..72acee3a 100644
 --- a/libweston/linux-dmabuf.c
 +++ b/libweston/linux-dmabuf.c
 @@ -1061,8 +1061,7 @@ bind_linux_dmabuf(struct wl_client *client,
@@ -122,7 +122,7 @@ index ea781cdfe..72acee3a1 100644
  								fmt->format);
  			}
 diff --git a/libweston/pixel-formats.c b/libweston/pixel-formats.c
-index 72fcc3a5d..2592294e3 100644
+index 72fcc3a5..2592294e 100644
 --- a/libweston/pixel-formats.c
 +++ b/libweston/pixel-formats.c
 @@ -801,7 +801,7 @@ pixel_format_get_modifier(uint64_t modifier)
@@ -135,7 +135,7 @@ index 72fcc3a5d..2592294e3 100644
  			   (unsigned long long) modifier);
  		free(modifier_name);
 diff --git a/libweston/pixman-renderer.c b/libweston/pixman-renderer.c
-index ac5115286..4c960d307 100644
+index ac511528..4c960d30 100644
 --- a/libweston/pixman-renderer.c
 +++ b/libweston/pixman-renderer.c
 @@ -852,8 +852,7 @@ pixman_renderer_prepare_dmabuf(struct linux_dmabuf_buffer *dmabuf)
@@ -149,7 +149,7 @@ index ac5115286..4c960d307 100644
  	}
  
 diff --git a/libweston/renderer-gl/gl-renderer.c b/libweston/renderer-gl/gl-renderer.c
-index d4958f7ec..1a964c773 100644
+index d4958f7e..1a964c77 100644
 --- a/libweston/renderer-gl/gl-renderer.c
 +++ b/libweston/renderer-gl/gl-renderer.c
 @@ -2656,7 +2656,7 @@ import_simple_dmabuf(struct gl_renderer *gr,
@@ -180,7 +180,7 @@ index d4958f7ec..1a964c773 100644
  			ret = weston_drm_format_add_modifier(fmt, modifiers[j]);
  			if (ret < 0) {
 diff --git a/shared/weston-drm-fourcc.h b/shared/weston-drm-fourcc.h
-index 0a013f791..31d80398a 100644
+index 0a013f79..31d80398 100644
 --- a/shared/weston-drm-fourcc.h
 +++ b/shared/weston-drm-fourcc.h
 @@ -30,6 +30,10 @@

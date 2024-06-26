@@ -1,7 +1,8 @@
-From 006757fc7138520e047cc30791d361cbe55c099c Mon Sep 17 00:00:00 2001
+From 0107c204cb3757b9e50332535c7d4f9b5f9482aa Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Sat, 9 Oct 2021 12:33:33 +0800
-Subject: [PATCH 58/95] HACK: pixman-renderer: Support passing dma fd to pixman
+Subject: [PATCH 058/100] HACK: pixman-renderer: Support passing dma fd to
+ pixman
 
 Usage:
 pixman_image_set_destroy_function(image, NULL, (void *)(ptrdiff_t)dma_fd)
@@ -16,7 +17,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  5 files changed, 49 insertions(+), 1 deletion(-)
 
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index a32b7ceb5..5e3741b86 100644
+index e83c8242..fd727d98 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -448,6 +448,7 @@ struct drm_fb {
@@ -28,7 +29,7 @@ index a32b7ceb5..5e3741b86 100644
  	uint32_t plane_mask;
  
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 46fcf99e8..a97f4c69d 100644
+index 9208e2a7..89cab669 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -2001,9 +2001,10 @@ drm_output_init_pixman(struct drm_output *output, struct drm_backend *b)
@@ -44,7 +45,7 @@ index 46fcf99e8..a97f4c69d 100644
  		if (!output->renderbuffer[i])
  			goto err;
 diff --git a/libweston/backend-drm/fb.c b/libweston/backend-drm/fb.c
-index 7df1198f8..b0d8f55b4 100644
+index 7df1198f..b0d8f55b 100644
 --- a/libweston/backend-drm/fb.c
 +++ b/libweston/backend-drm/fb.c
 @@ -64,6 +64,9 @@ drm_fb_destroy_dumb(struct drm_fb *fb)
@@ -86,7 +87,7 @@ index 7df1198f8..b0d8f55b4 100644
  	drmModeRmFB(device->drm.fd, fb->fb_id);
  err_bo:
 diff --git a/libweston/pixman-renderer.c b/libweston/pixman-renderer.c
-index 6b9aad479..255c648fe 100644
+index 6b9aad47..255c648f 100644
 --- a/libweston/pixman-renderer.c
 +++ b/libweston/pixman-renderer.c
 @@ -1002,6 +1002,8 @@ pixman_renderer_attach_dmabuf(struct weston_surface *es,
@@ -131,7 +132,7 @@ index 6b9aad479..255c648fe 100644
  	.renderbuffer_get_image = pixman_renderer_renderbuffer_get_image,
  };
 diff --git a/libweston/pixman-renderer.h b/libweston/pixman-renderer.h
-index e508ef87e..7d4b1db13 100644
+index e508ef87..7d4b1db1 100644
 --- a/libweston/pixman-renderer.h
 +++ b/libweston/pixman-renderer.h
 @@ -30,6 +30,10 @@

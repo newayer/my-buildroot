@@ -1,8 +1,8 @@
-From 1197b0f27c39c61957c51fdb9331f42f5a8cb18f Mon Sep 17 00:00:00 2001
+From 0c9bc342eab645c67e3e22f05a264f4e5a5b984a Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 24 Jun 2022 16:25:11 +0800
-Subject: [PATCH 69/95] desktop-shell: Avoid lowering the requested fullscreen
- surface
+Subject: [PATCH 069/100] desktop-shell: Avoid lowering the requested
+ fullscreen surface
 
 Don't lower itself.
 
@@ -13,7 +13,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/desktop-shell/shell.c b/desktop-shell/shell.c
-index b31a31bea..a743cecaf 100644
+index b31a31be..a743ceca 100644
 --- a/desktop-shell/shell.c
 +++ b/desktop-shell/shell.c
 @@ -3632,7 +3632,8 @@ rotate_binding(struct weston_pointer *pointer, const struct timespec *time,
@@ -54,7 +54,7 @@ index b31a31bea..a743cecaf 100644
  	weston_keyboard_start_grab(keyboard, &switcher->grab);
  	weston_keyboard_set_focus(keyboard, NULL);
 diff --git a/desktop-shell/shell.h b/desktop-shell/shell.h
-index 7ae6c6592..4a0f5c433 100644
+index 7ae6c659..4a0f5c43 100644
 --- a/desktop-shell/shell.h
 +++ b/desktop-shell/shell.h
 @@ -182,7 +182,8 @@ get_output_work_area(struct desktop_shell *shell,
