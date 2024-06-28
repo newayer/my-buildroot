@@ -60,4 +60,9 @@ LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_DRM=1
 LVGL_DEMO_DEPENDENCIES += lv_drivers libdrm libevdev
 endif
 
+ifeq ($(BR2_LV_DRIVERS_USE_RKADK), y)
+LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_RKADK=1
+LVGL_DEMO_DEPENDENCIES += rkadk rockchip-rga
+endif
+
 $(eval $(cmake-package))

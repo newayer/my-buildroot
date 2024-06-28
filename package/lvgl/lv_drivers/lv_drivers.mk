@@ -29,4 +29,9 @@ LV_DRIVERS_CONF_OPTS += -DLV_DRV_USE_RGA=1
 LV_DRIVERS_DEPENDENCIES += rockchip-rga
 endif
 
+ifeq ($(BR2_LV_DRIVERS_USE_RKADK), y)
+LV_DRIVERS_CONF_OPTS += -DLV_DRV_USE_RKADK=1
+LV_DRIVERS_DEPENDENCIES += rkadk rockchip-rga
+endif
+
 $(eval $(cmake-package))
