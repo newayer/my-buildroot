@@ -1,7 +1,7 @@
-From a5e0f9ad9349e0477db2d438e2d9b6ecc5895346 Mon Sep 17 00:00:00 2001
+From 7493590e05021df4548154de2bc7683213f508c8 Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Thu, 15 Dec 2022 17:08:38 +0800
-Subject: [PATCH 09/19] fix(draw): sdl: fix sdl crash
+Subject: [PATCH 08/18] fix(draw): sdl: fix sdl crash
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---

@@ -1,32 +1,18 @@
-From b760392a93f1f516f0f4ff971105ed8d7afe55f6 Mon Sep 17 00:00:00 2001
+From bce76e1158062964b58b34b5404fdaabcd9265e1 Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Wed, 6 Sep 2023 15:56:30 +0800
-Subject: [PATCH 16/19] src: extra: New widgets stiker_matrix
+Subject: [PATCH 14/18] src: extra: New widgets stiker_matrix
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
- lv_conf.h                                     |   2 +
  src/extra/themes/default/lv_theme_default.c   |   8 +
  src/extra/widgets/lv_widgets.h                |   1 +
  .../widgets/stiker_matrix/lv_stiker_matrix.c  | 164 ++++++++++++++++++
  .../widgets/stiker_matrix/lv_stiker_matrix.h  |  71 ++++++++
- 5 files changed, 246 insertions(+)
+ 4 files changed, 244 insertions(+)
  create mode 100644 src/extra/widgets/stiker_matrix/lv_stiker_matrix.c
  create mode 100644 src/extra/widgets/stiker_matrix/lv_stiker_matrix.h
 
-diff --git a/lv_conf.h b/lv_conf.h
-index 7ab822e72..550573d79 100644
---- a/lv_conf.h
-+++ b/lv_conf.h
-@@ -559,6 +559,8 @@
- 
- #define LV_USE_SPINNER    1
- 
-+#define LV_USE_STIKER_MATRIX    1
-+
- #define LV_USE_TABVIEW    1
- 
- #define LV_USE_TILEVIEW   1
 diff --git a/src/extra/themes/default/lv_theme_default.c b/src/extra/themes/default/lv_theme_default.c
 index 85c6ac376..3b47961d1 100644
 --- a/src/extra/themes/default/lv_theme_default.c

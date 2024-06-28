@@ -1,7 +1,7 @@
-From 900b802fc07b5384dcfbe308ea6491c2c49bf0da Mon Sep 17 00:00:00 2001
+From 839c0e55a1aceebf22237922d4f3466fd60c19bf Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Mon, 5 Jun 2023 19:43:28 +0800
-Subject: [PATCH 17/19] src: lv_lru: Add error log for lru testing
+Subject: [PATCH 15/18] src: lv_lru: Add error log for lru testing
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---

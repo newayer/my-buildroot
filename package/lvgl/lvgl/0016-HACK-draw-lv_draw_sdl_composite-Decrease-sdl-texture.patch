@@ -1,7 +1,7 @@
-From a94297cd4b4bfbff40de44de9d8781089f46f54a Mon Sep 17 00:00:00 2001
+From 7b4d1cb3e66f90556b3adb3a44a53e1de2c837d6 Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Mon, 5 Jun 2023 19:45:29 +0800
-Subject: [PATCH 18/19] HACK: draw: lv_draw_sdl_composite: Decrease sdl texture
+Subject: [PATCH 16/18] HACK: draw: lv_draw_sdl_composite: Decrease sdl texture
  cache size
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>

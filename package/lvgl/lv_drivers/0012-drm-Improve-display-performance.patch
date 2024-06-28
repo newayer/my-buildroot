@@ -1,7 +1,7 @@
-From 976fadfd1a393198a562ceb9aeb8dffd1553db81 Mon Sep 17 00:00:00 2001
+From dda0098c757d94b4c0ea78a28ea4db517991c6e2 Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Mon, 18 Sep 2023 18:32:44 +0800
-Subject: [PATCH] drm: Improve display performance
+Subject: [PATCH 12/16] drm: Improve display performance
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
  1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/display/drm.c b/display/drm.c
-index 943b1e7f..7693a2fc 100644
+index 709b31ff..e8ca9667 100644
 --- a/display/drm.c
 +++ b/display/drm.c
 @@ -96,7 +96,9 @@ static int quit = 0;
@@ -22,7 +22,7 @@ index 943b1e7f..7693a2fc 100644
  static struct drm_bo *vop_buf[2];
  
  struct device *pdev;
-@@ -895,7 +897,7 @@ static void *drm_thread(void *arg)
+@@ -951,7 +953,7 @@ static void *drm_thread(void *arg)
              if (ret)
                  printf("c_RkRgaBlit error : %s\n", strerror(errno));
  #else
@@ -31,7 +31,7 @@ index 943b1e7f..7693a2fc 100644
  #endif
              setdrmdisp(bo);
              draw_update = 0;
-@@ -959,7 +961,8 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
+@@ -1015,7 +1017,8 @@ void drm_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color
          color_p += area_w;
      }
  #endif
@@ -41,7 +41,7 @@ index 943b1e7f..7693a2fc 100644
      pthread_mutex_unlock(&draw_mutex);
      /*IMPORTANT!!!
       *Inform the graphics library that you are ready with the flushing*/
-@@ -978,15 +981,17 @@ void disp_init(void)
+@@ -1034,15 +1037,17 @@ void disp_init(void)
      } else {
          format = DRM_FORMAT_ARGB8888;
      }

@@ -1,7 +1,7 @@
-From 0737892dd50e9edc69442e252cdd585b597453a4 Mon Sep 17 00:00:00 2001
+From bd8797be04b7552bf85f69305898e401e2c8c2de Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Wed, 26 Apr 2023 16:44:45 +0800
-Subject: [PATCH 13/19] demos: benchmark: modify benchmark test scenes
+Subject: [PATCH 12/18] demos: benchmark: modify benchmark test scenes
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
