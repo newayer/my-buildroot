@@ -1,7 +1,7 @@
-From 63a2388f5311417bc789804f74cd04dbc99e668c Mon Sep 17 00:00:00 2001
+From dc1ecc360d2738d5c8764bbb86fab95f764cc24e Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Mon, 27 Nov 2023 14:24:59 +0800
-Subject: [PATCH] sdl: Support opengl
+Subject: [PATCH 15/16] sdl: Support opengl
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
@@ -37,7 +37,7 @@ Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
  create mode 100644 sdl/gl/shaders/rgba_cube.frag
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5c1d24dc..a118cd0d 100644
+index 48500e97..14912180 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -19,6 +19,13 @@ add_library(lvgl::drivers ALIAS lv_drivers)

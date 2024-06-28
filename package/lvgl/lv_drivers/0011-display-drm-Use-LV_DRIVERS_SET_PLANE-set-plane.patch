@@ -1,7 +1,7 @@
-From 1b84e7919132a32f9b75078fb6c1e3fe44e9a749 Mon Sep 17 00:00:00 2001
+From 0a868eb1f5daa1ddff934c19487bd0b3993414dd Mon Sep 17 00:00:00 2001
 From: ZiHan Huang <zack.huang@rock-chips.com>
 Date: Tue, 1 Aug 2023 15:05:03 +0800
-Subject: [PATCH] display: drm: Use LV_DRIVERS_SET_PLANE set plane
+Subject: [PATCH 11/16] display: drm: Use LV_DRIVERS_SET_PLANE set plane
 
 example: export LV_DRIVERS_SET_PLANE=CURSOR
 

@@ -1,7 +1,7 @@
-From db3244879320f44b5d15c12dabf7037fb8587513 Mon Sep 17 00:00:00 2001
+From 5f96742194626b63ecba374e8274b599f0bb4f1b Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Fri, 29 Mar 2024 11:47:27 +0800
-Subject: [PATCH] fix(snapshot): always use sw driver to taking sanpshot
+Subject: [PATCH 18/18] fix(snapshot): always use sw driver to taking sanpshot
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---

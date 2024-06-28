@@ -1,32 +1,18 @@
-From 63b08349dfe45d1520de3899faaeaf4a0566da06 Mon Sep 17 00:00:00 2001
+From 63e5d1a2fe5e4fea6938600338567a1dd92dd77f Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Wed, 31 May 2023 10:52:54 +0800
-Subject: [PATCH 15/19] src: extra: New widgets inputbox
+Subject: [PATCH 13/18] src: extra: New widgets inputbox
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
- lv_conf.h                                   |   2 +
  src/extra/themes/default/lv_theme_default.c |  18 ++
  src/extra/widgets/inputbox/lv_inputbox.c    | 209 ++++++++++++++++++++
  src/extra/widgets/inputbox/lv_inputbox.h    | 102 ++++++++++
  src/extra/widgets/lv_widgets.h              |   1 +
- 5 files changed, 332 insertions(+)
+ 4 files changed, 330 insertions(+)
  create mode 100644 src/extra/widgets/inputbox/lv_inputbox.c
  create mode 100644 src/extra/widgets/inputbox/lv_inputbox.h
 
-diff --git a/lv_conf.h b/lv_conf.h
-index 777545453..7ab822e72 100644
---- a/lv_conf.h
-+++ b/lv_conf.h
-@@ -535,6 +535,8 @@
- 
- #define LV_USE_IMGBTN     1
- 
-+#define LV_USE_INPUTBOX   1
-+
- #define LV_USE_KEYBOARD   1
- 
- #define LV_USE_LED        1
 diff --git a/src/extra/themes/default/lv_theme_default.c b/src/extra/themes/default/lv_theme_default.c
 index 47392b0d1..85c6ac376 100644
 --- a/src/extra/themes/default/lv_theme_default.c
