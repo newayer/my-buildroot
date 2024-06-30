@@ -2,6 +2,8 @@
 #include "chips/rk3506_arm.config"
 #include "fs/vfat.config"
 #include "multimedia/audio.config"
+#include "lvgl/lvgl_rkadk.config"
+#include "lvgl/rk_demo.config"
 BR2_PACKAGE_CAN_UTILS=y
 BR2_PACKAGE_COREMARK=y
 BR2_PACKAGE_COREUTILS=y
