@@ -1,7 +1,7 @@
-From e2af6872c493ae3f9ee118f39b8bf0f5e3b803c6 Mon Sep 17 00:00:00 2001
+From efeaaf7bfee62f85614af87c039c1e21fc39c3b3 Mon Sep 17 00:00:00 2001
 From: Daniel Stone <daniels@collabora.com>
 Date: Thu, 23 Nov 2023 16:44:10 +0000
-Subject: [PATCH 04/95] touch-calibrator: Regularise surface/view mapping
+Subject: [PATCH 04/99] touch-calibrator: Regularise surface/view mapping
 
 Manually mark the surface as mapped exactly once - in the committed
 handler where we have our content, and assert that it's correct when we

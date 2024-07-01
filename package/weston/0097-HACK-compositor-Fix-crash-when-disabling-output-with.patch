@@ -1,8 +1,8 @@
-From 56912d4125b3a31fed70e8d1917d15c520a7d5ce Mon Sep 17 00:00:00 2001
+From 361bf7de3dc24e23eaa5beee26514b09a717c30d Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 31 May 2024 18:49:02 +0800
-Subject: [PATCH 097/100] HACK: compositor: Fix crash when disabling output
- with fullscreen chromium
+Subject: [PATCH 97/99] HACK: compositor: Fix crash when disabling output with
+ fullscreen chromium
 
 Tested on RK3588 EVB with:
 chromium --start-fullscreen&
@@ -14,7 +14,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index ccd27bf5..5ae315b5 100644
+index ccd27bf5c..5ae315b53 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -1996,7 +1996,13 @@ weston_view_get_pos_offset_global(struct weston_view *view)

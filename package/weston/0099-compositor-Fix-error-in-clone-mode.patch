@@ -1,4 +1,4 @@
-From 5ebf015736b397099a45e2bdd46b4c0d3ad87c44 Mon Sep 17 00:00:00 2001
+From 93a2b64a1ad1c6360ca39f7c4136c59739f28e13 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Mon, 17 Jun 2024 08:53:35 +0800
 Subject: [PATCH 99/99] compositor: Fix error in clone mode
@@ -20,7 +20,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  1 file changed, 19 insertions(+)
 
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 5ae315b5..f73de192 100644
+index 5ae315b53..f73de192d 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -6139,9 +6139,16 @@ bind_output(struct wl_client *client,

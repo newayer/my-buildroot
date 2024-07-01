@@ -1,7 +1,7 @@
-From ef0313529ede105d4954693eba836a728843260b Mon Sep 17 00:00:00 2001
+From dc6696cf6ac03760b26b0456488bfa222fd3aaa5 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 31 May 2024 14:53:16 +0800
-Subject: [PATCH 96/96] HACK: vnc: Support dynamically enabling and disabling
+Subject: [PATCH 96/99] HACK: vnc: Support dynamically enabling and disabling
 
 Tested on RK3588 EVB with:
 weston -B drm,vnc
@@ -14,7 +14,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  1 file changed, 43 insertions(+), 3 deletions(-)
 
 diff --git a/libweston/backend-vnc/vnc.c b/libweston/backend-vnc/vnc.c
-index 8c20534..a707ea9 100644
+index 8c20534cb..5e555cc35 100644
 --- a/libweston/backend-vnc/vnc.c
 +++ b/libweston/backend-vnc/vnc.c
 @@ -30,6 +30,7 @@

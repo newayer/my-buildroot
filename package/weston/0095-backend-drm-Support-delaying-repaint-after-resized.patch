@@ -1,7 +1,7 @@
-From 99e1995a5217d2f99173f86588b94474d5b2698e Mon Sep 17 00:00:00 2001
+From a384840eeff00ea7d3dcde115d293dd38bde10c2 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 17 Apr 2024 15:41:33 +0800
-Subject: [PATCH 95/97] backend-drm: Support delaying repaint after resized
+Subject: [PATCH 95/99] backend-drm: Support delaying repaint after resized
 
 Freeze after drm outputs resized, to avoid glith.
 
@@ -12,7 +12,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 37 insertions(+), 3 deletions(-)
 
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index e74a23b..8c33347 100644
+index e74a23b73..8c3334796 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -118,6 +118,9 @@
@@ -43,7 +43,7 @@ index e74a23b..8c33347 100644
  	int virtual_width;
  	int virtual_height;
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 12d01e7..44e8255 100644
+index 466ff29bf..a7f9a502c 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -214,6 +214,7 @@ static void
@@ -82,7 +82,7 @@ index 12d01e7..44e8255 100644
  		return 1;
  	}
  
-@@ -4548,6 +4555,17 @@ output_create_notify(struct wl_listener *listener, void *data)
+@@ -4555,6 +4562,17 @@ output_create_notify(struct wl_listener *listener, void *data)
  	config_timer_handler(b);
  }
  
@@ -100,7 +100,7 @@ index 12d01e7..44e8255 100644
  static const struct weston_drm_output_api api = {
  	drm_output_set_mode,
  	drm_output_set_gbm_format,
-@@ -5074,6 +5092,12 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -5081,6 +5099,12 @@ drm_backend_create(struct weston_compositor *compositor,
  	if (buf)
  		sscanf(buf, "%dx%d", &b->virtual_width, &b->virtual_height);
  
@@ -113,7 +113,7 @@ index 12d01e7..44e8255 100644
  	buf = getenv("WESTON_DRM_MIRROR");
  	if (buf && buf[0] == '1') {
  		b->mirror_mode = true;
-@@ -5258,6 +5282,10 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -5267,6 +5291,10 @@ drm_backend_create(struct weston_compositor *compositor,
  	wl_signal_add(&b->compositor->output_created_signal,
  		      &b->output_create_listener);
  

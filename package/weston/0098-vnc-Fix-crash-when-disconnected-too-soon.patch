@@ -1,7 +1,7 @@
-From 95ce0547fe9c3b5ff97596c164ada4b9d6c20e3f Mon Sep 17 00:00:00 2001
+From c4ed138d6a97fd4b4dbe31603797a4b6143a4c73 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 14 Jun 2024 15:44:42 +0800
-Subject: [PATCH 98/98] vnc: Fix crash when disconnected too soon
+Subject: [PATCH 98/99] vnc: Fix crash when disconnected too soon
 
 Delay the destruction for 500ms, since the client might be about to bind
 the resources.
@@ -12,7 +12,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  1 file changed, 42 insertions(+), 6 deletions(-)
 
 diff --git a/libweston/backend-vnc/vnc.c b/libweston/backend-vnc/vnc.c
-index 5e555cc3..a53a279b 100644
+index 5e555cc35..a53a279ba 100644
 --- a/libweston/backend-vnc/vnc.c
 +++ b/libweston/backend-vnc/vnc.c
 @@ -122,6 +122,9 @@ struct vnc_peer {
