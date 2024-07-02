@@ -14,6 +14,11 @@ if BR2_PACKAGE_LVGL_DEMO
 		default y if BR2_LV_DRIVERS_USE_DRM
 		select BR2_PACKAGE_LIBEVDEV
 
+	config BR2_LVGL_DEMO_BACKEND_RKADK
+		bool
+		default y if BR2_LV_DRIVERS_USE_RKADK
+		select BR2_PACKAGE_LIBEVDEV
+
 	config BR2_LVGL_DEMO_OFFICIAL_DEMOS
 		bool "Enable demos from LVGL team"
 		default n
