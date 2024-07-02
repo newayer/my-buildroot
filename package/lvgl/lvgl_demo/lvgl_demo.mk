@@ -62,4 +62,8 @@ LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_RKADK=1
 LVGL_DEMO_DEPENDENCIES += rkadk rockchip-rga
 endif
 
+ifeq ($(BR2_PACKAGE_RK3506), y)
+LVGL_DEMO_CONF_OPTS += -DLVGL_DEMO_RK3506=1
+endif
+
 $(eval $(cmake-package))
