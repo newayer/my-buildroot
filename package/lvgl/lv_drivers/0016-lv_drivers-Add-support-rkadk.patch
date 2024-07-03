@@ -1,4 +1,4 @@
-From 04e4591b8d044068df0117f1650c007516d25256 Mon Sep 17 00:00:00 2001
+From 2fcee0df544242e6df568e53c0ec6bd406020d86 Mon Sep 17 00:00:00 2001
 From: ZiHan Huang <zack.huang@rock-chips.com>
 Date: Fri, 28 Jun 2024 16:19:15 +0800
 Subject: [PATCH] lv_drivers: Add support rkadk
@@ -13,7 +13,7 @@ Signed-off-by: ZiHan Huang <zack.huang@rock-chips.com>
  create mode 100644 rkadk/rkadk.h
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 14912180..2210c875 100644
+index 1491218..2210c87 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -34,6 +34,9 @@ if (LV_DRV_USE_RGA)
@@ -28,7 +28,7 @@ index 14912180..2210c875 100644
  include_directories(${CMAKE_SYSROOT}/usr/include/libdrm/)
 diff --git a/rkadk/rkadk.c b/rkadk/rkadk.c
 new file mode 100644
-index 00000000..b612ba73
+index 0000000..3f47da2
 --- /dev/null
 +++ b/rkadk/rkadk.c
 @@ -0,0 +1,734 @@
@@ -280,15 +280,15 @@ index 00000000..b612ba73
 +    memset(&ui_attr, 0, sizeof(ui_attr));
 +
 +    ui_attr.u32VoChn = 1;
-+    ui_attr.u32VoDev = 3; //3588 is 3
++    ui_attr.u32VoDev = -1;
++    ui_attr.u32VoLay = -1;
 +    ui_attr.u32DispFrmRt = 30;
 +    ui_attr.u32DispWidth = disp_dev.width;
 +    ui_attr.u32DispHeight = disp_dev.height;
 +    ui_attr.u32ImgWidth = disp_dev.width;
 +    ui_attr.u32ImgHeight = disp_dev.height;
 +    ui_attr.enUiVoFormat = VO_FORMAT_RGB888;
-+    //ui_attr.enVoSpliceMode = SPLICE_MODE_RGA;
-+    ui_attr.enVoSpliceMode = SPLICE_MODE_GPU;
++    ui_attr.enVoSpliceMode = SPLICE_MODE_RGA;
 +
 +#ifdef PLATFORM_RV1106
 +    ui_attr.enUiVoIntfTye = DISPLAY_TYPE_DEFAULT;
@@ -768,7 +768,7 @@ index 00000000..b612ba73
 +#endif
 diff --git a/rkadk/rkadk.h b/rkadk/rkadk.h
 new file mode 100644
-index 00000000..3fabb0af
+index 0000000..3fabb0a
 --- /dev/null
 +++ b/rkadk/rkadk.h
 @@ -0,0 +1,32 @@
@@ -805,5 +805,5 @@ index 00000000..3fabb0af
 +} /* extern "C" */
 +#endif
 -- 
-2.25.1
+2.34.1
 
