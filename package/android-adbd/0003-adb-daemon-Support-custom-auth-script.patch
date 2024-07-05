@@ -1,14 +1,14 @@
-From 310ede965d2288dea563352c26f680acdb2bb371 Mon Sep 17 00:00:00 2001
+From 7488d788d8fd0fbff86084264cf3085577b7c183 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Sun, 8 Oct 2023 12:07:33 +0800
-Subject: [PATCH 3/8] adb: daemon: Support custom auth script
+Subject: [PATCH 3/8] adb: daemon: Support custom auth command
 
-Run "adb shell auth" to trigger /usr/bin/adbd-auth for custom
+Run "adb shell" to trigger /usr/bin/adbd-auth.sh for custom
 authentication.
 
 Tested on RK3588 EVB with:
-1/ echo true > /usr/bin/adbd-auth
-2/ chmod 755 /usr/bin/adbd-auth
+1/ echo true > /usr/bin/adbd-auth.sh
+2/ chmod 755 /usr/bin/adbd-auth.sh
 3/ echo ADB_SECURE=1 > /etc/profile.d/adbd.sh
 4/ reboot
 
@@ -16,14 +16,14 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
  adb/adb.cpp           | 38 +++++++++++++++++++++++++++++++++++---
  adb/adb_auth.h        |  8 ++++++++
- adb/adbd_auth.cpp     | 12 ++++++++++++
+ adb/adbd_auth.cpp     | 20 ++++++++++++++++++++
  adb/services.cpp      | 27 +++++++++++++++++++++++++++
  adb/shell_service.cpp | 21 ++++++++++++++++-----
  adb/shell_service.h   |  5 ++++-
- 6 files changed, 102 insertions(+), 9 deletions(-)
+ 6 files changed, 110 insertions(+), 9 deletions(-)
 
 diff --git a/adb/adb.cpp b/adb/adb.cpp
-index e041ba8..cf57d09 100644
+index e041ba8..8dd2e30 100644
 --- a/adb/adb.cpp
 +++ b/adb/adb.cpp
 @@ -214,7 +214,7 @@ static void send_close(unsigned local, unsigned remote, atransport *t)
@@ -80,7 +80,7 @@ index e041ba8..cf57d09 100644
 +
 +#ifndef __ANDROID__
 +            if (auth_required && !t->has_feature(FEATURE_AUTHED)) {
-+                if (!has_adbd_auth_script()) {
++                if (!adbd_auth_custom_supported()) {
 +                    /* Should not reach here */
 +                    t->SetConnectionState(kCsOffline);
 +                    handle_offline(t);
@@ -88,7 +88,7 @@ index e041ba8..cf57d09 100644
 +                }
 +
 +                /* Try custom authentication */
-+                if (!strcmp(name, "shell:auth")) {
++                if (!strncmp(name, "shell:", strlen("shell:"))) {
 +                    if (t->failed_auth_attempts++ > 3) std::this_thread::sleep_for(1s);
 +                    name = const_cast<char*>(AUTH_CUSTOM);
 +                } else {
@@ -101,26 +101,31 @@ index e041ba8..cf57d09 100644
              if (s == nullptr) {
                  send_close(0, p->msg.arg0, t);
 diff --git a/adb/adb_auth.h b/adb/adb_auth.h
-index a6f224f..6ee480e 100644
+index a6f224f..65709ed 100644
 --- a/adb/adb_auth.h
 +++ b/adb/adb_auth.h
-@@ -43,6 +43,14 @@ void send_auth_response(const char* token, size_t token_size, atransport* t);
+@@ -43,11 +43,19 @@ void send_auth_response(const char* token, size_t token_size, atransport* t);
  
  #else // !ADB_HOST
  
-+#define ADBD_AUTH_SCRIPT "/usr/bin/adbd-auth"
-+#define has_adbd_auth_script() (!access(ADBD_AUTH_SCRIPT, X_OK))
-+
 +#define FEATURE_AUTHED "authed"
 +
 +#define AUTH_CUSTOM "auth:custom"
 +#define AUTH_REQUIRED "auth:required"
 +
  extern bool auth_required;
++extern const char *auth_command;
  
  void adbd_auth_init(void);
+ void adbd_auth_verified(atransport *t);
+ 
++bool adbd_auth_custom_supported(void);
++
+ void adbd_cloexec_auth_socket();
+ bool adbd_auth_verify(const char* token, size_t token_size, const char* sig, int sig_len);
+ void adbd_auth_confirm_key(const char* data, size_t len, atransport* t);
 diff --git a/adb/adbd_auth.cpp b/adb/adbd_auth.cpp
-index 3488ad1..da64a0c 100644
+index 3488ad1..60fbeaf 100644
 --- a/adb/adbd_auth.cpp
 +++ b/adb/adbd_auth.cpp
 @@ -129,6 +129,14 @@ void adbd_auth_confirm_key(const char* key, size_t len, atransport* t) {
@@ -129,7 +134,7 @@ index 3488ad1..da64a0c 100644
  
 +#ifndef __ANDROID__
 +    /* Try custom authentication later */
-+    if (has_adbd_auth_script()) {
++    if (adbd_auth_custom_supported()) {
 +        adbd_auth_verified(t);
 +        return;
 +    }
@@ -138,7 +143,7 @@ index 3488ad1..da64a0c 100644
      if (framework_fd < 0) {
          LOG(ERROR) << "Client not connected";
          needs_retry = true;
-@@ -179,7 +187,9 @@ static void adbd_auth_listener(int fd, unsigned events, void* data) {
+@@ -179,16 +187,28 @@ static void adbd_auth_listener(int fd, unsigned events, void* data) {
  void adbd_cloexec_auth_socket() {
      int fd = android_get_control_socket("adbd");
      if (fd == -1) {
@@ -148,8 +153,17 @@ index 3488ad1..da64a0c 100644
          return;
      }
      fcntl(fd, F_SETFD, FD_CLOEXEC);
-@@ -188,7 +198,9 @@ void adbd_cloexec_auth_socket() {
+ }
+ 
++const char *auth_command = "/bin/false";
++
++bool adbd_auth_custom_supported(void) {
++    return access(auth_command, X_OK) == 0;
++}
++
  void adbd_auth_init(void) {
++    auth_command = getenv("ADBD_AUTH_COMMAND") ?: "/usr/bin/adbd-auth.sh";
++
      int fd = android_get_control_socket("adbd");
      if (fd == -1) {
 +#ifdef __ANDROID__
@@ -159,7 +173,7 @@ index 3488ad1..da64a0c 100644
      }
  
 diff --git a/adb/services.cpp b/adb/services.cpp
-index e516691..04122a4 100644
+index e516691..ccf5a3e 100644
 --- a/adb/services.cpp
 +++ b/adb/services.cpp
 @@ -51,6 +51,7 @@
@@ -177,7 +191,7 @@ index e516691..04122a4 100644
 +#ifndef __ANDROID__
 +void require_auth_service(int fd, void *)
 +{
-+    WriteFdExactly(fd, "login with \"adb shell auth\" to continue.\r\n");
++    WriteFdExactly(fd, "login with \"adb shell\" to continue.\r\n");
 +    adb_close(fd);
 +}
 +
@@ -201,8 +215,8 @@ index e516691..04122a4 100644
          ret = create_service_thread("reconnect", reconnect_service,
                                      const_cast<atransport*>(transport));
 +    } else if (!strcmp(name, AUTH_CUSTOM)) {
-+        ret = StartSubprocess(ADBD_AUTH_SCRIPT, nullptr,
-+                              SubprocessType::kRaw, SubprocessProtocol::kNone,
++        ret = StartSubprocess(auth_command, nullptr,
++                              SubprocessType::kPty, SubprocessProtocol::kNone,
 +                              auth_finished,
 +                              reinterpret_cast<void*>(const_cast<atransport*>(transport)));
 +    } else if (!strcmp(name, AUTH_REQUIRED)) {
