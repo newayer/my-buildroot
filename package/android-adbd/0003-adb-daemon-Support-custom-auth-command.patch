@@ -1,4 +1,4 @@
-From 7488d788d8fd0fbff86084264cf3085577b7c183 Mon Sep 17 00:00:00 2001
+From 3b28c2dfff5ce967b1a1665170e038a57b46fcec Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Sun, 8 Oct 2023 12:07:33 +0800
 Subject: [PATCH 3/8] adb: daemon: Support custom auth command
@@ -23,7 +23,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  6 files changed, 110 insertions(+), 9 deletions(-)
 
 diff --git a/adb/adb.cpp b/adb/adb.cpp
-index e041ba8..8dd2e30 100644
+index e041ba8..f7661a4 100644
 --- a/adb/adb.cpp
 +++ b/adb/adb.cpp
 @@ -214,7 +214,7 @@ static void send_close(unsigned local, unsigned remote, atransport *t)
@@ -91,7 +91,7 @@ index e041ba8..8dd2e30 100644
 +                if (!strncmp(name, "shell:", strlen("shell:"))) {
 +                    if (t->failed_auth_attempts++ > 3) std::this_thread::sleep_for(1s);
 +                    name = const_cast<char*>(AUTH_CUSTOM);
-+                } else {
++                } else if(strncmp(name, "reboot:", 7)) {
 +                    name = const_cast<char*>(AUTH_REQUIRED);
 +                }
 +            }
@@ -173,7 +173,7 @@ index 3488ad1..60fbeaf 100644
      }
  
 diff --git a/adb/services.cpp b/adb/services.cpp
-index e516691..ccf5a3e 100644
+index e516691..b4469c1 100644
 --- a/adb/services.cpp
 +++ b/adb/services.cpp
 @@ -51,6 +51,7 @@
