@@ -1,4 +1,4 @@
-From ebf67b0a4b8c6da91dcec51f2a8598f35e204146 Mon Sep 17 00:00:00 2001
+From 14ad7fcbe72ebd8ff245216f79ee55b3bba4ce23 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Sun, 8 Oct 2023 18:03:25 +0800
 Subject: [PATCH 5/8] adb: Support setting adb shell
@@ -9,14 +9,22 @@ Tested on RK3588 EVB with:
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
- adb/shell_service.cpp | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ adb/shell_service.cpp | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/adb/shell_service.cpp b/adb/shell_service.cpp
-index b548a31..22fded5 100644
+index b548a31..b67747e 100644
 --- a/adb/shell_service.cpp
 +++ b/adb/shell_service.cpp
-@@ -337,12 +337,15 @@ bool Subprocess::ForkAndExec(std::string* error) {
+@@ -102,6 +102,7 @@
+ #endif
+ 
+ #include "adb.h"
++#include "adb_auth.h"
+ #include "adb_io.h"
+ #include "adb_trace.h"
+ #include "adb_unique_fd.h"
+@@ -337,12 +338,19 @@ bool Subprocess::ForkAndExec(std::string* error) {
          // processes, so we need to manually reset back to SIG_DFL here (http://b/35209888).
          signal(SIGPIPE, SIG_DFL);
  
@@ -26,6 +34,10 @@ index b548a31..22fded5 100644
 +            execle(shell_command, shell_command, "-l", nullptr, cenv.data());
          } else {
 -            execle(_PATH_BSHELL, _PATH_BSHELL, "-c", command_.c_str(), nullptr, cenv.data());
++            /* Use default shell for auth */
++            if (!strcmp(command_.c_str(), auth_command))
++                shell_command = _PATH_BSHELL;
++
 +            execle(shell_command, shell_command, "-c", command_.c_str(), nullptr, cenv.data());
          }
 -        WriteFdExactly(child_error_sfd, "exec '" _PATH_BSHELL "' failed: ");
