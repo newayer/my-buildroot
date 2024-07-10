@@ -4,6 +4,8 @@
 #include "wifibt/bt.config"
 #include "wifibt/wireless.config"
 #include "multimedia/audio.config"
+#include "wifibt/bt.config"
+#include "wifibt/wireless.config"
 #include "lvgl/lvgl_rkadk.config"
 #include "lvgl/rk_demo.config"
 BR2_PACKAGE_CAN_UTILS=y
@@ -31,3 +33,8 @@ BR2_TARGET_ROOTFS_SQUASHFS4_XZ=y
 BR2_TARGET_ROOTFS_UBI=y
 BR2_TARGET_ROOTFS_UBI_SQUASHFS=y
 BR2_TARGET_ROOTFS_UBI_SUBSIZE=2048
+<<<<<<< PATCH SET (aad981 config/rk3506: add wifi bt config and rockchip test config)
+BR2_PACKAGE_PULSEAUDIO=n
+BR2_PACKAGE_PULSEAUDIO_DAEMON=n
+=======
+>>>>>>> BASE      (88ad3a weston: Fix a few issues for VNC)
