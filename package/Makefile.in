@@ -332,7 +332,8 @@ EXTRA_ENV = \
 	BR2_DL_DIR=$(BR2_DL_DIR) \
 	BUILD_DIR=$(BUILD_DIR) \
 	CONFIG_DIR=$(CONFIG_DIR) \
-	O=$(CANONICAL_O)
+	O=$(CANONICAL_O) \
+	FORCE_UNSAFE_CONFIGURE=1
 
 ################################################################################
 # settings we need to pass to configure
