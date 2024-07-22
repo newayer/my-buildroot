@@ -19,7 +19,7 @@ shift $(($OPTIND - 1))
 
 config=$1
 if [ -z $config ]; then
-    config=zlg_a6g2c_iot-6g2c-l_paver_5x_defconfig
+    config=luckfox_pico_defconfig
 else
     config=$(basename $1)
 fi
