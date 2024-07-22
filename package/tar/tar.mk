@@ -28,6 +28,8 @@ else
 TAR_CONF_OPTS += --without-xattrs
 endif
 
+TAR_CONF_OPTS += --disable-year2038
+
 $(eval $(autotools-package))
 
 # host-tar: use cpio.gz instead of tar.gz to prevent chicken-egg problem
