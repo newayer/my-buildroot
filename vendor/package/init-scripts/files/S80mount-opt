@@ -1,21 +1,23 @@
 #!/bin/sh
 #
-# mount /dev/mtdblock6 of nandflash in /opt directory
+# mount /dev/mtdblock5 of nandflash in /opt directory
 #
+
+mtdblock=5
 
 start() {
      echo -n "Start mount /opt: "
-     ubiattach /dev/ubi_ctrl -m 4 -d 1 &&
+     ubiattach /dev/ubi_ctrl -m $mtdblock -d 1 &&
      mount -t ubifs ubi1_0 /opt
 
      if [ $? == 0 ]; then
          echo "Mount /opt ok"
      else
-         echo "flash_erase /dev/mtd4"
-         ubidetach -p /dev/mtd4
-         flash_erase /dev/mtd4 0 0
-         ubiformat /dev/mtd4
-         ubiattach /dev/ubi_ctrl -m 4 -d 1
+         echo "flash_erase /dev/mtd$mtdblock"
+         ubidetach -p /dev/mtd$mtdblock
+         flash_erase /dev/mtd$mtdblock 0 0
+         ubiformat /dev/mtd$mtdblock
+         ubiattach /dev/ubi_ctrl -m $mtdblock -d 1
          ubimkvol /dev/ubi1 -N opt -m
          mount -t ubifs ubi1_0 /opt
      fi
@@ -23,7 +25,7 @@ start() {
 stop() {
      echo -n "Unmount /opt: "
      umount /opt
-     ubidetach -p /dev/mtd4
+     ubidetach -p /dev/mtd5
      echo "Unmount /opt OK"
 }
 restart() {
