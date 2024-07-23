@@ -1,0 +1,33 @@
+config BR2_PACKAGE_WORKSITE_D
+	bool "worksite-d"
+	help
+	  Add worksite-d project to rootfs.
+
+if BR2_PACKAGE_WORKSITE_D
+
+comment "Worksite-d Parameters"
+
+config BR2_PACKAGE_WORKSITE_D_URL
+	string "URL of custom repository"
+
+config BR2_PACKAGE_WORKSITE_D_VERSION
+	string "Custom git repository version"
+	help
+	  Revision to use in the typical format used by
+	  Git E.G. a sha id, a tag
+
+choice
+	prompt "worksite-d sub project"
+	default BR2_PACKAGE_WORKSITE_D_UAV
+	help
+	  Select which sub project to enable
+
+config BR2_PACKAGE_WORKSITE_D_PAVER
+	bool "worksite-d for paver app"
+
+config BR2_PACKAGE_WORKSITE_D_UAV
+	bool "worksite-d for uav app"
+
+endchoice
+
+endif # BR2_PACKAGE_WORKSITE_D

@@ -3,7 +3,7 @@
 function app_restart()
 {
     echo "`date "+%Y-%m-%d %H:%M:%S"`: main app restart..." >> /opt/logs/main_error.log
-    /etc/init.d/S90paver restart >> /opt/logs/main_error.log
+    /etc/init.d/S90worksite-d restart >> /opt/logs/main_error.log
 }
 
 function app_exist()
