@@ -1,0 +1,70 @@
+# /etc/ppp/peers/ppp-wcdma
+
+# Usage: sudo pppd call ppp-wcdma &
+
+# 连接调试时隐藏密码
+hide-password
+
+# 该手机不需要身份验证
+noauth
+
+# 用于呼叫控制脚本
+connect '/usr/sbin/chat -s -v -f /etc/ppp/peers/chat-wcdma-connect'
+
+# 断开连接脚本
+disconnect '/usr/sbin/chat -s -v -f /etc/ppp/peers/chat-wcdma-disconnect'
+
+# 调试信息，pppd将以可读的形式记录所有发送或接收的控制数据包的内容
+debug
+
+# 4G模块对应的串口设备名称
+/dev/ttyS3
+
+# 串口波特率
+115200
+
+# 使用默认路由，IPCP协商成功后，在系统路由表中添加一条缺省路由，使用对等体作为网关。当PPP连接断开时，删除此表项。
+defaultroute
+
+# 不使用默认IP：当没有指定本地IP地址时禁用默认行为，这是为了从主机名确定(如果可能)本地IP地址。
+noipdefault
+
+# 不使用PPP压缩
+novj
+novjccomp
+noccp
+
+#使用该选项，pppd将接受对等体对我们本地IP地址的想法，即使本地IP地址在选项中指定
+ipcp-accept-local
+
+#通过该选项，pppd将接受对等体对其(远端)IP地址的想法，即使远端IP地址在选项中指定
+ipcp-accept-remote
+
+#不要使用调制解调器控制线
+local
+
+# 指定pppd应该为串行设备创建一个锁文件，以确保对该设备的独占访问，其他程序在发现这个文件后，就能得知相应的串口已经被使用。
+lock
+
+#使用转储选项，pppd将打印所有已设置的选项值
+dump
+
+# 保持pppd连接到终端。在pppd程序需要放到后台运行时，最好不要该选项
+nodetach
+
+# 用户名 密码
+user card
+password card
+#电信需要用户名和密码，移动、联通拨号不需要，下文给出不同运营商的配置
+
+# 无硬件流量控制
+xonxoff
+
+#将用于身份验证的远程系统的假定名称设置为name
+remotename 3gppp
+
+#为ip-up、ip-pre-up和ip-down脚本提供额外参数。如果提供了这个选项，提供的字符串将作为这些脚本的第6个参数提供
+ipparam 3gppp
+
+# 向对端请求最多2个DNS服务器地址
+usepeerdns

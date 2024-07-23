@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# pppd Starts pppd.
+#
+
+start() {
+    mkdir -p /opt/logs
+    printf "Starting stream pppd: "
+
+    python3 /usr/local/lib/ppp_start.py >> /opt/logs/main_error.log 2>&1
+
+    for var in 1 2 3; do
+        sleep 10
+        pppd call ppp_options >> /opt/logs/main_error.log 2>&1
+        IP=$(ifconfig ppp0 | grep "inet addr:" | tr -d A-z: | awk {'print $1'})
+        if [ "$IP" ] ; then
+            echo "OK"
+            break
+        fi
+    done
+    echo "FAILED"
+}
+
+stop() {
+    printf "Stopping pppd: "
+    killall pppd >> /opt/logs/main_error.log 2>&1
+    echo "OK"
+}
+
+restart() {
+    stop
+    sleep 3
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

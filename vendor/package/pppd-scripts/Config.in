@@ -3,3 +3,21 @@ config BR2_PACKAGE_PPPD_SCRIPTS
 	depends on BR2_PACKAGE_PPPD
 	help
 	  pppd scripts used by system init.
+
+if BR2_PACKAGE_PPPD_SCRIPTS
+
+choice
+	prompt "pppd Parameters"
+	default BR2_PACKAGE_PPPD_SCRIPTS_EC20
+	help
+	  Select which modem to pppd
+
+config BR2_PACKAGE_PPPD_SCRIPTS_IRIDIUM
+	bool "pppd scripts for iridium"
+
+config BR2_PACKAGE_PPPD_SCRIPTS_EC20
+	bool "pppd scripts for ec20"
+
+endchoice
+
+endif # BR2_PACKAGE_PPPD_SCRIPTS
