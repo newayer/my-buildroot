@@ -1,0 +1,7 @@
+ABORT "ERROR"
+ABORT "NO DIALTONE"
+SAY "\NSending break to the modem\n"
+
+""\k"
+""\033\033\033"
+SAY "\nGood bye !\n"

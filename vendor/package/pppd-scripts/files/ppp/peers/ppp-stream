@@ -1,0 +1,15 @@
+# Usage: sudo pppd call ppp-stream &
+# or
+# sudo pppd /dev/ttyS3 115200 192.168.1.2:192.168.1.1 asyncmap 80a0000 noauth xonxoff usepeerdns defaultroute connect "chat -v -s -S -t 10 -f /etc/ppp/peers/chat-iridium-connect" &
+
+noauth
+connect 'chat -v -s -S -t 10 -f /etc/ppp/peers/chat-iridium-connect'
+disconnect 'chat -v -s -S -t 10 -f /etc/ppp/peers/chat-iridium-disconnect'
+debug
+/dev/ttyS3
+115200
+defaultroute
+192.168.1.2:192.168.1.1
+asyncmap 80a0000
+xonxoff
+usepeerdns

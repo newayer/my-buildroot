@@ -1,12 +1,12 @@
 #!/bin/sh
 #
-# pppd        Starts pppd.
+# pppd Starts pppd.
 #
 
 start() {
     mkdir -p /opt/logs
     printf "Starting pppd: "
-    /usr/bin/pon wcdma >> /opt/logs/main_error.log 2>&1 &
+    /usr/bin/pon ppp_options >> /opt/logs/main_error.log 2>&1
     touch /var/lock/pppd
     echo "OK"
 }
@@ -40,4 +40,3 @@ case "$1" in
 esac
 
 exit $?
-
