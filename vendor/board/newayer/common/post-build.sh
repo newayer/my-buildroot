@@ -27,7 +27,7 @@ if [ -e $TARGET_DIR/etc/network/interfaces ]; then
   echo "" >> $TARGET_DIR/etc/network/interfaces
   echo "auto eth1" >> $TARGET_DIR/etc/network/interfaces
   echo "iface eth1 inet static" >> $TARGET_DIR/etc/network/interfaces
-  echo "	address 192.168.117.136/24" >> $TARGET_DIR/etc/network/interfaces
-  echo "	gateway 192.168.117.1" >> $TARGET_DIR/etc/network/interfaces
+  echo "	address 192.168.118.136/24" >> $TARGET_DIR/etc/network/interfaces
+  echo "	gateway 192.168.118.1" >> $TARGET_DIR/etc/network/interfaces
 
 fi
