@@ -23,11 +23,11 @@ config BR2_PACKAGE_INIT_SCRIPT_MOUNT
 	help
 	  opt partion mount
 
-config BR2_PACKAGE_INIT_SCRIPT_DAEMON
-	bool "init scripts app"
+config BR2_PACKAGE_INIT_SCRIPT_DAEMON_WIFI
+	bool "init scripts for wifi"
 	default n
 	help
-	  init app up
+	  init wifi up
 
 config BR2_PACKAGE_INIT_SCRIPT_ADB
 	bool "init scripts adb tools"

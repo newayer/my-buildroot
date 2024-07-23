@@ -30,10 +30,10 @@ define INSTALL_MOUNT_INIT_SYSV
 endef
 endif
 
-ifeq ($(BR2_PACKAGE_INIT_SCRIPT_DAEMON),y)
+ifeq ($(BR2_PACKAGE_INIT_SCRIPT_DAEMON_WIFI),y)
 define INSTALL_DAEMON_INIT_SYSV
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S99daemons $(TARGET_DIR)/etc/init.d/S99daemons
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/daemon-wifi.sh $(TARGET_DIR)/etc/init.d/daemon-wifi.sh
+	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S99daemon-wifi $(TARGET_DIR)/etc/init.d/S99daemon-wifi
+	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/daemon-wifi.sh $(TARGET_DIR)/usr/sbin/daemon-wifi.sh
 endef
 endif
 

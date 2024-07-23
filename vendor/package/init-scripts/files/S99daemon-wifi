@@ -1,21 +1,19 @@
 #!/bin/sh
 
 start() {
-    echo -n "Start daemons: "
-    /usr/bin/daemon-wifi.sh &
-    /usr/bin/daemon-app.sh &
+    echo -n "Start WIFI daemons: "
+    /usr/sbin/daemon-wifi.sh &
     echo "OK"
 }
 
 stop() {
-    echo -n "Stop daemons: "
-    kill -9 `pidof daemon-app.sh` > /dev/null 2>&1
+    echo -n "Stop WIFI daemons: "
     kill -9 `pidof daemon-wifi.sh` > /dev/null 2>&1
     echo "OK"
 }
 
 restart() {
-    echo -n "restart daemons: "
+    echo -n "restart WIFI daemons: "
     stop
     start
 }
