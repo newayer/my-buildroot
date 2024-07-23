@@ -1,2 +1,4 @@
 LINUX_OVERRIDE_SRCDIR = $(TOPDIR)/../my-kernel
 UBOOT_OVERRIDE_SRCDIR = $(TOPDIR)/../my-uboot
+
+WORKSITE_D_OVERRIDE_SRCDIR = $(TOPDIR)/../../worksite-d

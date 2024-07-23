@@ -13,7 +13,7 @@ menu "newayer extendsions"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/opencv-mobile/Config.in"
 
 #Owner
-    source "$BR2_EXTERNAL_NEWAYER_PATH/package/paver/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/worksite-d/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/firmware-brcm/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/firmware-rtl/Config.in"
     source "$BR2_EXTERNAL_NEWAYER_PATH/package/pppd-scripts/Config.in"
