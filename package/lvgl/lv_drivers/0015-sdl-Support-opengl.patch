@@ -1,13 +1,13 @@
-From dc1ecc360d2738d5c8764bbb86fab95f764cc24e Mon Sep 17 00:00:00 2001
+From fea41fc576e28608434bc66922f97087518ab458 Mon Sep 17 00:00:00 2001
 From: Jiajian Wu <jair.wu@rock-chips.com>
 Date: Mon, 27 Nov 2023 14:24:59 +0800
-Subject: [PATCH 15/16] sdl: Support opengl
+Subject: [PATCH] sdl: Support opengl
 
 Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
 ---
  CMakeLists.txt                |    7 +
  lv_drv_conf.h                 |    4 +
- sdl/gl/gl.c                   | 1116 +++++++++++++++++++++++++++++++++
+ sdl/gl/gl.c                   | 1117 +++++++++++++++++++++++++++++++++
  sdl/gl/gl.h                   |  161 +++++
  sdl/gl/mat.c                  |  369 +++++++++++
  sdl/gl/mat.h                  |   23 +
@@ -21,7 +21,7 @@ Signed-off-by: Jiajian Wu <jair.wu@rock-chips.com>
  sdl/gl/shaders/rgba.frag      |   12 +
  sdl/gl/shaders/rgba_cube.frag |   10 +
  sdl/sdl_gpu.c                 |   34 +-
- 16 files changed, 1977 insertions(+), 1 deletion(-)
+ 16 files changed, 1978 insertions(+), 1 deletion(-)
  create mode 100644 sdl/gl/gl.c
  create mode 100644 sdl/gl/gl.h
  create mode 100644 sdl/gl/mat.c
@@ -71,10 +71,10 @@ index 345762aa..d6f10ee5 100644
  //#  define SDL_VER_RES     1280
 diff --git a/sdl/gl/gl.c b/sdl/gl/gl.c
 new file mode 100644
-index 00000000..e09a4ec4
+index 00000000..09e68b78
 --- /dev/null
 +++ b/sdl/gl/gl.c
-@@ -0,0 +1,1116 @@
+@@ -0,0 +1,1117 @@
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <unistd.h>
@@ -1188,6 +1188,7 @@ index 00000000..e09a4ec4
 +    gl_ctx.clear_depth = 1;
 +    if (user_cb)
 +        user_cb();
++    glFinish();
 +}
 +#endif
 +
