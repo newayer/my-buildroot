@@ -717,7 +717,7 @@ menu "LVGL configuration"
 
 		choice
 			prompt "Set the default BIDI direction"
-			default LV_BIDI_DIR_AUTO
+			default BR2_LV_BIDI_DIR_AUTO
 			depends on BR2_LV_USE_BIDI
 
 			config BR2_LV_BIDI_DIR_LTR
