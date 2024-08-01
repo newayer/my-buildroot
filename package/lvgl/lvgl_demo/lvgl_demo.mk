@@ -45,7 +45,7 @@ endif
 
 ifeq ($(BR2_LV_DRIVERS_USE_SDL_GPU), y)
 LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_SDL_GPU=1
-LVGL_DEMO_DEPENDENCIES += sdl2
+LVGL_DEMO_DEPENDENCIES += lv_drivers sdl2
 endif
 
 ifeq ($(BR2_LV_DRIVERS_USE_OPENGL), y)
@@ -54,12 +54,12 @@ endif
 
 ifeq ($(BR2_LV_DRIVERS_USE_DRM), y)
 LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_DRM=1
-LVGL_DEMO_DEPENDENCIES += libdrm libevdev
+LVGL_DEMO_DEPENDENCIES += lv_drivers libdrm libevdev
 endif
 
 ifeq ($(BR2_LV_DRIVERS_USE_RKADK), y)
 LVGL_DEMO_CONF_OPTS += -DLV_DRV_USE_RKADK=1
-LVGL_DEMO_DEPENDENCIES += rkadk rockchip-rga
+LVGL_DEMO_DEPENDENCIES += lv_drivers rkadk rockchip-rga
 endif
 
 ifeq ($(BR2_PACKAGE_RK3506), y)
