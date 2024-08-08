@@ -1,5 +1,11 @@
 # The env variables below can be overridden
 
+# HACK to disable weston-keyboard process
+# export WESTON_NO_KEYBOARD=1
+
+# HACK to disable background
+# export WESTON_NO_BACKGROUND=1
+
 # HACK for old chromium, see:
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1279574
 export WL_OUTPUT_VERSION=3

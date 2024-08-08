@@ -1,0 +1,44 @@
+From d77d12e1588428c1267d436c430a7cce1a5628a7 Mon Sep 17 00:00:00 2001
+From: Jeffy Chen <jeffy.chen@rock-chips.com>
+Date: Thu, 8 Aug 2024 08:51:02 +0800
+Subject: [PATCH 105/106] Support disabling background
+
+Set env WESTON_NO_BACKGROUND=1 to disable it.
+
+Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
+---
+ clients/desktop-shell.c | 3 +++
+ libweston/compositor.c  | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/clients/desktop-shell.c b/clients/desktop-shell.c
+index b8ded46..87b6b47 100644
+--- a/clients/desktop-shell.c
++++ b/clients/desktop-shell.c
+@@ -2080,6 +2080,9 @@ output_init(struct output *output, struct desktop *desktop)
+ 					       output->output, surface);
+ 	}
+ 
++	if (getenv("WESTON_NO_BACKGROUND"))
++		return;
++
+ 	output->background = background_create(desktop, output);
+ 	surface = window_get_wl_surface(output->background->window);
+ 	weston_desktop_shell_set_background(desktop->shell,
+diff --git a/libweston/compositor.c b/libweston/compositor.c
+index 7d64062..9b77ea4 100644
+--- a/libweston/compositor.c
++++ b/libweston/compositor.c
+@@ -3571,7 +3571,8 @@ weston_output_repaint(struct weston_output *output)
+ 		assert(pnode->output == output);
+ 	}
+ 
+-	if (weston_output_valid(output) && !has_background) {
++	if (!getenv("WESTON_NO_BACKGROUND") &&
++	    weston_output_valid(output) && !has_background) {
+ 		timespec_add_nsec(&output->next_repaint, &output->next_repaint,
+ 				  millihz_to_nsec(output->current_mode->refresh));
+ 		return 1;
+-- 
+2.20.1
+
