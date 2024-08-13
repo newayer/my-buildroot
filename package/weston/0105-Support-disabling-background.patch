@@ -1,4 +1,4 @@
-From d77d12e1588428c1267d436c430a7cce1a5628a7 Mon Sep 17 00:00:00 2001
+From f867aad7cb8e5bd86f14aec40f20a908b67e2413 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 8 Aug 2024 08:51:02 +0800
 Subject: [PATCH 105/106] Support disabling background
@@ -7,15 +7,36 @@ Set env WESTON_NO_BACKGROUND=1 to disable it.
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
- clients/desktop-shell.c | 3 +++
- libweston/compositor.c  | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ clients/desktop-shell.c | 10 ++++++++++
+ libweston/compositor.c  |  3 ++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/clients/desktop-shell.c b/clients/desktop-shell.c
-index b8ded46..87b6b47 100644
+index b8ded46..888ab13 100644
 --- a/clients/desktop-shell.c
 +++ b/clients/desktop-shell.c
-@@ -2080,6 +2080,9 @@ output_init(struct output *output, struct desktop *desktop)
+@@ -145,6 +145,8 @@ struct output {
+ 	struct background *background;
+ 
+ 	struct desktop *desktop;
++
++	bool inited;
+ };
+ 
+ struct panel_launcher {
+@@ -2073,6 +2075,11 @@ output_init(struct output *output, struct desktop *desktop)
+ {
+ 	struct wl_surface *surface;
+ 
++	if (output->inited)
++		return;
++
++	output->inited = true;
++
+ 	if (desktop->want_panel) {
+ 		output->panel = panel_create(desktop, output);
+ 		surface = window_get_wl_surface(output->panel->window);
+@@ -2080,6 +2087,9 @@ output_init(struct output *output, struct desktop *desktop)
  					       output->output, surface);
  	}
  
