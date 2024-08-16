@@ -8,6 +8,7 @@
 #include "wifibt/wireless.config"
 #include "lvgl/lvgl_rkadk.config"
 #include "lvgl/rk_demo.config"
+BR2_TIME_BITS_64=y
 BR2_PACKAGE_EVTEST=y
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_6_1=y
 BR2_PACKAGE_MHZ=y
