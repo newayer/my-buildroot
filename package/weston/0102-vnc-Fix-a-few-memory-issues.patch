@@ -1,7 +1,7 @@
-From 402e3c2b248e76356da5a97a61b2488c2ce6fc34 Mon Sep 17 00:00:00 2001
+From dc2eb47c1e8b2ccc21c71c72accc5f4f3e158c71 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 10 Jul 2024 16:45:54 +0800
-Subject: [PATCH 102/103] vnc: Fix a few memory issues
+Subject: [PATCH 102/107] vnc: Fix a few memory issues
 
 1/ Avoid using VNC's seat as udev_seat.
 2/ Destroy VNC outputs before shutting it down.
@@ -14,12 +14,12 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 45 insertions(+), 17 deletions(-)
 
 diff --git a/libweston/backend-vnc/vnc.c b/libweston/backend-vnc/vnc.c
-index a53a279..1df27f8 100644
+index 1c56e21..a341e66 100644
 --- a/libweston/backend-vnc/vnc.c
 +++ b/libweston/backend-vnc/vnc.c
-@@ -542,10 +542,13 @@ vnc_client_cleanup(struct nvnc_client *client)
- 	struct vnc_output *output = backend->output;
+@@ -543,10 +543,13 @@ vnc_client_cleanup(struct nvnc_client *client)
  	struct timespec now;
+ 	int delay_ms;
  
 -	wl_list_remove(&peer->link);
 +	/* The output might be destroyed */
@@ -34,7 +34,7 @@ index a53a279..1df27f8 100644
  
  	weston_log("VNC Client disconnected\n");
  
-@@ -1146,6 +1149,11 @@ static void
+@@ -1148,6 +1151,11 @@ static void
  vnc_shutdown(struct weston_backend *base)
  {
  	struct vnc_backend *backend = container_of(base, struct vnc_backend, base);
@@ -46,7 +46,7 @@ index a53a279..1df27f8 100644
  
  	nvnc_close(backend->server);
  }
-@@ -1154,8 +1162,6 @@ static void
+@@ -1156,8 +1164,6 @@ static void
  vnc_destroy(struct weston_backend *base)
  {
  	struct vnc_backend *backend = container_of(base, struct vnc_backend, base);
@@ -55,7 +55,7 @@ index a53a279..1df27f8 100644
  
  	wl_list_remove(&backend->base.link);
  
-@@ -1165,9 +1171,6 @@ vnc_destroy(struct weston_backend *base)
+@@ -1167,9 +1173,6 @@ vnc_destroy(struct weston_backend *base)
  
  	aml_unref(backend->aml);
  
