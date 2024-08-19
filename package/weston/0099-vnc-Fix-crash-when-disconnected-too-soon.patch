@@ -1,18 +1,18 @@
-From 51c9eb87df3d6daacc17af64cc53d4687b983acd Mon Sep 17 00:00:00 2001
+From 4390d90ef9c3b4287e3645b74036d536754f2831 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 14 Jun 2024 15:44:42 +0800
-Subject: [PATCH 099/100] vnc: Fix crash when disconnected too soon
+Subject: [PATCH 099/107] vnc: Fix crash when disconnected too soon
 
 Delay the destruction for 500ms, since the client might be about to bind
 the resources.
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
- libweston/backend-vnc/vnc.c | 48 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ libweston/backend-vnc/vnc.c | 50 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 6 deletions(-)
 
 diff --git a/libweston/backend-vnc/vnc.c b/libweston/backend-vnc/vnc.c
-index 5e555cc35..a53a279ba 100644
+index 5e555cc..1c56e21 100644
 --- a/libweston/backend-vnc/vnc.c
 +++ b/libweston/backend-vnc/vnc.c
 @@ -122,6 +122,9 @@ struct vnc_peer {
@@ -25,7 +25,7 @@ index 5e555cc35..a53a279ba 100644
  };
  
  struct vnc_head {
-@@ -516,21 +519,43 @@ vnc_handle_auth(const char *username, const char *password, void *userdata)
+@@ -516,21 +519,45 @@ vnc_handle_auth(const char *username, const char *password, void *userdata)
  	return true;
  }
  
@@ -57,6 +57,7 @@ index 5e555cc35..a53a279ba 100644
 +	struct vnc_backend *backend = peer->backend;
 +	struct vnc_output *output = backend->output;
 +	struct timespec now;
++	int delay_ms;
 +
 +	wl_list_remove(&peer->link);
  
@@ -70,12 +71,13 @@ index 5e555cc35..a53a279ba 100644
 +	 * to bind the peer's resources.
 +	 */
 +	weston_compositor_read_presentation_clock(backend->compositor, &now);
++	delay_ms = peer->create_ms + 500 - timespec_to_msec(&now);
 +	wl_event_source_timer_update(peer->cleanup_timer,
-+				     peer->create_ms + 500 - timespec_to_msec(&now));
++				     delay_ms > 0 ? delay_ms : 1);
  }
  
  static struct weston_pointer *
-@@ -849,6 +874,8 @@ vnc_new_client(struct nvnc_client *client)
+@@ -849,6 +876,8 @@ vnc_new_client(struct nvnc_client *client)
  	struct vnc_output *output = backend->output;
  	struct vnc_peer *peer;
  	const char *seat_name = "VNC Client";
@@ -84,7 +86,7 @@ index 5e555cc35..a53a279ba 100644
  
  	weston_log("New VNC client connected\n");
  
-@@ -869,6 +896,15 @@ vnc_new_client(struct nvnc_client *client)
+@@ -869,6 +898,15 @@ vnc_new_client(struct nvnc_client *client)
  	nvnc_set_userdata(client, peer, NULL);
  	nvnc_set_client_cleanup_fn(client, vnc_client_cleanup);
  
