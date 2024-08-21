@@ -81,6 +81,18 @@ if BR2_PACKAGE_LVGL_DEMO
 			help
 			  Rockchip LVGL demo enable sensor functions,
 			  e.g. lsensor, psensor.
+
+		config BR2_RK_DEMO_ENABLE_WIFIBT
+			bool "RK demo enable WiFi and BT"
+			default n
+			help
+			  Rockchip LVGL demo enable wifibt functions.
+
+		config BR2_RK_DEMO_ENABLE_ASR
+			bool "RK demo enable ASR"
+			default n
+			help
+			  Rockchip LVGL demo enable ASR functions.
 	endif
 
 endif
