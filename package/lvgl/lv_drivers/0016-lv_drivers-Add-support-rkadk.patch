@@ -279,7 +279,7 @@ index 0000000..3f47da2
 +
 +    memset(&ui_attr, 0, sizeof(ui_attr));
 +
-+    ui_attr.u32VoChn = 1;
++    ui_attr.u32VoChn = 2;
 +    ui_attr.u32VoDev = -1;
 +    ui_attr.u32VoLay = -1;
 +    ui_attr.u32DispFrmRt = 30;
