@@ -1,7 +1,7 @@
-From 34cf45d9c71c3b5ebbae2851eea8ea30464ae752 Mon Sep 17 00:00:00 2001
+From f83601633df438d24007983954ee1907589d8662 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 8 Aug 2024 08:54:43 +0800
-Subject: [PATCH 106/106] desktop-shell: Support disabling keyboard process
+Subject: [PATCH 106/107] desktop-shell: Support disabling keyboard process
 
 Set env WESTON_NO_KEYBOARD=1 to disable it.
 
@@ -11,10 +11,10 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/desktop-shell/shell.c b/desktop-shell/shell.c
-index d081e3f..a218c8d 100644
+index 58ba018..d3e8ba9 100644
 --- a/desktop-shell/shell.c
 +++ b/desktop-shell/shell.c
-@@ -4918,8 +4918,10 @@ shell_destroy(struct wl_listener *listener, void *data)
+@@ -4929,8 +4929,10 @@ shell_destroy(struct wl_listener *listener, void *data)
  	wl_list_remove(&shell->wake_listener.link);
  	wl_list_remove(&shell->transform_listener.link);
  
@@ -27,7 +27,7 @@ index d081e3f..a218c8d 100644
  
  	wl_list_remove(&shell->kill_focus_listener.link);
  
-@@ -5128,10 +5130,12 @@ wet_shell_init(struct weston_compositor *ec,
+@@ -5139,10 +5141,12 @@ wet_shell_init(struct weston_compositor *ec,
  	weston_layer_init(&shell->minimized_layer, ec);
  	weston_layer_init(&shell->workspace.layer, ec);
  
