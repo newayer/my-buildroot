@@ -199,6 +199,7 @@ menu "Rockchip BSP packages"
 	source "package/rockchip/rockchip-uac-app/Config.in"
 	source "package/rockchip/rockchip-uvc-app/Config.in"
 	source "package/rockchip/rockit/Config.in"
+	source "package/rockchip/rockit-uvc/Config.in"
 	source "package/rockchip/slt_gpu_light/Config.in"
 	source "package/rockchip/tee-user-app/Config.in"
 endmenu
