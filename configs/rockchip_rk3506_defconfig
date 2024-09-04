@@ -28,3 +28,5 @@ BR2_TARGET_ROOTFS_UBI_SQUASHFS=y
 # BR2_TARGET_ROOTFS_UBI_SQUASHFS_STATIC is not set
 BR2_TARGET_ROOTFS_UBI_SUBSIZE=2048
 BR2_TIME_BITS_64=y
+BR2_ROOTFS_OVERLAY+="board/rockchip/rk3506/fast-display-overlay/"
+BR2_ROOTFS_POST_BUILD_SCRIPT+="board/rockchip/rk3506/post-build-fast-display.sh"
