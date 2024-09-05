@@ -1,7 +1,7 @@
-From c8c561c93b5658a11ac12ccd09005df886f6b4b4 Mon Sep 17 00:00:00 2001
+From fd578078fd6703f07119f5dc258c4d0f98ba0f37 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 24 Jun 2020 11:59:42 +0800
-Subject: [PATCH 035/100] backend-drm: Support virtual screen size
+Subject: [PATCH 035/107] backend-drm: Support virtual screen size
 
 Support setting virtual screen size, for example:
 export WESTON_DRM_VIRTUAL_SIZE=1024x768
@@ -15,7 +15,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  4 files changed, 150 insertions(+), 21 deletions(-)
 
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index 4c932732d..c3cda6ec9 100644
+index 4c93273..c3cda6e 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -171,6 +171,7 @@ enum wdrm_plane_property {
@@ -83,10 +83,10 @@ index 4c932732d..c3cda6ec9 100644
  drm_property_get_range_values(struct drm_property_info *info,
  			      const drmModeObjectProperties *props);
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 217487bf8..2c1b28292 100644
+index 451fc6a..a3ab845 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
-@@ -359,6 +359,11 @@ drm_output_update_complete(struct drm_output *output, uint32_t flags,
+@@ -360,6 +360,11 @@ drm_output_update_complete(struct drm_output *output, uint32_t flags,
  	drm_output_state_free(output->state_last);
  	output->state_last = NULL;
  
@@ -98,7 +98,7 @@ index 217487bf8..2c1b28292 100644
  	if (output->destroy_pending) {
  		output->destroy_pending = false;
  		output->disable_pending = false;
-@@ -435,6 +440,7 @@ drm_output_render(struct drm_output_state *state)
+@@ -436,6 +441,7 @@ drm_output_render(struct drm_output_state *state)
  	struct drm_plane *scanout_plane = output->scanout_plane;
  	struct drm_property_info *damage_info =
  		&scanout_plane->props[WDRM_PLANE_FB_DAMAGE_CLIPS];
@@ -106,7 +106,7 @@ index 217487bf8..2c1b28292 100644
  	struct drm_fb *fb;
  	pixman_region32_t damage, scanout_damage;
  	pixman_box32_t *rects;
-@@ -483,10 +489,11 @@ drm_output_render(struct drm_output_state *state)
+@@ -484,10 +490,11 @@ drm_output_render(struct drm_output_state *state)
  	scanout_state->src_w = fb->width << 16;
  	scanout_state->src_h = fb->height << 16;
  
@@ -120,7 +120,7 @@ index 217487bf8..2c1b28292 100644
  
  	scanout_state->zpos = scanout_plane->zpos_min;
  
-@@ -1183,6 +1190,11 @@ drm_plane_create(struct drm_device *device, const drmModePlane *kplane)
+@@ -1184,6 +1191,11 @@ drm_plane_create(struct drm_device *device, const drmModePlane *kplane)
  				       props,
  				       WDRM_PLANE_TYPE__COUNT);
  
@@ -132,7 +132,7 @@ index 217487bf8..2c1b28292 100644
  	zpos_range_values =
  		drm_property_get_range_values(&plane->props[WDRM_PLANE_ZPOS],
  					      props);
-@@ -4194,6 +4206,10 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4195,6 +4207,10 @@ drm_backend_create(struct weston_compositor *compositor,
  
  	b->head_matches = drm_head_matches[head_mode];
  
@@ -144,7 +144,7 @@ index 217487bf8..2c1b28292 100644
  	if (device == NULL)
  		goto err_backend;
 diff --git a/libweston/backend-drm/kms.c b/libweston/backend-drm/kms.c
-index e268fbe02..8d61d7323 100644
+index e268fbe..8d61d73 100644
 --- a/libweston/backend-drm/kms.c
 +++ b/libweston/backend-drm/kms.c
 @@ -77,6 +77,15 @@ struct drm_property_enum_info plane_rotation_enums[] = {
@@ -316,7 +316,7 @@ index e268fbe02..8d61d7323 100644
  	drm_debug(backend, "\t[CRTC:%u, PLANE:%u] FORMAT: %s\n",
  			   crtc->crtc_id, scanout_state->plane->plane_id,
 diff --git a/libweston/backend-drm/modes.c b/libweston/backend-drm/modes.c
-index f2f36bf08..c6ed46eb7 100644
+index f2f36bf..c6ed46e 100644
 --- a/libweston/backend-drm/modes.c
 +++ b/libweston/backend-drm/modes.c
 @@ -461,6 +461,7 @@ drm_refresh_rate_mHz(const drmModeModeInfo *info)

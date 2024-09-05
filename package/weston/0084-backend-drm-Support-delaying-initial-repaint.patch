@@ -1,7 +1,7 @@
-From 530eb9d10f1f5eaef9fbee469410c459575dd758 Mon Sep 17 00:00:00 2001
+From 11cb1b88cd71777d8d3a7f7f10d6bcaa80a2af1a Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 19 Oct 2023 11:41:06 +0800
-Subject: [PATCH 084/100] backend-drm: Support delaying initial repaint
+Subject: [PATCH 084/107] backend-drm: Support delaying initial repaint
 
 Set env "WESTON_DRM_INITIAL_FREEZE_MS" for the initial freezing.
 
@@ -12,7 +12,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 27 insertions(+)
 
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index d45959487..cde46de9b 100644
+index d459594..cde46de 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -402,6 +402,9 @@ struct drm_backend {
@@ -26,10 +26,10 @@ index d45959487..cde46de9b 100644
  	bool single_head;
  	bool head_fallback;
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 44c987515..a2d27fe93 100644
+index 7993ed1..229b966 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
-@@ -1048,12 +1048,16 @@ drm_output_repaint(struct weston_output *output_base)
+@@ -1049,12 +1049,16 @@ drm_output_repaint(struct weston_output *output_base)
  	struct drm_plane_state *cursor_state;
  	struct drm_pending_state *pending_state;
  	struct drm_device *device;
@@ -46,7 +46,7 @@ index 44c987515..a2d27fe93 100644
  
  	if (output->disable_pending || output->destroy_pending)
  		goto err;
-@@ -1068,6 +1072,16 @@ drm_output_repaint(struct weston_output *output_base)
+@@ -1069,6 +1073,16 @@ drm_output_repaint(struct weston_output *output_base)
  		return 1;
  	}
  
@@ -63,7 +63,7 @@ index 44c987515..a2d27fe93 100644
  	/* If planes have been disabled in the core, we might not have
  	 * hit assign_planes at all, so might not have valid output state
  	 * here. */
-@@ -3601,6 +3615,12 @@ drm_backend_update_connectors(struct drm_device *device,
+@@ -3602,6 +3616,12 @@ drm_backend_update_connectors(struct drm_device *device,
  	uint32_t connector_id;
  	int i, ret;
  
@@ -76,7 +76,7 @@ index 44c987515..a2d27fe93 100644
  	resources = drmModeGetResources(device->drm.fd);
  	if (!resources) {
  		weston_log("drmModeGetResources failed\n");
-@@ -4997,6 +5017,10 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4998,6 +5018,10 @@ drm_backend_create(struct weston_compositor *compositor,
  		weston_log("Entering mirror mode.\n");
  	}
  

@@ -1,7 +1,7 @@
-From c1747fbbcbcea60b37f492949a66d0462be39457 Mon Sep 17 00:00:00 2001
+From 02f44525fed128f8d92f8f5177623d7d079bb243 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 27 Apr 2022 15:17:39 +0800
-Subject: [PATCH 067/100] backend-drm: Stop disabling unused CRTCs by default
+Subject: [PATCH 067/107] backend-drm: Stop disabling unused CRTCs by default
 
 So that we can launch multiple weston instances for different monitors.
 
@@ -15,7 +15,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  3 files changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index 73a7e50d9..2bc635709 100644
+index 73a7e50..2bc6357 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -400,6 +400,7 @@ struct drm_backend {
@@ -27,10 +27,10 @@ index 73a7e50d9..2bc635709 100644
  	bool head_fallback;
  	bool head_fallback_all;
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index a4064d0ac..c2e255501 100644
+index fc41026..8c661cf 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
-@@ -2642,6 +2642,10 @@ drm_output_detach_crtc(struct drm_output *output)
+@@ -2643,6 +2643,10 @@ drm_output_detach_crtc(struct drm_output *output)
  
  	crtc->output = NULL;
  	output->crtc = NULL;
@@ -41,7 +41,7 @@ index a4064d0ac..c2e255501 100644
  }
  
  static bool
-@@ -4923,6 +4927,10 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4924,6 +4928,10 @@ drm_backend_create(struct weston_compositor *compositor,
  	if (b == NULL)
  		return NULL;
  
@@ -53,7 +53,7 @@ index a4064d0ac..c2e255501 100644
  	if (buf && buf[0] == '1')
  		b->single_head = true;
 diff --git a/libweston/backend-drm/kms.c b/libweston/backend-drm/kms.c
-index 1c6a01850..9cef545b3 100644
+index 1c6a018..9cef545 100644
 --- a/libweston/backend-drm/kms.c
 +++ b/libweston/backend-drm/kms.c
 @@ -1495,7 +1495,7 @@ drm_pending_state_apply_atomic(struct drm_pending_state *pending_state,

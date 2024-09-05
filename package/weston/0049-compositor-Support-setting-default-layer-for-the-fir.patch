@@ -1,4 +1,4 @@
-From 559d3e0e92c0e437473c4fa0b3348e0cdbb992d5 Mon Sep 17 00:00:00 2001
+From d7be5342805ab4a3b7b5a9d4430f52267b35fe7f Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 15 Oct 2020 12:43:00 +0800
 Subject: [PATCH 049/107] compositor: Support setting default layer for the
@@ -13,10 +13,10 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 20 insertions(+), 1 deletion(-)
 
 diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
-index 324808c..c0fa9f3 100644
+index 8be9c98..c8cb53b 100644
 --- a/include/libweston/libweston.h
 +++ b/include/libweston/libweston.h
-@@ -1878,6 +1878,9 @@ enum weston_surface_flags {
+@@ -1880,6 +1880,9 @@ enum weston_surface_flags {
  	SURFACE_ACTIVATE	= 1 << 5,
  };
  
@@ -27,7 +27,7 @@ index 324808c..c0fa9f3 100644
  	struct wl_resource *resource;
  	struct wl_signal destroy_signal; /* callback argument: this surface */
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 26dda1a..1a8bbf5 100644
+index 0d3d52c..8039197 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -3418,14 +3418,30 @@ weston_compositor_build_view_list(struct weston_compositor *compositor)

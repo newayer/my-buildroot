@@ -1,7 +1,7 @@
-From db988da597954920c1dc02e4f3afd2b133e7eb14 Mon Sep 17 00:00:00 2001
+From 755991113c05f5e94b657ef4516cf79e72bb1c7a Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 23 Aug 2023 18:18:58 +0800
-Subject: [PATCH 083/100] backend-drm: Support increasing buffers
+Subject: [PATCH 083/107] backend-drm: Support increasing buffers
 
 Default is 2 buffers, set env "WESTON_DRM_MIN_BUFFERS" to increase it.
 
@@ -17,7 +17,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  5 files changed, 222 insertions(+), 56 deletions(-)
 
 diff --git a/libweston/backend-drm/drm-gbm.c b/libweston/backend-drm/drm-gbm.c
-index 830865fb7..4d1e8807e 100644
+index 830865f..4d1e880 100644
 --- a/libweston/backend-drm/drm-gbm.c
 +++ b/libweston/backend-drm/drm-gbm.c
 @@ -122,8 +122,11 @@ static void drm_output_fini_cursor_egl(struct drm_output *output)
@@ -267,7 +267,7 @@ index 830865fb7..4d1e8807e 100644
  	bo = gbm_surface_lock_front_buffer(output->gbm_surface);
  	if (!bo) {
 diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
-index 2bc635709..d45959487 100644
+index 2bc6357..d459594 100644
 --- a/libweston/backend-drm/drm-internal.h
 +++ b/libweston/backend-drm/drm-internal.h
 @@ -121,6 +121,8 @@
@@ -310,10 +310,10 @@ index 2bc635709..d45959487 100644
  
  	struct vaapi_recorder *recorder;
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 18d69b213..44c987515 100644
+index 5cd460e..7993ed1 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
-@@ -561,13 +561,14 @@ drm_output_render_pixman(struct drm_output_state *state,
+@@ -562,13 +562,14 @@ drm_output_render_pixman(struct drm_output_state *state,
  {
  	struct drm_output *output = state->output;
  	struct weston_compositor *ec = output->base.compositor;
@@ -332,7 +332,7 @@ index 18d69b213..44c987515 100644
  }
  
  static struct drm_fb *
-@@ -627,7 +628,7 @@ drm_output_get_wrap_fb(struct drm_backend *b, struct drm_output *output,
+@@ -628,7 +629,7 @@ drm_output_get_wrap_fb(struct drm_backend *b, struct drm_output *output,
  
  	output->wrap[output->next_wrap] = fb;
  out:
@@ -341,7 +341,7 @@ index 18d69b213..44c987515 100644
  	return drm_fb_ref(fb);
  }
  
-@@ -1992,7 +1993,7 @@ drm_output_init_pixman(struct drm_output *output, struct drm_backend *b)
+@@ -1993,7 +1994,7 @@ drm_output_init_pixman(struct drm_output *output, struct drm_backend *b)
  		goto err;
  
  	/* FIXME error checking */
@@ -350,7 +350,7 @@ index 18d69b213..44c987515 100644
  		output->dumb[i] = drm_fb_create_dumb(device, w, h,
  						     options.format->format);
  		if (!output->dumb[i])
-@@ -2050,8 +2051,11 @@ drm_output_fini_pixman(struct drm_output *output)
+@@ -2051,8 +2052,11 @@ drm_output_fini_pixman(struct drm_output *output)
  	}
  
  	for (i = 0; i < ARRAY_LENGTH(output->dumb); i++) {
@@ -364,7 +364,7 @@ index 18d69b213..44c987515 100644
  		output->dumb[i] = NULL;
  		output->renderbuffer[i] = NULL;
  	}
-@@ -3209,6 +3213,7 @@ drm_output_create(struct weston_backend *backend, const char *name)
+@@ -3210,6 +3214,7 @@ drm_output_create(struct weston_backend *backend, const char *name)
  	struct drm_backend *b = container_of(backend, struct drm_backend, base);
  	struct drm_device *device;
  	struct drm_output *output;
@@ -372,7 +372,7 @@ index 18d69b213..44c987515 100644
  
  	device = drm_device_find_by_output(b->compositor, name);
  	if (!device)
-@@ -3228,6 +3233,14 @@ drm_output_create(struct weston_backend *backend, const char *name)
+@@ -3229,6 +3234,14 @@ drm_output_create(struct weston_backend *backend, const char *name)
  	output->gbm_bo_flags = GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING;
  #endif
  
@@ -388,7 +388,7 @@ index 18d69b213..44c987515 100644
  
  	output->base.enable = drm_output_enable;
 diff --git a/libweston/renderer-gl/gl-renderer.c b/libweston/renderer-gl/gl-renderer.c
-index 84dd830b6..0cef332c4 100644
+index 84dd830..0cef332 100644
 --- a/libweston/renderer-gl/gl-renderer.c
 +++ b/libweston/renderer-gl/gl-renderer.c
 @@ -97,6 +97,9 @@ struct gl_renderbuffer {
@@ -550,7 +550,7 @@ index 84dd830b6..0cef332c4 100644
  	.output_fbo_create = gl_renderer_output_fbo_create,
  	.output_destroy = gl_renderer_output_destroy,
 diff --git a/libweston/renderer-gl/gl-renderer.h b/libweston/renderer-gl/gl-renderer.h
-index 6fc7f6f03..7e7d1bcb0 100644
+index 6fc7f6f..7e7d1bc 100644
 --- a/libweston/renderer-gl/gl-renderer.h
 +++ b/libweston/renderer-gl/gl-renderer.h
 @@ -135,6 +135,9 @@ struct gl_renderer_interface {

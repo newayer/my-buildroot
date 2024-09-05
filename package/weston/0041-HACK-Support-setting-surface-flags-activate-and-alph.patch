@@ -1,4 +1,4 @@
-From d16e3728a8945b11a1e949b5a36671eda8093fd2 Mon Sep 17 00:00:00 2001
+From fe81a9973e2a76ade623994eddbf0a648836bf95 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 7 May 2020 08:55:42 +0800
 Subject: [PATCH 041/107] HACK: Support setting surface flags activate and
@@ -21,7 +21,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  5 files changed, 267 insertions(+), 12 deletions(-)
 
 diff --git a/desktop-shell/shell.c b/desktop-shell/shell.c
-index f3b6014..a6899ab 100644
+index 7683bbd..4f55c2e 100644
 --- a/desktop-shell/shell.c
 +++ b/desktop-shell/shell.c
 @@ -1711,10 +1711,17 @@ static void
@@ -219,10 +219,10 @@ index debb365..7ae6c65 100644
  	struct wl_listener pointer_focus_listener;
  	struct weston_surface *grab_surface;
 diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
-index f1176ba..18d6466 100644
+index 801538f..7f7cc5b 100644
 --- a/include/libweston/libweston.h
 +++ b/include/libweston/libweston.h
-@@ -1864,6 +1864,15 @@ struct weston_pointer_constraint {
+@@ -1866,6 +1866,15 @@ struct weston_pointer_constraint {
  	struct wl_listener surface_activate_listener;
  };
  
@@ -238,7 +238,7 @@ index f1176ba..18d6466 100644
  struct weston_surface {
  	struct wl_resource *resource;
  	struct wl_signal destroy_signal; /* callback argument: this surface */
-@@ -1977,6 +1986,11 @@ struct weston_surface {
+@@ -1979,6 +1988,11 @@ struct weston_surface {
  	enum weston_surface_protection_mode protection_mode;
  
  	struct weston_tearing_control *tear_control;
@@ -251,7 +251,7 @@ index f1176ba..18d6466 100644
  
  struct weston_subsurface {
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 550591a..c52d833 100644
+index d7051e0..49b7d47 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -620,7 +620,7 @@ weston_view_create_internal(struct weston_surface *surface)
