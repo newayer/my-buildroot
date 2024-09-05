@@ -1,4 +1,4 @@
-From e2fa8ce4477761cc2a9aaae841109388f591ef02 Mon Sep 17 00:00:00 2001
+From 7eddc9427c4f0f2809c0369393b1a71654f86123 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 1 Jun 2022 11:28:24 +0800
 Subject: [PATCH 068/107] desktop-shell: Delay locking when having pending
@@ -11,7 +11,7 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/desktop-shell/shell.c b/desktop-shell/shell.c
-index ce7bfcb..a1dad4f 100644
+index 386c47c..8893d7c 100644
 --- a/desktop-shell/shell.c
 +++ b/desktop-shell/shell.c
 @@ -3902,6 +3902,10 @@ static void
@@ -56,10 +56,10 @@ index ce7bfcb..a1dad4f 100644
  
  	if (shell->fade.curtain) {
 diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
-index c0fa9f3..c9aae7d 100644
+index c8cb53b..73a3d69 100644
 --- a/include/libweston/libweston.h
 +++ b/include/libweston/libweston.h
-@@ -1547,6 +1547,8 @@ struct weston_compositor {
+@@ -1549,6 +1549,8 @@ struct weston_compositor {
  	bool warm_up;
  
  	bool hide_cursor;
