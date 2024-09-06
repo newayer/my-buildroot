@@ -31,6 +31,7 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
 	$(INSTALL) -d $(TARGET_DIR)/usr/local/lib/
 	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/main.py $(TARGET_DIR)/usr/local/lib/uav-convertor.py
+	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
 	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/ppp_start.py $(TARGET_DIR)/usr/local/lib/ppp_start.py
 endef
 endif
