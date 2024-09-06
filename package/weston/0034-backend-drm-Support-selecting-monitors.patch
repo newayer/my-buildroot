@@ -1,4 +1,4 @@
-From c02d209a937b9b9d2a9787d56121ca66bdbc45bf Mon Sep 17 00:00:00 2001
+From c4694a643cc138317c9883477768627088197b64 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Tue, 23 Jun 2020 10:05:48 +0800
 Subject: [PATCH 034/107] backend-drm: Support selecting monitors
@@ -32,10 +32,11 @@ Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
  include/libweston/config-parser.h    |   1 +
  include/libweston/libweston.h        |   7 +
  libweston/backend-drm/drm-internal.h |  21 ++
- libweston/backend-drm/drm.c          | 362 +++++++++++++++++++++++----
+ libweston/backend-drm/drm.c          | 360 +++++++++++++++++++++++----
  libweston/backend-drm/kms.c          |  22 +-
- libweston/compositor.c               |  79 +++++-
- 8 files changed, 507 insertions(+), 86 deletions(-)
+ libweston/backend.h                  |   2 +
+ libweston/compositor.c               |  83 +++++-
+ 9 files changed, 511 insertions(+), 86 deletions(-)
 
 diff --git a/compositor/main.c b/compositor/main.c
 index 04908e1..319fc30 100644
@@ -420,7 +421,7 @@ index f85cb22..4c93273 100644
  
  void
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index b3fa788..451fc6a 100644
+index b3fa788..2d3686f 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -48,6 +48,7 @@
@@ -795,7 +796,7 @@ index b3fa788..451fc6a 100644
  static const struct weston_drm_output_api api = {
  	drm_output_set_mode,
  	drm_output_set_gbm_format,
-@@ -3902,6 +4065,71 @@ static const struct weston_drm_output_api api = {
+@@ -3902,6 +4065,70 @@ static const struct weston_drm_output_api api = {
  	drm_output_set_content_type,
  };
  
@@ -857,9 +858,8 @@ index b3fa788..451fc6a 100644
 +};
 +
 +static void
-+drm_backend_late_init(void *data)
-+{
-+	struct drm_backend *b = data;
++drm_late_init(struct weston_backend *backend) {
++	struct drm_backend *b = container_of(backend, struct drm_backend, base);
 +
 +	hotplug_timer_handler(b->drm);
 +}
@@ -867,7 +867,7 @@ index b3fa788..451fc6a 100644
  static struct drm_backend *
  drm_backend_create(struct weston_compositor *compositor,
  		   struct weston_drm_backend_config *config)
-@@ -3913,7 +4141,9 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -3913,7 +4140,9 @@ drm_backend_create(struct weston_compositor *compositor,
  	const char *seat_id = default_seat;
  	const char *session_seat;
  	struct weston_drm_format_array *scanout_formats;
@@ -877,7 +877,7 @@ index b3fa788..451fc6a 100644
  	int ret;
  
  	session_seat = getenv("XDG_SEAT");
-@@ -3929,6 +4159,42 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -3929,6 +4158,42 @@ drm_backend_create(struct weston_compositor *compositor,
  	if (b == NULL)
  		return NULL;
  
@@ -920,6 +920,14 @@ index b3fa788..451fc6a 100644
  	device = zalloc(sizeof *device);
  	if (device == NULL)
  		goto err_backend;
+@@ -4018,6 +4283,7 @@ drm_backend_create(struct weston_compositor *compositor,
+ 		goto err_udev_dev;
+ 	}
+ 
++	b->base.late_init = drm_late_init;
+ 	b->base.shutdown = drm_shutdown;
+ 	b->base.destroy = drm_destroy;
+ 	b->base.repaint_begin = drm_repaint_begin;
 @@ -4052,10 +4318,6 @@ drm_backend_create(struct weston_compositor *compositor,
  	}
  
@@ -942,19 +950,17 @@ index b3fa788..451fc6a 100644
  	weston_compositor_add_debug_binding(compositor, KEY_O,
  					    planes_binding, b);
  	weston_compositor_add_debug_binding(compositor, KEY_C,
-@@ -4150,6 +4416,11 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4150,6 +4416,9 @@ drm_backend_create(struct weston_compositor *compositor,
  		goto err_udev_monitor;
  	}
  
 +	b->hotplug_timer =
 +		wl_event_loop_add_timer(loop, hotplug_timer_handler, b->drm);
 +
-+	wl_event_loop_add_idle(loop, drm_backend_late_init, b);
-+
  	return b;
  
  err_udev_monitor:
-@@ -4157,7 +4428,6 @@ err_udev_monitor:
+@@ -4157,7 +4426,6 @@ err_udev_monitor:
  	udev_monitor_unref(b->udev_monitor);
  err_drm_source:
  	wl_event_source_remove(b->drm_source);
@@ -1041,8 +1047,21 @@ index d232619..e268fbe 100644
  	drm_pending_state_free(pending_state);
  
  	return 0;
+diff --git a/libweston/backend.h b/libweston/backend.h
+index 495d0a5..bcc0cb3 100644
+--- a/libweston/backend.h
++++ b/libweston/backend.h
+@@ -42,6 +42,8 @@ struct weston_hdr_metadata_type1;
+ struct weston_backend {
+ 	struct wl_list link; /**< in weston_compositor::backend_list */
+ 
++	void (*late_init)(struct weston_backend *backend);
++
+ 	/** Bitfield of supported presentation clocks
+ 	 *
+ 	 * Bit positions correspond to system clock IDs.
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 5f9585d..ec031aa 100644
+index 5f9585d..55eb4f1 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -336,6 +336,25 @@ weston_paint_node_destroy(struct weston_paint_node *pnode)
@@ -1193,6 +1212,17 @@ index 5f9585d..ec031aa 100644
  }
  
  /** Create a weston_coord_global from a point and a weston_output
+@@ -9314,6 +9379,10 @@ weston_compositor_backends_loaded(struct weston_compositor *compositor)
+ 
+ 	weston_log("Color manager: %s\n", compositor->color_manager->name);
+ 
++	wl_list_for_each(backend, &compositor->backend_list, link)
++		if (backend->late_init)
++			backend->late_init(backend);
++
+ 	return 0;
+ }
+ 
 -- 
 2.20.1
 

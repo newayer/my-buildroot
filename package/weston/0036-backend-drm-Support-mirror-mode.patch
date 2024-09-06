@@ -1,4 +1,4 @@
-From 8778b8ce73c6a964e069f3835854dc728ab44b7a Mon Sep 17 00:00:00 2001
+From 6092faf17fb7454ddee18ae1b2a7817eb07aaa66 Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 19 Nov 2020 09:41:47 +0800
 Subject: [PATCH 036/107] backend-drm: Support mirror mode
@@ -141,7 +141,7 @@ index c3cda6e..c0ce4cd 100644
  
  void
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index a3ab845..3212f3d 100644
+index 8bd1662..d1062b9 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -70,6 +70,11 @@
@@ -559,7 +559,7 @@ index a3ab845..3212f3d 100644
  	free(output);
  }
  
-@@ -4211,6 +4518,12 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4210,6 +4517,12 @@ drm_backend_create(struct weston_compositor *compositor,
  	if (buf)
  		sscanf(buf, "%dx%d", &b->virtual_width, &b->virtual_height);
  
@@ -635,7 +635,7 @@ index 4e8fccb..18df834 100644
  		state = drm_output_propose_state(output_base, pending_state, mode);
  		if (!state) {
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index ec031aa..83c4b1a 100644
+index 55eb4f1..6a255b9 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -1435,7 +1435,7 @@ weston_view_assign_output(struct weston_view *ev)

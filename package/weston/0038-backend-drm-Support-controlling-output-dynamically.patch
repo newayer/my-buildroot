@@ -1,4 +1,4 @@
-From 4e59fd75ebcc398fdd527309d53f169486c84e80 Mon Sep 17 00:00:00 2001
+From 10dd4584eb3415fd51f6db1b3b70258fb5bf738c Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Fri, 3 Jul 2020 12:37:37 +0800
 Subject: [PATCH 038/107] backend-drm: Support controlling output dynamically
@@ -420,7 +420,7 @@ index c0ce4cd..4ac158b 100644
 +	return head->connector.conn->connection == DRM_MODE_CONNECTED;
 +}
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 9f0c459..9cc8f4c 100644
+index 8863eba..129fd8e 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -40,6 +40,7 @@
@@ -796,8 +796,8 @@ index 9f0c459..9cc8f4c 100644
  enum drm_head_mode {
  	DRM_HEAD_MODE_DEFAULT,
  	DRM_HEAD_MODE_PRIMARY,
-@@ -4448,6 +4729,7 @@ drm_backend_late_init(void *data)
- 	struct drm_backend *b = data;
+@@ -4447,6 +4728,7 @@ drm_late_init(struct weston_backend *backend) {
+ 	struct drm_backend *b = container_of(backend, struct drm_backend, base);
  
  	hotplug_timer_handler(b->drm);
 +	config_timer_handler(b);
@@ -811,9 +811,9 @@ index 9f0c459..9cc8f4c 100644
 +	b->config_timer =
 +		wl_event_loop_add_timer(loop, config_timer_handler, b);
 +
- 	wl_event_loop_add_idle(loop, drm_backend_late_init, b);
- 
  	return b;
+ 
+ err_udev_monitor:
 diff --git a/libweston/backend-drm/kms.c b/libweston/backend-drm/kms.c
 index 8d61d73..7421f35 100644
 --- a/libweston/backend-drm/kms.c
@@ -890,7 +890,7 @@ index c6ed46e..d292448 100644
  			       struct drm_output *output,
  			       enum weston_drm_backend_output_mode mode,
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 83c4b1a..d7051e0 100644
+index 6a255b9..f7da591 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
 @@ -355,6 +355,24 @@ weston_compositor_is_static_layer(struct weston_layer *layer)
