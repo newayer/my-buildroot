@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_AIOMQTT
+	bool "python-aiomqtt"
+	select BR2_PACKAGE_PYTHON_PAHO_MQTT # runtime
+	help
+	  Idiomatic asyncio MQTT Client.
+
+	  https://github.com/empicano/aiomqtt
