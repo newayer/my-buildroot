@@ -24,23 +24,25 @@ else
     config=$(basename $1)
 fi
 
+output_dir=../${config/%_defconfig/-output}
+
 if [ "${INIT_DL}" == "yes" ]; then
     echo "init download dir for $config"
-    make BR2_EXTERNAL=vendor ${config}
-    make source
+    make BR2_EXTERNAL=vendor O=${output_dir} ${config}
+    make O=${output_dir} source
     exit 0
 fi
 
-echo "make $config"
+echo "make O=${output_dir} $config"
 
 export `env | grep PATH | sed 's/\mnt\/.*://g'`
 export BR2_EXTERNAL=vendor
 
-make $config
+make O=${output_dir} $config
 
 if [ "${SOURCE_ACTION}" != "yes" ]; then
     START_TIME=`date`
-    make
+    make O=${output_dir}
     echo "build start time:${START_TIME}"
     echo " build  end time:`date`"
 fi
