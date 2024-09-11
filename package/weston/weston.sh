@@ -10,6 +10,9 @@
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1279574
 export WL_OUTPUT_VERSION=3
 
+# Increasing this can help to reduce tearing for NVC
+export WESTON_VNC_MIN_BUFFERS=4
+
 # Comment out this for atomic related functions, e.g. sprites
 export WESTON_DISABLE_ATOMIC=1
 
