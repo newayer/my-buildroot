@@ -1,0 +1,109 @@
+From 53a9dcc7e211ff92ec5f083849ad1d6b95abcfb9 Mon Sep 17 00:00:00 2001
+From: Jeffy Chen <jeffy.chen@rock-chips.com>
+Date: Thu, 12 Sep 2024 11:36:08 +0800
+Subject: [PATCH] Fix compile errors
+
+Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
+---
+ GLideN64/src/OpenGL.h                 | 1 -
+ GLideN64/src/ShaderUtils.h            | 1 +
+ libretro-common/include/glsm/glsm.h   | 2 +-
+ libretro/libretro.c                   | 2 ++
+ libretro/libretro_private.h           | 2 +-
+ mupen64plus-core/src/main/workqueue.h | 1 -
+ mupen64plus-rsp-cxd4/su.c             | 4 ++--
+ 7 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/GLideN64/src/OpenGL.h b/GLideN64/src/OpenGL.h
+index ee1ef40..1eabe0c 100644
+--- a/GLideN64/src/OpenGL.h
++++ b/GLideN64/src/OpenGL.h
+@@ -15,7 +15,6 @@
+ 
+ #ifdef __LIBRETRO__
+ #include <glsm/glsmsym.h>
+-#include <glsym/glsym.h>
+ #include <GLideN64_libretro.h>
+ #elif GLES2
+ #include <GLES2/gl2.h>
+diff --git a/GLideN64/src/ShaderUtils.h b/GLideN64/src/ShaderUtils.h
+index 3377244..9888e86 100644
+--- a/GLideN64/src/ShaderUtils.h
++++ b/GLideN64/src/ShaderUtils.h
+@@ -3,6 +3,7 @@
+ 
+ #include "OpenGL.h"
+ #include "Combiner.h"
++#include <string>
+ 
+ GLuint createShaderProgram(const char * _strVertex, const char * _strFragment);
+ bool checkShaderCompileStatus(GLuint obj);
+diff --git a/libretro-common/include/glsm/glsm.h b/libretro-common/include/glsm/glsm.h
+index d422267..c4096a0 100644
+--- a/libretro-common/include/glsm/glsm.h
++++ b/libretro-common/include/glsm/glsm.h
+@@ -32,7 +32,7 @@
+ RETRO_BEGIN_DECLS
+ 
+ #ifdef HAVE_OPENGLES2
+-typedef GLfloat GLdouble;
++typedef double GLdouble;
+ typedef GLclampf GLclampd;
+ #endif
+ 
+diff --git a/libretro/libretro.c b/libretro/libretro.c
+index 1827caf..0751e50 100644
+--- a/libretro/libretro.c
++++ b/libretro/libretro.c
+@@ -55,6 +55,8 @@ retro_input_state_t input_cb = NULL;
+ retro_audio_sample_batch_t audio_batch_cb = NULL;
+ retro_environment_t environ_cb = NULL;
+ 
++bool libretro_swap_buffer;
++
+ struct retro_rumble_interface rumble;
+ 
+ save_memory_data saved_memory;
+diff --git a/libretro/libretro_private.h b/libretro/libretro_private.h
+index 1d048f0..6d7ac73 100644
+--- a/libretro/libretro_private.h
++++ b/libretro/libretro_private.h
+@@ -16,7 +16,7 @@ extern retro_get_cpu_features_t perf_get_cpu_features_cb;
+ extern retro_perf_get_counter_t perf_get_counter_cb;
+ extern retro_log_printf_t log_cb;
+ extern retro_perf_register_t perf_register_cb;
+-bool libretro_swap_buffer;
++extern bool libretro_swap_buffer;
+ void retro_return();
+ 
+ #define SDL_GetTicks() FAKE_SDL_TICKS
+diff --git a/mupen64plus-core/src/main/workqueue.h b/mupen64plus-core/src/main/workqueue.h
+index 2228359..a2d08b5 100644
+--- a/mupen64plus-core/src/main/workqueue.h
++++ b/mupen64plus-core/src/main/workqueue.h
+@@ -27,7 +27,6 @@
+ 
+ struct work_struct;
+ 
+-struct work_struct *work;
+ typedef void (*work_func_t)(struct work_struct *work);
+ struct work_struct {
+     work_func_t func;
+diff --git a/mupen64plus-rsp-cxd4/su.c b/mupen64plus-rsp-cxd4/su.c
+index 9a679e7..bd38199 100644
+--- a/mupen64plus-rsp-cxd4/su.c
++++ b/mupen64plus-rsp-cxd4/su.c
+@@ -27,8 +27,8 @@ u32 SR[32];
+ typedef VECTOR_OPERATION(*p_vector_func)(v16, v16);
+ 
+ pu8 DRAM;
+-pu8 DMEM;
+-pu8 IMEM;
++extern pu8 DMEM;
++extern pu8 IMEM;
+ 
+ NOINLINE void res_S(void)
+ {
+-- 
+2.20.1
+
