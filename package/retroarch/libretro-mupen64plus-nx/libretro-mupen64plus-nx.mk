@@ -3,7 +3,8 @@
 # mupen64plus-next
 #
 ################################################################################
-LIBRETRO_MUPEN64PLUS_NX_VERSION = c2f6acfe3b7b07ab86c3e4cd89f61a9911191793
+# LIBRETRO_MUPEN64PLUS_NX_VERSION = c2f6acfe3b7b07ab86c3e4cd89f61a9911191793
+LIBRETRO_MUPEN64PLUS_NX_VERSION = 143e608e3ce715f62c71d589d7129ccd80ab0819
 LIBRETRO_MUPEN64PLUS_NX_SITE = $(call github,libretro,mupen64plus-libretro-nx,$(LIBRETRO_MUPEN64PLUS_NX_VERSION))
 
 LIBRETRO_MUPEN64PLUS_NX_CONF = platform=unix
