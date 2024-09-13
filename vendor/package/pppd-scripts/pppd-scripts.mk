@@ -32,8 +32,6 @@ endef
 else ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_IRIDIUM),y)
 define PPPD_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D $(PPPD_SCRIPTS_PKGDIR)files/S45pppd-stream $(TARGET_DIR)/etc/init.d/S45pppd
-	$(INSTALL) -m 755 -D $(PPPD_SCRIPTS_PKGDIR)files/S99daemon-pppd $(TARGET_DIR)/etc/init.d/S99daemon-pppd
-	$(INSTALL) -m 755 -D $(PPPD_SCRIPTS_PKGDIR)files/daemon-pppd-stream.sh $(TARGET_DIR)/usr/sbin/daemon-pppd.sh
 endef
 endif
 

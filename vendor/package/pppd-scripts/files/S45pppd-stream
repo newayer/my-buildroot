@@ -1,30 +1,36 @@
 #!/bin/sh
 #
-# pppd Starts pppd.
+# Starts iridium_pppd.
 #
+NAME=iridium_pppd
+PIDFILE=/var/run/$NAME.pid
+DAEMON=python3
+DAEMON_ARGS=/usr/local/lib/pppd_daemon.py
 
 start() {
+    printf "Starting $NAME: "
     mkdir -p /opt/logs
-    printf "Starting stream pppd: "
-
-    python3 /usr/local/lib/ppp_start.py >> /opt/logs/main_error.log 2>&1
-
-    for var in 1 2 3; do
-        sleep 10
-        pppd call ppp_options >> /opt/logs/main_error.log 2>&1
-        IP=$(ifconfig ppp0 | grep "inet addr:" | tr -d A-z: | awk {'print $1'})
-        if [ "$IP" ] ; then
-            echo "OK"
-            break
-        fi
-    done
-    echo "FAILED"
+    start-stop-daemon -S -q -m -b -p $PIDFILE --startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS"
+    status=$?
+    if [ "$status" -eq 0 ]; then
+        echo "OK"
+    else
+        echo "FAIL"
+    fi
+    return "$status"
 }
 
 stop() {
-    printf "Stopping pppd: "
-    killall pppd >> /opt/logs/main_error.log 2>&1
-    echo "OK"
+    printf "Stopping $NAME: "
+    start-stop-daemon -K -q -p $PIDFILE
+    status=$?
+    if [ "$status" -eq 0 ]; then
+        rm -f "$PIDFILE"
+        echo "OK"
+    else
+        echo "FAIL"
+    fi
+    return "$status"
 }
 
 restart() {
