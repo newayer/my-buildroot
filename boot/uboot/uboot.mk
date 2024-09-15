@@ -358,7 +358,7 @@ define UBOOT_BUILD_CMDS
 		cp -f $(UBOOT_CUSTOM_DTS_PATH) $(@D)/arch/$(UBOOT_ARCH)/dts/
 	)
 	$(if $(BR2_TARGET_UBOOT_RK),
-		pushd $(@D);./make.sh --spl-new $(BR2_TARGET_UBOOT_RK_LOADER_INI) CROSS_COMPILE="$(TARGET_CROSS)";popd,
+		pushd $(@D);./make.sh --spl-new $(call qstrip,$(BR2_TARGET_UBOOT_RK_LOADER_INI)) CROSS_COMPILE="$(TARGET_CROSS)";popd,
 	$(TARGET_CONFIGURE_OPTS) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_SYSROOT_DIR="/" \
@@ -390,7 +390,7 @@ define UBOOT_INSTALL_IMAGES_CMDS
         $(if $(BR2_TARGET_UBOOT_RK),
 		cp -dpf $(@D)/*_download_v*.bin $(BINARIES_DIR)/download.bin
 		cp -dpf $(@D)/*_idblock_v*.img $(BINARIES_DIR)/idblock.img
-		$(UBOOT_DIR)/tools/mkenvimage -s 0x40000 -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
+		$(UBOOT_DIR)/tools/mkenvimage -s $(BR2_TARGET_UBOOT_RK_ENV_SIZE) -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
 	)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
 		cp -dpf $(@D)/u-boot.sb $(BINARIES_DIR))
