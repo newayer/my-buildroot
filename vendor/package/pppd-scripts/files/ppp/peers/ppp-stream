@@ -11,5 +11,8 @@ debug
 defaultroute
 192.168.1.2:192.168.1.1
 asyncmap 80a0000
+lock
+dump
+nodetach
 xonxoff
 usepeerdns
