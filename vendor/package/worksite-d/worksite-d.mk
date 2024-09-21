@@ -16,23 +16,23 @@ endif
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 define WORKSITE_D_BUILD_CMDS
-	$(MAKE) -C $(@D)/paver/legcy/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
-	$(MAKE) -C $(@D)/paver/legcy $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
+	$(MAKE) -C $(@D)/legcy/paver/legcy/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
+	$(MAKE) -C $(@D)/legcy/paver/legcy $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 endif
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D)/paver/legcy/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
-	$(MAKE) -C $(@D)/paver/legcy $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) -C $(@D)/legcy/paver/legcy/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) -C $(@D)/legcy/paver/legcy $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
 	echo -n $(WORKSITE_D_VERSION) > $(TARGET_DIR)/etc/version
 endef
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
 	$(INSTALL) -d $(TARGET_DIR)/usr/local/lib/
-	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/main.py $(TARGET_DIR)/usr/local/lib/uav-convertor.py
-	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
-	$(INSTALL) -m 644 -D $(@D)/tracker/linux/root/root/pppd_daemon.py $(TARGET_DIR)/usr/local/lib/pppd_daemon.py
+	$(INSTALL) -m 644 -D $(@D)/gateway/python/uav/main.py $(TARGET_DIR)/usr/local/lib/uav-convertor.py
+	$(INSTALL) -m 644 -D $(@D)/gateway/python/uav/pppd_daemon.py $(TARGET_DIR)/usr/local/lib/pppd_daemon.py
+	$(INSTALL) -m 644 -D $(@D)/gateway/python/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
 endef
 endif
 
