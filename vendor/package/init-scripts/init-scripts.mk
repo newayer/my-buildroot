@@ -40,6 +40,7 @@ endif
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_ADB),y)
 define INSTALL_ADB_INIT_SYSV
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S50usbdevice $(TARGET_DIR)/etc/init.d/S50usbdevice
+	$(INSTALL) -m 644 -D $(INIT_SCRIPTS_PKGDIR)files/usb_gadget_config $(TARGET_DIR)/etc/usb_gadget_config
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S90usb0config $(TARGET_DIR)/etc/init.d/S90usb0config
 endef
 endif
