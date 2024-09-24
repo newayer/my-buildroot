@@ -78,7 +78,7 @@ config BR2_GCC_SUPPORTS_DLANG
 
 config BR2_GCC_VERSION
 	string
-	default "8.4.0"     if BR2_GCC_VERSION_POWERPC_SPE
+	default "8.4.0"     if BR2_GCC_VERSION_8_X
 	default "10.4.0"    if BR2_GCC_VERSION_10_X
 	default "12.4.0"    if BR2_GCC_VERSION_12_X
 	default "13.3.0"    if BR2_GCC_VERSION_13_X
