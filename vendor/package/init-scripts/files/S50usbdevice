@@ -7,20 +7,21 @@
 . /etc/profile
 
 UMS_EN=off
-ADB_EN=on
+ADB_EN=off
 MTP_EN=off
 NTB_EN=off
 ACM_EN=off
 UAC1_EN=off
 UAC2_EN=off
 UVC_EN=off
-RNDIS_EN=on
+RNDIS_EN=off
 HID_EN=off
 
 USB_ATTRIBUTE=0x409
 USB_GROUP=rockchip
 USB_SKELETON=b.1
 
+USB_CONFIG_FILE=/etc/usb_gadget_config
 CONFIGFS_DIR=/sys/kernel/config
 USB_CONFIGFS_DIR=${CONFIGFS_DIR}/usb_gadget/${USB_GROUP}
 USB_STRINGS_DIR=${USB_CONFIGFS_DIR}/strings/${USB_ATTRIBUTE}
@@ -117,7 +118,7 @@ parse_parameter()
             UMS_BLOCK=${VAR}
             ;;
         ums_block_size)
-            if [ ! "$VAR" -gt 0 ] 2>/dev/null ;then
+            if [ ! "$VAR" -ge 0 ] 2>/dev/null ;then
                 echo "$VAR is not a number"
                 exit 1
             fi
@@ -356,9 +357,9 @@ bind_functions()
             mkfs.${UMS_BLOCK_TYPE} ${UMS_BLOCK}
             test $? && echo "Warning: failed to mkfs.${UMS_BLOCK_TYPE} ${UMS_BLOCK}"
         fi
-        mkdir /mnt/ums -p
+        mkdir /mnt/storage -p
         if [ $UMS_BLOCK_AUTO_MOUNT = on ];then
-            mount ${UMS_BLOCK} /mnt/ums
+            mount ${UMS_BLOCK} /mnt/storage
         else
             echo ${UMS_BLOCK} > ${USB_FUNCTIONS_DIR}/mass_storage.0/lun.0/file
         fi
@@ -397,22 +398,9 @@ usb_device_stop()
 case "$1" in
 start)
     ifconfig lo up
-#   if [ ! -e "/tmp/.usb_config" ]; then
-#       echo "$0: Cannot find .usb_config"
-#       # exit 0
-#       USB_CONFIG_FILE=/tmp/.usb_config
-#       echo "usb_adb_en" >> $USB_CONFIG_FILE
-#   fi
-
-#   if [ -e /tmp/.usb_config ]; then
-#       USB_CONFIG_FILE=/tmp/.usb_config
-#   fi
 
     parameter_init
-#   if [ -z $CONFIG_STRING ]; then
-#       echo "$0: no function be selected"
-#       exit 0
-#   fi
+
     test -d ${USB_CONFIGFS_DIR} || configfs_init
     use_os_desc
     echo $PID > ${USB_CONFIGFS_DIR}/idProduct
