@@ -1,4 +1,4 @@
-From fda7cc0a39b525e4cc35f81dd8b6593a1f35dbd1 Mon Sep 17 00:00:00 2001
+From 01bace651c8f938374eac3d90698047a150057bb Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Thu, 13 Dec 2018 21:48:20 +0800
 Subject: [PATCH 2/2] retroarch: Use first crtc when failed to get encoder from
