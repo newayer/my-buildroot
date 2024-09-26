@@ -27,7 +27,7 @@ MUPEN64PLUS_CORE_CONF += USE_GLES=1
 endif
 
 ifeq ($(BR2_arm),y)
-ifeq ($(BR2_ARM_SOFT_FLOAT),)
+ifeq ($(BR2_GCC_TARGET_FLOAT_ABI),"hard")
 MUPEN64PLUS_CORE_CONF += VFP_HARD=1
 endif
 
