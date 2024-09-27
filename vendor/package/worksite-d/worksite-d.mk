@@ -12,6 +12,8 @@ ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 WORKSITE_D_DEPENDENCIES = c-periphery wpa_supplicant luv lua-cjson lualogging luamqtt luaossl lua-periphery luasec openresty
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 WORKSITE_D_DEPENDENCIES = python3
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
+WORKSITE_D_DEPENDENCIES = python3
 endif
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
@@ -34,6 +36,12 @@ define WORKSITE_D_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 644 -D $(@D)/gateway/python/uav/pppd_daemon.py $(TARGET_DIR)/usr/local/lib/pppd_daemon.py
 	$(INSTALL) -m 644 -D $(@D)/gateway/python/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
 endef
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
+define WORKSITE_D_INSTALL_TARGET_CMDS
+	$(INSTALL) -d $(TARGET_DIR)/usr/local/lib/
+	$(INSTALL) -m 644 -D $(@D)/gateway/python/storage/main.py $(TARGET_DIR)/usr/local/lib/main.py
+	$(INSTALL) -m 644 -D $(@D)/gateway/python/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
+endef
 endif
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
@@ -46,6 +54,12 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 define WORKSITE_D_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)S90worksite-d-uav $(TARGET_DIR)/etc/init.d/S90worksite-d
 	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)daemon-uav.sh $(TARGET_DIR)/usr/sbin/daemon-app.sh
+	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)S99daemon-worksite-d $(TARGET_DIR)/etc/init.d/S99daemon-worksite-d
+endef
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
+define WORKSITE_D_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)S90worksite-d-storage $(TARGET_DIR)/etc/init.d/S90worksite-d
+	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)daemon-storage.sh $(TARGET_DIR)/usr/sbin/daemon-app.sh
 	$(INSTALL) -m 755 -D $(WORKSITE_D_PKGDIR)S99daemon-worksite-d $(TARGET_DIR)/etc/init.d/S99daemon-worksite-d
 endef
 endif
