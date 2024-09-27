@@ -28,6 +28,9 @@ config BR2_PACKAGE_WORKSITE_D_PAVER
 config BR2_PACKAGE_WORKSITE_D_UAV
 	bool "worksite-d for uav app"
 
+config BR2_PACKAGE_WORKSITE_D_STORAGE
+	bool "worksite-d for storage app"
+
 endchoice
 
 endif # BR2_PACKAGE_WORKSITE_D
