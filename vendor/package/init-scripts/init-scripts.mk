@@ -26,7 +26,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_MOUNT),y)
 define INSTALL_MOUNT_INIT_SYSV
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S10mount-opt $(TARGET_DIR)/etc/init.d/S10mount-opt
+	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S10mount $(TARGET_DIR)/etc/init.d/S10mount
+	$(INSTALL) -m 644 -D $(INIT_SCRIPTS_PKGDIR)files/mount_config $(TARGET_DIR)/etc/mount_config
 endef
 endif
 

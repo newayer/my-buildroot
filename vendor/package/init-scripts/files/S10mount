@@ -2,18 +2,27 @@
 #
 #
 
-bootmedium=emmc
+export `cat /etc/mount_config`
 
 linkdev(){
     if [ ! -d "/dev/block/by-name" ];then
         mkdir -p /dev/block/by-name
         cd /dev/block/by-name
-        ln -sf /dev/mmcblk0p1 env
-        ln -sf /dev/mmcblk0p2 idblock
-        ln -sf /dev/mmcblk0p3 uboot
-        ln -sf /dev/mmcblk0p4 boot
-        ln -sf /dev/mmcblk0p5 rootfs
-        ln -sf /dev/mmcblk0p6 userdata
+        if [ "emmc" = "$bootmedium" ];then
+            ln -sf /dev/mmcblk0p1 env
+            ln -sf /dev/mmcblk0p2 idblock
+            ln -sf /dev/mmcblk0p3 uboot
+            ln -sf /dev/mmcblk0p4 boot
+            ln -sf /dev/mmcblk0p5 rootfs
+            ln -sf /dev/mmcblk0p6 userdata
+        elif [ "spi_nand" = "$bootmedium" ];then
+            ln -sf /dev/mtd0 env
+            ln -sf /dev/mtd1 idblock
+            ln -sf /dev/mtd2 uboot
+            ln -sf /dev/mtd3 boot
+            ln -sf /dev/mtd4 rootfs
+            ln -sf /dev/mtd5 userdata
+        fi
     fi
 }
 
@@ -172,8 +181,13 @@ mount_part(){
 
 start() {
     linkdev
-    mount_part rootfs IGNORE ext4
-    mount_part userdata /opt ext4
+    if [ "emmc" = "$bootmedium" ];then
+        mount_part rootfs IGNORE ext4
+#        mount_part userdata /opt ext4
+    elif [ "spi_nand" = "$bootmedium" ];then
+        mount_part rootfs IGNORE ubifs
+        mount_part userdata /opt ubifs
+    fi
 }
 
 stop() {
