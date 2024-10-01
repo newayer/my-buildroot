@@ -8,13 +8,10 @@ function app_restart()
 
 function app_exist()
 {
-    for i in `pidof python3`;
-    do
-        app=`grep main.py /proc/$i/cmdline`
-        if [ "$app" ] ; then
-            return 1
-        fi
-    done
+	app=`pidof storage`
+	if [ "$app" ] ; then
+		return 1
+	fi
     return 0
 }
 
