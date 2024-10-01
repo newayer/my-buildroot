@@ -12,8 +12,6 @@ ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 WORKSITE_D_DEPENDENCIES = c-periphery wpa_supplicant luv lua-cjson lualogging luamqtt luaossl lua-periphery luasec openresty
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 WORKSITE_D_DEPENDENCIES = python3
-else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
-WORKSITE_D_DEPENDENCIES = python3
 endif
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
@@ -38,9 +36,8 @@ define WORKSITE_D_INSTALL_TARGET_CMDS
 endef
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
-	$(INSTALL) -d $(TARGET_DIR)/usr/local/lib/
-	$(INSTALL) -m 644 -D $(@D)/gateway/python/storage/main.py $(TARGET_DIR)/usr/local/lib/main.py
-	$(INSTALL) -m 644 -D $(@D)/gateway/python/my_asyncio.py $(TARGET_DIR)/usr/local/lib/my_asyncio.py
+	$(INSTALL) -d $(TARGET_DIR)/usr/bin/
+	$(INSTALL) -m 755 -D $(@D)/gateway/storage/build/storage $(TARGET_DIR)/usr/bin/storage
 endef
 endif
 

@@ -4,11 +4,12 @@
 #
 NAME=storage
 PIDFILE=/var/run/$NAME.pid
-DAEMON=python3
-DAEMON_ARGS=/usr/local/lib/main.py
+DAEMON=/usr/bin/storage
+DAEMON_ARGS=
 
 start() {
     printf "Starting $NAME: "
+    echo 1048576 > /proc/sys/net/core/rmem_max
     mkdir -p /opt/logs
     start-stop-daemon -S -q -m -b -p $PIDFILE --startas /bin/bash -- -c "exec $DAEMON $DAEMON_ARGS"
     status=$?
