@@ -21,6 +21,12 @@ define PPPD_SCRIPTS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/chat-iridium-disconnect $(TARGET_DIR)/etc/ppp/peers/chat-iridium-disconnect
 	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/ppp-stream $(TARGET_DIR)/etc/ppp/peers/ppp_options
 endef
+else ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_TT),y)
+define PPPD_SCRIPTS_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/chat-tiantong-connect $(TARGET_DIR)/etc/ppp/peers/chat-tiantong-connect
+	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/chat-tiantong-disconnect $(TARGET_DIR)/etc/ppp/peers/chat-tiantong-disconnect
+	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/ppp-tiantong $(TARGET_DIR)/etc/ppp/peers/ppp_options
+endef
 endif
 
 ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_EC20),y)
@@ -32,6 +38,10 @@ endef
 else ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_IRIDIUM),y)
 define PPPD_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D $(PPPD_SCRIPTS_PKGDIR)files/S45pppd-stream $(TARGET_DIR)/etc/init.d/S45pppd
+endef
+else ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_TT),y)
+define PPPD_SCRIPTS_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D $(PPPD_SCRIPTS_PKGDIR)files/S45pppd-tiantong $(TARGET_DIR)/etc/init.d/S45pppd
 endef
 endif
 

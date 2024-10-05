@@ -1,0 +1,43 @@
+noauth
+
+connect 'chat -s -v -f /etc/ppp/peers/chat-tiantong-connect'
+
+disconnect 'chat -s -v -f /etc/ppp/peers/chat-tiantong-disconnect'
+
+debug
+
+/dev/ttyS1 115200
+
+defaultroute
+
+noipdefault
+
+novj
+novjccomp
+noccp
+
+ipcp-accept-local
+
+ipcp-accept-remote
+
+local
+
+lock
+
+dump
+
+nodetach
+
+user linux
+
+usepeerdns
+
+lcp-max-configure 30
+
+ipcp-max-configure 50
+
+kdebug 7
+
+mru 1400
+
+mtu 1400

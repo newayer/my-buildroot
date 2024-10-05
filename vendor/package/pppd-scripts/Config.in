@@ -18,6 +18,9 @@ config BR2_PACKAGE_PPPD_SCRIPTS_IRIDIUM
 config BR2_PACKAGE_PPPD_SCRIPTS_EC20
 	bool "pppd scripts for ec20"
 
+config BR2_PACKAGE_PPPD_SCRIPTS_TT
+	bool "pppd scripts for Tiantong"
+
 endchoice
 
 endif # BR2_PACKAGE_PPPD_SCRIPTS
