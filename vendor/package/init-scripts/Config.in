@@ -35,4 +35,10 @@ config BR2_PACKAGE_INIT_SCRIPT_ADB
 	help
 	  adb device up
 
+config BR2_PACKAGE_INIT_SCRIPT_NAT
+	bool "init scripts net nat"
+	default n
+	help
+	  net nat
+
 endif
