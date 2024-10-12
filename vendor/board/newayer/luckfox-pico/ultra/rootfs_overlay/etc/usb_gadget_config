@@ -1,8 +1,2 @@
 usb_adb_en
-usb_ums_en
-ums_block=/dev/mmcblk0p6
-ums_block_size=0
-ums_block_type=fat
-ums_block_auto_mount=on
-ums_ro=0
 usb_rndis_en

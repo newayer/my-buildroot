@@ -19,14 +19,14 @@ BR2_TARGET_GENERIC_ISSUE="Welcome to storage"
 BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
 BR2_TARGET_GENERIC_ROOT_PASSWD="root"
 BR2_SYSTEM_BIN_SH_BASH=y
-BR2_ROOTFS_OVERLAY="vendor/board/newayer/common/rootfs_overlay vendor/board/newayer/luckfox-pico/ultra/rootfs_overlay"
+BR2_ROOTFS_OVERLAY="vendor/board/newayer/common/rootfs_overlay vendor/board/newayer/luckfox-pico/ultra/rootfs_overlay vendor/board/newayer/luckfox-pico/ultra-storage/rootfs_overlay"
 BR2_ROOTFS_POST_BUILD_SCRIPT="vendor/board/newayer/common/post-build.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="vendor/board/newayer/luckfox-pico/post-images-ultra.sh"
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
 BR2_LINUX_KERNEL_CUSTOM_REPO_URL="git@github.com:newayer/my-kernel.git"
 BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="br_luckfox"
-BR2_LINUX_KERNEL_DEFCONFIG="luckfox_rv1106_linux"
+BR2_LINUX_KERNEL_DEFCONFIG="luckfox_rv1106_storage"
 BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM=y
 BR2_LINUX_KERNEL_IMAGE_TARGET_NAME="rv1106g-luckfox-pico-ultra-storage.img BOOT_ITS=boot.its"
 BR2_LINUX_KERNEL_IMAGE_NAME="zImage"
