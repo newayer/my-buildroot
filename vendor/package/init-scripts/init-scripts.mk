@@ -43,8 +43,6 @@ define INSTALL_ADB_INIT_SYSV
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S50usbdevice $(TARGET_DIR)/etc/init.d/S50usbdevice
 	$(INSTALL) -m 644 -D $(INIT_SCRIPTS_PKGDIR)files/usb_gadget_config $(TARGET_DIR)/etc/usb_gadget_config
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S90usb0config $(TARGET_DIR)/etc/init.d/S90usb0config
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/usb_change.sh $(TARGET_DIR)/usr/bin/usb_change.sh
-	$(INSTALL) -m 644 -D $(INIT_SCRIPTS_PKGDIR)files/50-usb.rules $(TARGET_DIR)/etc/udev/rules.d/50-usb.rules
 endef
 endif
 

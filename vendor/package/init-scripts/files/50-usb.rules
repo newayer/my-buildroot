@@ -1,1 +1,0 @@
-SUBSYSTEM=="extcon", ACTION=="change", ENV{DEVTYPE}=="extcon0", RUN+="/usr/bin/usb_change.sh '$env{STATE}'"
