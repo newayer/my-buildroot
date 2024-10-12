@@ -38,6 +38,8 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
 	$(INSTALL) -d $(TARGET_DIR)/usr/bin/
 	$(INSTALL) -m 755 -D $(@D)/gateway/storage/build/storage $(TARGET_DIR)/usr/bin/storage
+	$(INSTALL) -m 755 -D $(@D)/gateway/storage/build/storage_rs422 $(TARGET_DIR)/usr/bin/storage_rs422
+	$(INSTALL) -m 644 -D $(@D)/gateway/storage/etc/FPGA_firmware.bin $(TARGET_DIR)/etc/FPGA_firmware.bin
 endef
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_TIANTONG),y)
 define WORKSITE_D_INSTALL_TARGET_CMDS
