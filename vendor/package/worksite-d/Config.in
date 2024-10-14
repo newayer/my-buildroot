@@ -36,4 +36,19 @@ config BR2_PACKAGE_WORKSITE_D_TIANTONG
 
 endchoice
 
+if BR2_PACKAGE_WORKSITE_D_STORAGE
+choice
+	prompt "storage project options"
+	default BR2_STORAGE_DEFAULT
+	help
+	  Select which sub project to enable
+
+config BR2_STORAGE_DEFAULT
+	bool "storage default"
+
+config BR2_STORAGE_RS422
+	bool "storage for rs422"
+endchoice
+endif
+
 endif # BR2_PACKAGE_WORKSITE_D
