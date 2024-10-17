@@ -373,6 +373,7 @@ bind_functions()
         fi
         mkdir /mnt/storage -p
         if [ $UMS_BLOCK_AUTO_MOUNT = on ];then
+            fsck -t exfat ${UMS_BLOCK}
             mount ${UMS_BLOCK} /mnt/storage
         else
             echo ${UMS_BLOCK} > ${USB_FUNCTIONS_DIR}/mass_storage.0/lun.0/file
