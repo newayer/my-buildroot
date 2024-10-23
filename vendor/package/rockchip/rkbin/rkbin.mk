@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RKBIN_VERSION = 7c7b513f13fc6ff43b0eac0bd259001fd75185d7
+RKBIN_VERSION = a2a0b89b6c8c612dca5ed9ed8a68db8a07f68bc0
 RKBIN_SITE = https://github.com/rockchip-linux/rkbin.git
 RKBIN_SITE_METHOD = git
 
