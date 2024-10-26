@@ -13,14 +13,9 @@ do
                 continue
             fi
         fi
-	else
-		/etc/init.d/S30wpa_supplicant restart
-		sleep 3
     fi
 
-    /etc/init.d/S40network stop
-	sleep 3
-	/etc/init.d/S40network start
+    /etc/init.d/S40network restart
 
     for((i=1;i<=10;i++));
 	do
