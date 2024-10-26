@@ -32,9 +32,12 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_DAEMON_WIFI),y)
+IFUPDOWN_SCRIPTS_DHCP_IFACE = $(call qstrip,$(BR2_SYSTEM_DHCP))
 define INSTALL_DAEMON_INIT_SYSV
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S99daemon-wifi $(TARGET_DIR)/etc/init.d/S99daemon-wifi
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/daemon-wifi.sh $(TARGET_DIR)/usr/sbin/daemon-wifi.sh
+	sed -i '/wpa_conf/d' $(TARGET_DIR)/etc/network/interfaces
+	sed -i 's%iface $(IFUPDOWN_SCRIPTS_DHCP_IFACE).*%&\n  wpa_conf /etc/wpa_supplicant.conf%g' $(TARGET_DIR)/etc/network/interfaces
+	#$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S99daemon-wifi $(TARGET_DIR)/etc/init.d/S99daemon-wifi
+	#$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/daemon-wifi.sh $(TARGET_DIR)/usr/sbin/daemon-wifi.sh
 endef
 endif
 
@@ -52,6 +55,27 @@ define INSTALL_NAT_INIT_SYSV
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_INIT_SCRIPT_ETH),y)
+
+SCRIPTS_STATIC_IFACE = $(call qstrip,$(BR2_PACKAGE_INIT_SCRIPT_ETH_NAME))
+SCRIPTS_STATIC_IP = $(call qstrip,$(BR2_PACKAGE_INIT_SCRIPT_ETH_IP))
+define INSTALL_ETH_INIT_SYSV
+	sed -i "{:begin;/dns-nameservers/! {$!{N;b begin};};s/auto $(SCRIPTS_STATIC_IFACE).*dns-nameservers 8\.8\.8\.8//;};" $(TARGET_DIR)/etc/network/interfaces
+	sed -i '/^$$/{N;/\n$$/D};' $(TARGET_DIR)/etc/network/interfaces
+	( \
+		SCRIPTS_STATIC_IP=$(SCRIPTS_STATIC_IP); \
+		echo ; \
+		echo "auto $(SCRIPTS_STATIC_IFACE)"; \
+		echo "iface $(SCRIPTS_STATIC_IFACE) inet static"; \
+		echo "  address $(SCRIPTS_STATIC_IP)"; \
+		echo "  gateway $${SCRIPTS_STATIC_IP%.*}.1"; \
+		echo "  netmask 255.255.255.0"; \
+		echo "  dns-nameservers 8.8.8.8"; \
+	) >> $(TARGET_DIR)/etc/network/interfaces
+endef
+
+endif
+
 define INIT_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL_CAN_INIT_SYSV)
 	$(INSTALL_TIME_INIT_SYSV)
@@ -59,6 +83,7 @@ define INIT_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL_DAEMON_INIT_SYSV)
 	$(INSTALL_ADB_INIT_SYSV)
 	$(INSTALL_NAT_INIT_SYSV)
+	$(INSTALL_ETH_INIT_SYSV)
 endef
 
 define INIT_SCRIPTS_INSTALL_INIT_SYSTEMD
