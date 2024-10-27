@@ -10,19 +10,8 @@ WORKSITE_D_SITE_METHOD = git
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 
-WORKSITE_D_DEPENDENCIES = c-periphery wpa_supplicant luv lua-cjson lualogging luamqtt luaossl lua-periphery luasec openresty
-WORKSITE_D_SUBDIR=legcy/paver/legcy
-
-define WORKSITE_D_BUILD_CMDS
-       $(MAKE) -C $(WORKSITE_D_SRCDIR)/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
-       $(MAKE) -C $(WORKSITE_D_SRCDIR) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
-endef
-
-define WORKSITE_D_INSTALL_TARGET_CMDS
-       $(MAKE) -C $(WORKSITE_D_SRCDIR)/libs/snapshot $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
-       $(MAKE) -C $(WORKSITE_D_SRCDIR) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) install
-       echo -n $(WORKSITE_D_VERSION) > $(TARGET_DIR)/etc/version
-endef
+WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_SUBDIR=gateway/python/paver
 
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 
@@ -44,8 +33,4 @@ endif
 
 endif
 
-ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
-$(eval $(generic-package))
-else
 $(eval $(cmake-package))
-endif
