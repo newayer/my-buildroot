@@ -15,7 +15,7 @@ TUNNEL="-NR 1178:localhost:22"
 # remote user
 RUSER="root"
 # remote server
-RSERVER="182.92.224.57"
+RSERVER="101.42.228.121"
 # You must use the real autossh binary, not a wrapper.
 DAEMON=/usr/bin/autossh
 #
