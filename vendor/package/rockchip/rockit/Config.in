@@ -1,4 +1,4 @@
-config BR2_PACKAGE_KERNEL_MODULE_ROCKIT
+config BR2_PACKAGE_ROCKIT
 	bool "kernel-module-rockit"
 	depends on BR2_LINUX_KERNEL
 	help
