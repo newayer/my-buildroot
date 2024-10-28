@@ -1,4 +1,4 @@
-config BR2_PACKAGE_KERNEL_MODULE_KMPP
+config BR2_PACKAGE_KMPP
 	bool "kernel-module-kmpp"
 	depends on BR2_LINUX_KERNEL
 	help

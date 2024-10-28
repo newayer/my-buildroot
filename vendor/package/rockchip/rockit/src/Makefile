@@ -11,13 +11,19 @@ rockit-objs += ./mpi/mpi_sysfs.o
 rockit-objs += ./mpi/mpi_buf.o
 rockit-objs += ./mcu/mcu.o
 rockit-objs += ./isp/rockit_isp.o
+rockit-objs += ./common/argparse.o
 rockit-objs += ./rockit_init.o
 rockit-objs += ./vpss/vpss.o
+rockit-objs += ./avs/avs.o
 rockit-objs += ./rga/vrga.o
 rockit-objs += ./rga/rga_utils.o
 rockit-objs += ./sys/vsys.o
 rockit-objs += ./venc/venc.o
+rockit-objs += ./aiisp/aiisp.o
 rockit-objs += ./vrgn/vrgn.o
+rockit-objs += ./vicap/rockit_cif.o
 rockit-objs += ./valloc/valloc.o
 rockit-objs += ./vi/vvi.o
-
+ifneq ($(CONFIG_ROCKCHIP_THUNDER_BOOT_SERVICE),y)
+rockit-objs += ./fakecode.o
+endif
