@@ -1,4 +1,4 @@
-TIMEOUT 5
+TIMEOUT 20
 ABORT "NO CARRIER"
 ABORT "NO DIALTONE"
 ABORT "NO ANSWER"
@@ -6,10 +6,5 @@ ABORT "BUSY"
 ABORT "Username/Password Incorrect"
 
 ""      AT
-OK      ATE0
-OK      AT+CGDCONT=1,"IP","ctnet"
-OK      AT+CGEQREQ=1,1,10,10,0,0,0,0,"0E0","0E0",0,0,0,0,0
-OK      AT+CGEQREQ?
-OK      AT+HLSERROR=1
-OK      ATD*98*1#
+OK      ATD*98*4#
 CONNECT ""
