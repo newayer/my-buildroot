@@ -6,7 +6,7 @@ disconnect 'chat -s -v -f /etc/ppp/peers/chat-tiantong-disconnect'
 
 debug
 
-/dev/ttyS1 115200
+/dev/gsmtty5 921600
 
 defaultroute
 
