@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_IOCTL_OPT
+	bool "python-ioctl-opt"
+	help
+	  Functions to compute fnctl.ioctl's opt argument
+
+	  http://github.com/vpelletier/python-ioctl-opt
