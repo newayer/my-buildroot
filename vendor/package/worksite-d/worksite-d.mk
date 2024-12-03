@@ -10,7 +10,7 @@ WORKSITE_D_SITE_METHOD = git
 
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 
-WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_DEPENDENCIES = python3 c-periphery
 WORKSITE_D_SUBDIR=gateway/python/paver
 
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
