@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENVPN_VERSION = 2.5.7
-OPENVPN_SITE = https://swupdate.openvpn.net/community/releases
+OPENVPN_VERSION = 2.5.11
+OPENVPN_SITE = https://github.com/OpenVPN/openvpn/releases/download/v$(OPENVPN_VERSION)
 OPENVPN_DEPENDENCIES = host-pkgconf
 OPENVPN_LICENSE = GPL-2.0
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
