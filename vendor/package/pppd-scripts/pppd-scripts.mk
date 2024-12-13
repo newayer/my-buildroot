@@ -25,7 +25,8 @@ else ifeq ($(BR2_PACKAGE_PPPD_SCRIPTS_TT),y)
 define PPPD_SCRIPTS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/chat-tiantong-connect $(TARGET_DIR)/etc/ppp/peers/chat-tiantong-connect
 	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/chat-tiantong-disconnect $(TARGET_DIR)/etc/ppp/peers/chat-tiantong-disconnect
-	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/ppp-tiantong $(TARGET_DIR)/etc/ppp/peers/ppp_options
+	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/ppp-tiantong-cmux $(TARGET_DIR)/etc/ppp/peers/ppp_options
+	$(INSTALL) -m 644 -D $(PPPD_SCRIPTS_PKGDIR)files/ppp/peers/ppp-tiantong $(TARGET_DIR)/etc/ppp/peers/ppp_options_2
 endef
 endif
 

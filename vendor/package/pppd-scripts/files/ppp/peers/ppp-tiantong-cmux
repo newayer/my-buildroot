@@ -6,7 +6,7 @@ disconnect 'chat -s -v -f /etc/ppp/peers/chat-tiantong-disconnect'
 
 debug
 
-/dev/ttyS1 921600
+/dev/gsmtty5 921600
 
 defaultroute
 
@@ -41,6 +41,8 @@ kdebug 7
 mru 1500
 
 mtu 1500
+
+escape f9
 
 #nolock
 crtscts
