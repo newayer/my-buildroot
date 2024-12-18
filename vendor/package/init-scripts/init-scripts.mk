@@ -51,7 +51,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_NAT),y)
 define INSTALL_NAT_INIT_SYSV
-	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S42nat $(TARGET_DIR)/etc/init.d/S42nat
+	#$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/S42nat $(TARGET_DIR)/etc/init.d/S42nat
+	$(INSTALL) -m 644 -D $(INIT_SCRIPTS_PKGDIR)files/sysctl.conf $(TARGET_DIR)/etc/sysctl.conf
 endef
 endif
 
@@ -68,7 +69,6 @@ define INSTALL_ETH_INIT_SYSV
 		echo "auto $(SCRIPTS_STATIC_IFACE)"; \
 		echo "iface $(SCRIPTS_STATIC_IFACE) inet static"; \
 		echo "  address $(SCRIPTS_STATIC_IP)"; \
-		echo "  gateway $${SCRIPTS_STATIC_IP%.*}.1"; \
 		echo "  netmask 255.255.255.0"; \
 		echo "  dns-nameservers 8.8.8.8"; \
 	) >> $(TARGET_DIR)/etc/network/interfaces
