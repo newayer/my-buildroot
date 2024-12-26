@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SERIAL_PACKETS
+	bool "python-serial-packets"
+	select BR2_PACKAGE_PYTHON_SERIAL_ASYNCIO # runtime
+	select BR2_PACKAGE_PYTHON_PYTHONCRC # runtime
+	help
+	  A Python impelementation of the Serial Packets protocol.
+
+	  https://github.com/zapta/serial_packets_py
