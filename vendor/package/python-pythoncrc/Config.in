@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYTHONCRC
+	bool "python-pythoncrc"
+	help
+	  Python libraries for CRC calculations (it supports CRC-16, CRC-32, CRC-CCITT, etc)
+
+	   https://pycrc.readthedocs.org
