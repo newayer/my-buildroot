@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_QUART
+	bool "python-quart"
+	select BR2_PACKAGE_PYTHON_FLASK # runtime
+	help
+	  Quart is an async Python web application framework.
+
+	  https://github.com/pallets/quart
