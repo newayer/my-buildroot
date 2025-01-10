@@ -19,7 +19,7 @@ shift $(($OPTIND - 1))
 
 config=$1
 if [ -z $config ]; then
-    config=luckfox_pico_defconfig
+    config=luckfox_pico_ultra_tiantong_defconfig
 else
     config=$(basename $1)
 fi
