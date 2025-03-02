@@ -34,6 +34,9 @@ config BR2_PACKAGE_WORKSITE_D_STORAGE
 config BR2_PACKAGE_WORKSITE_D_TIANTONG
 	bool "worksite-d for tiantong app"
 
+config BR2_PACKAGE_WORKSITE_D_ACU
+	bool "worksite-d for acu app"
+
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE

@@ -31,6 +31,11 @@ ifeq ($(BR2_STORAGE_RS422),y)
 WORKSITE_D_CONF_OPTS += -DENABLE_RS422=ON
 endif
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_ACU),y)
+
+WORKSITE_D_DEPENDENCIES = c-periphery
+WORKSITE_D_SUBDIR=gateway/acu
+
 endif
 
 $(eval $(cmake-package))
