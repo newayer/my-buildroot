@@ -15,7 +15,7 @@
 
 # Startup the system
 ::sysinit:/bin/mount -t sysfs sysfs /sys
-::sysinit:/etc/init.d/rcS /etc/init.d/pre_init
+::sysinit:/etc/init.d/rcS.early
 ::sysinit:/bin/mkdir -p /dev/pts /dev/shm
 ::sysinit:/bin/mount -t tmpfs tmpfs /var/log
 ::sysinit:/bin/mount -t tmpfs tmpfs /tmp

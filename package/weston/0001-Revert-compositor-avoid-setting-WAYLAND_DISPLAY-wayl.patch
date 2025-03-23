@@ -1,7 +1,7 @@
-From 24f8c717de7fb6542ed37983e7839eb4779baa94 Mon Sep 17 00:00:00 2001
+From a9df139537ee8f9d77feba7251ba4bed7d6decce Mon Sep 17 00:00:00 2001
 From: Jeffy Chen <jeffy.chen@rock-chips.com>
 Date: Wed, 5 Jan 2022 14:56:17 +0800
-Subject: [PATCH 01/99] Revert "compositor: avoid setting
+Subject: [PATCH 01/95] Revert "compositor: avoid setting
  WAYLAND_DISPLAY=wayland-0"
 
 This reverts commit ae69381b6eb43ab63992906d1bf29ffd2b4df10d.
@@ -10,14 +10,14 @@ Use "wayland-0" by default.
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---
- compositor/main.c | 23 +++++++++--------------
+ frontend/main.c | 23 +++++++++--------------
  1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/compositor/main.c b/compositor/main.c
-index 0e3d37584..f30562ff4 100644
---- a/compositor/main.c
-+++ b/compositor/main.c
-@@ -910,29 +910,24 @@ handle_primary_client_destroyed(struct wl_listener *listener, void *data)
+diff --git a/frontend/main.c b/frontend/main.c
+index c27c011..3b6481d 100644
+--- a/frontend/main.c
++++ b/frontend/main.c
+@@ -935,29 +935,24 @@ handle_primary_client_destroyed(struct wl_listener *listener, void *data)
  static int
  weston_create_listening_socket(struct wl_display *display, const char *socket_name)
  {

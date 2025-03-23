@@ -22,6 +22,8 @@ BLUEZ_ALSA_CONF_OPTS = \
 	--with-alsaplugindir=/usr/lib/alsa-lib \
 	--with-alsaconfdir=/etc/alsa/conf.d
 
+#BROADCOM CHIPS: SCO over PCM, --enable-sco2pcm
+
 ifeq ($(BR2_PACKAGE_ALSA_PLUGINS),y)
 BLUEZ_ALSA_DEPENDENCIES += alsa-plugins
 endif

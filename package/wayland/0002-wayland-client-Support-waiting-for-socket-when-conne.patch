@@ -7,8 +7,8 @@ Subject: [PATCH 2/3] wayland-client: Support waiting for socket when
 Set WAYLAND_WAIT=1 to enable it.
 
 Tested on RK3588 EVB with:
-1/ Run "weston-terminal&"
-2/ Run "WAYLAND_WAIT=1 weston&"
+1/ Run "WAYLAND_WAIT=1 weston-terminal&"
+2/ Run "weston&"
 
 Signed-off-by: Jeffy Chen <jeffy.chen@rock-chips.com>
 ---

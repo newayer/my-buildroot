@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XSERVER_XORG_SERVER_VERSION = 21.1.11_2024_01_31
+XSERVER_XORG_SERVER_VERSION = 21.1.8_2024_06_24
 XSERVER_XORG_SERVER_SITE = $(call github,JeffyCN,xorg-xserver,$(XSERVER_XORG_SERVER_VERSION))
 XSERVER_XORG_SERVER_LICENSE = MIT
 XSERVER_XORG_SERVER_LICENSE_FILES = COPYING
