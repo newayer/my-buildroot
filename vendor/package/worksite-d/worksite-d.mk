@@ -36,6 +36,11 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_ACU),y)
 WORKSITE_D_DEPENDENCIES = c-periphery
 WORKSITE_D_SUBDIR=gateway/acu
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_IOT_FORWARD),y)
+
+WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_SUBDIR=gateway/python/iot_forward
+
 endif
 
 $(eval $(cmake-package))

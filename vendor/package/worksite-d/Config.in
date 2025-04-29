@@ -37,6 +37,9 @@ config BR2_PACKAGE_WORKSITE_D_TIANTONG
 config BR2_PACKAGE_WORKSITE_D_ACU
 	bool "worksite-d for acu app"
 
+config BR2_PACKAGE_WORKSITE_D_IOT_FORWARD
+	bool "worksite-d for iot forward app"
+
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE
