@@ -13,3 +13,5 @@
 *.rej
 *~
 *.pyc
+toolchain-external-custom.hash
+rkbin.hash

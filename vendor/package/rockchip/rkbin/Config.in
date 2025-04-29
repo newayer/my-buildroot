@@ -2,3 +2,16 @@ config BR2_PACKAGE_RKBIN
         bool "rkbin"
         help
           Rockchip binary blobs
+
+if BR2_PACKAGE_RKBIN
+
+comment "rkbin package Parameters"
+
+config BR2_PACKAGE_RKBIN_VERSION
+	string "Custom git repository version"
+	default "br_rk3506"
+	help
+	  Revision to use in the typical format used by
+	  Git E.G. a sha id, a tag
+
+endif # BR2_PACKAGE_RKBIN
