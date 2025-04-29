@@ -91,4 +91,10 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH2_IP
 
 endif
 
+config BR2_PACKAGE_INIT_SCRIPT_NET_FORWARD
+	bool "config the eth iface to forward data"
+	default n
+	help
+	  config the eth iface to forward data
+
 endif
