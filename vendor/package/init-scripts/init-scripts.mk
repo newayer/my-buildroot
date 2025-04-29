@@ -76,6 +76,26 @@ endef
 
 endif
 
+ifeq ($(BR2_PACKAGE_INIT_SCRIPT_ETH2),y)
+
+SCRIPTS_STATIC_IFACE2 = $(call qstrip,$(BR2_PACKAGE_INIT_SCRIPT_ETH2_NAME))
+SCRIPTS_STATIC_IP2 = $(call qstrip,$(BR2_PACKAGE_INIT_SCRIPT_ETH2_IP))
+define INSTALL_ETH_INIT_SYSV2
+	sed -i "{:begin;/dns-nameservers/! {$!{N;b begin};};s/auto $(SCRIPTS_STATIC_IFACE2).*dns-nameservers 8\.8\.8\.8//;};" $(TARGET_DIR)/etc/network/interfaces
+	sed -i '/^$$/{N;/\n$$/D};' $(TARGET_DIR)/etc/network/interfaces
+	( \
+		SCRIPTS_STATIC_IP2=$(SCRIPTS_STATIC_IP2); \
+		echo ; \
+		echo "auto $(SCRIPTS_STATIC_IFACE2)"; \
+		echo "iface $(SCRIPTS_STATIC_IFACE2) inet static"; \
+		echo "  address $(SCRIPTS_STATIC_IP2)"; \
+		echo "  netmask 255.255.255.0"; \
+		echo "  dns-nameservers 8.8.8.8"; \
+	) >> $(TARGET_DIR)/etc/network/interfaces
+endef
+
+endif
+
 define INIT_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL_CAN_INIT_SYSV)
 	$(INSTALL_TIME_INIT_SYSV)
@@ -84,6 +104,7 @@ define INIT_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL_ADB_INIT_SYSV)
 	$(INSTALL_NAT_INIT_SYSV)
 	$(INSTALL_ETH_INIT_SYSV)
+	$(INSTALL_ETH_INIT_SYSV2)
 endef
 
 define INIT_SCRIPTS_INSTALL_INIT_SYSTEMD

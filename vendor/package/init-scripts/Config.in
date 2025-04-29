@@ -66,4 +66,29 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH_IP
 
 endif
 
+config BR2_PACKAGE_INIT_SCRIPT_ETH2
+	bool "config the eth2 iface to static IP"
+	default n
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN
+	help
+	  config the eth iface to static IP
+
+if BR2_PACKAGE_INIT_SCRIPT_ETH2
+
+config BR2_PACKAGE_INIT_SCRIPT_ETH2_NAME
+	string "Network interface to configure with static IP"
+	default "eth1"
+	help
+	  Enter here the name of the network interface (E.G. eth1) to
+	  configure with static IP at bootup.
+
+config BR2_PACKAGE_INIT_SCRIPT_ETH2_IP
+	string "configured IP for Network interface"
+	default "192.168.22.7"
+	help
+	  Enter here the IP of the network interface (E.G. eth1) to
+	  configure at bootup.
+
+endif
+
 endif
