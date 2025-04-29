@@ -149,6 +149,16 @@ endif
 
 ifeq ($(BR2_TARGET_UBOOT_RK),y)
 UBOOT_DEPENDENCIES += host-rkbin
+
+RK_CHIP = $(call qstrip,$(BR2_TARGET_UBOOT_RK_CHIP))
+ifeq ($(RK_CHIP),rv1106)
+RK_MAKE_OPT = --spl-new $(call qstrip,$(BR2_TARGET_UBOOT_RK_LOADER_INI)) CROSS_COMPILE="$(TARGET_CROSS)"
+else ifeq ($(RK_CHIP),rk3506)
+RK_MAKE_OPT = --spl-new $(call qstrip,$(BR2_TARGET_UBOOT_RK_LOADER_INI)) CROSS_COMPILE="$(TARGET_CROSS)"
+else ifeq ($(RK_CHIP),rk3576)
+RK_MAKE_OPT = $(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_MAKEOPTS))
+endif
+
 endif
 
 # The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
@@ -383,7 +393,7 @@ define UBOOT_BUILD_CMDS
 		cp -f $(UBOOT_CUSTOM_DTS_PATH) $(@D)/arch/$(UBOOT_ARCH)/dts/
 	)
 	$(if $(BR2_TARGET_UBOOT_RK),
-		pushd $(@D);./make.sh --spl-new $(call qstrip,$(BR2_TARGET_UBOOT_RK_LOADER_INI)) CROSS_COMPILE="$(TARGET_CROSS)";popd,
+		pushd $(@D);./make.sh $(RK_MAKE_OPT);popd,
 	$(TARGET_CONFIGURE_OPTS) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_SYSROOT_DIR="/" \
@@ -412,10 +422,13 @@ define UBOOT_INSTALL_IMAGES_CMDS
 	$(foreach f,$(UBOOT_BINS), \
 			cp -dpf $(@D)/$(f) $(BINARIES_DIR)/
 	)
-        $(if $(BR2_TARGET_UBOOT_RK),
-		cp -dpf $(@D)/*_download_v*.bin $(BINARIES_DIR)/download.bin
-		cp -dpf $(@D)/*_idblock_v*.img $(BINARIES_DIR)/idblock.img
-		$(UBOOT_DIR)/tools/mkenvimage -s $(BR2_TARGET_UBOOT_RK_ENV_SIZE) -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
+#	$(if $(BR2_TARGET_UBOOT_RK),
+#		cp -dpf $(@D)/*_download_v*.bin $(BINARIES_DIR)/download.bin
+#		cp -dpf $(@D)/*_idblock_v*.img $(BINARIES_DIR)/idblock.img
+#		$(UBOOT_DIR)/tools/mkenvimage -s $(BR2_TARGET_UBOOT_RK_ENV_SIZE) -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
+#	)
+	$(if $(BR2_TARGET_UBOOT_RK),
+		cp -dpf $(@D)/*_spl_loader_*.bin $(BINARIES_DIR)/MiniLoaderAll.bin
 	)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
 		cp -dpf $(@D)/u-boot.sb $(BINARIES_DIR))

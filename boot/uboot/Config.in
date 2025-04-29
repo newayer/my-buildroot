@@ -609,7 +609,13 @@ config BR2_TARGET_UBOOT_RK_ENV_SIZE
 config BR2_TARGET_UBOOT_RK_ENV_FILE
 	string "rk build uboot env image file name"
 	help
-		Location of build bootloader env image file name.
+	  Location of build bootloader env image file name.
+
+config BR2_TARGET_UBOOT_RK_CHIP
+	string "rk chip name"
+	default "rk3506"
+	help
+	  define the rockchip chip name.
 endif
 
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
