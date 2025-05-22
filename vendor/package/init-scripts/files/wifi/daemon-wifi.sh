@@ -2,7 +2,7 @@
 
 while :
 do
-	sleep 9
+    sleep 9
 
     wpaIsRun=$(ps -ef |grep "wpa_supplicant " |grep -v "grep")
     if [ "$wpaIsRun" ] ; then
@@ -18,11 +18,11 @@ do
     /etc/init.d/S40network restart
 
     for((i=1;i<=10;i++));
-	do
-		IP=$(ifconfig wlan0 | grep "inet addr:" | tr -d A-z: | awk {'print $1'})
-		if [ "$IP" ] ; then
-			break
-		fi
-		sleep 6
-	done
+    do
+        IP=$(ifconfig wlan0 | grep "inet addr:" | tr -d A-z: | awk {'print $1'})
+        if [ "$IP" ] ; then
+            break
+        fi
+        sleep 6
+    done
 done

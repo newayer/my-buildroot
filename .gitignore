@@ -15,3 +15,4 @@
 *.pyc
 toolchain-external-custom.hash
 rkbin.hash
+vendor/.vscode-ctags

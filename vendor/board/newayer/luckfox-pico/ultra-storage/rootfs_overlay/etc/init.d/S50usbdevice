@@ -391,7 +391,7 @@ run_binary()
     fi
     if [ $RNDIS_EN = on ];then
         sleep .5
-        ifconfig usb0 172.32.0.93
+        ifconfig usb0 192.168.22.1
         ifconfig usb0 up
     fi
 }

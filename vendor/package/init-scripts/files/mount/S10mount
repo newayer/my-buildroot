@@ -2,9 +2,27 @@
 #
 #
 
-export `cat /etc/mount_config`
+export bootmedium=@bootmedium@
 
-linkdev(){
+linkdev_rk3506(){
+    if [ ! -d "/dev/block/by-name" ];then
+        mkdir -p /dev/block/by-name
+        cd /dev/block/by-name
+        if [ "emmc" = "$bootmedium" ];then
+            ln -sf /dev/mmcblk0p1 uboot
+            ln -sf /dev/mmcblk0p2 boot
+            ln -sf /dev/mmcblk0p3 rootfs
+            ln -sf /dev/mmcblk0p4 userdata
+        elif [ "spi_nand" = "$bootmedium" ];then
+            ln -sf /dev/mtd0 uboot
+            ln -sf /dev/mtd1 boot
+            ln -sf /dev/mtd2 rootfs
+            ln -sf /dev/mtd3 userdata
+        fi
+    fi
+}
+
+linkdev_rv1106(){
     if [ ! -d "/dev/block/by-name" ];then
         mkdir -p /dev/block/by-name
         cd /dev/block/by-name
@@ -180,10 +198,10 @@ mount_part(){
 }
 
 start() {
-    linkdev
+    linkdev_@device_type@
     if [ "emmc" = "$bootmedium" ];then
         mount_part rootfs IGNORE ext4
-#        mount_part userdata /opt ext4
+        mount_part userdata /opt ext4
     elif [ "spi_nand" = "$bootmedium" ];then
         mount_part rootfs IGNORE ubifs
         mount_part userdata /opt ubifs
@@ -203,12 +221,15 @@ case "$1" in
   start)
      start
      ;;
+
   linkdev)
-     linkdev
+     linkdev_@device_type@
      ;;
+
   stop)
      stop
      ;;
+
   restart|reload)
      restart
      ;;

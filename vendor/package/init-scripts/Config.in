@@ -1,39 +1,123 @@
 menuconfig BR2_PACKAGE_INIT_SCRIPTS
-	bool "init scripts"
+	bool "init scripts for projects"
 	help
-	  Set of scripts used by system init.
+	  Set of init scripts used by SystemV init.
 
 if BR2_PACKAGE_INIT_SCRIPTS
 
-config BR2_PACKAGE_INIT_SCRIPT_CAN
-	bool "init scripts can"
+config BR2_PACKAGE_INIT_SCRIPT_MOUNT
+	bool "init script for partions mount"
 	default n
 	help
-	  can interface up
+	  partion mount
+
+if BR2_PACKAGE_INIT_SCRIPT_MOUNT
+	choice
+		prompt "mount partion storage type select"
+		default BR2_PACKAGE_INIT_SCRIPT_MOUNT_EMMC
+
+		config BR2_PACKAGE_INIT_SCRIPT_MOUNT_EMMC
+			bool "emmc storage"
+			help
+			  emmc storage
+
+		config BR2_PACKAGE_INIT_SCRIPT_MOUNT_NAND
+			bool "spi nand storage"
+			help
+			  spi nand storage
+
+		config BR2_PACKAGE_INIT_SCRIPT_MOUNT_NOR
+			bool "nor flash storage"
+			help
+			  nor flash storage
+	endchoice
+
+	choice
+		prompt "link dev select"
+		default BR2_PACKAGE_INIT_SCRIPT_LINK_RV1106
+
+		config BR2_PACKAGE_INIT_SCRIPT_LINK_RV1106
+			bool "using rv1106 link deveices"
+			help
+			  using rv1106 link deveices
+
+		config BR2_PACKAGE_INIT_SCRIPT_LINK_RK3506
+			bool "using rk3506 link deveices"
+			help
+			  using rk3506 link deveices
+	endchoice
+endif
 
 config BR2_PACKAGE_INIT_SCRIPT_TIME
-	bool "init scripts time"
+	bool "init script for system time sync"
 	default n
 	help
-	  system time syc
-
-config BR2_PACKAGE_INIT_SCRIPT_MOUNT
-	bool "init scripts mount"
-	default n
-	help
-	  opt partion mount
+	  system time sync
 
 config BR2_PACKAGE_INIT_SCRIPT_DAEMON_WIFI
-	bool "init scripts for wifi"
+	bool "init script for wifi client monitor"
 	default n
 	help
-	  init wifi up
+	  wifi client monitor
 
 config BR2_PACKAGE_INIT_SCRIPT_ADB
-	bool "init scripts adb tools"
+	bool "init script for adb tools"
 	default n
 	help
-	  adb device up
+	  adb tools
+
+if BR2_PACKAGE_INIT_SCRIPT_ADB
+	config BR2_PACKAGE_INIT_SCRIPT_USB_ADB
+		bool "adb"
+		default y
+		help
+		  adb
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_UMS
+		bool "ums"
+		help
+		  ums
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_MTP
+		bool "mtp"
+		help
+		  mtp
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_NTB
+		bool "ntb"
+		help
+		  ntb
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_ACM
+		bool "acm"
+		help
+		  acm
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_UAC1
+		bool "uac1"
+		help
+		  uac1
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_UAC2
+		bool "uac2"
+		help
+		  uac2
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_UVC
+		bool "uvc"
+		help
+		  uvc
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_RNDIS
+		bool "rndis"
+		help
+		  rndis
+
+	config BR2_PACKAGE_INIT_SCRIPT_USB_HID
+		bool "hid"
+		help
+		  hid
+endif
 
 config BR2_PACKAGE_INIT_SCRIPT_NAT
 	bool "init scripts net nat"
@@ -49,7 +133,6 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH
 	  config the eth iface to static IP
 
 if BR2_PACKAGE_INIT_SCRIPT_ETH
-
 config BR2_PACKAGE_INIT_SCRIPT_ETH_NAME
 	string "Network interface to configure with static IP"
 	default "eth0"
@@ -63,7 +146,6 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH_IP
 	help
 	  Enter here the IP of the network interface (E.G. eth0) to
 	  configure at bootup.
-
 endif
 
 config BR2_PACKAGE_INIT_SCRIPT_ETH2
@@ -71,10 +153,9 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH2
 	default n
 	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN
 	help
-	  config the eth iface to static IP
+	  config the eth2 iface to static IP
 
 if BR2_PACKAGE_INIT_SCRIPT_ETH2
-
 config BR2_PACKAGE_INIT_SCRIPT_ETH2_NAME
 	string "Network interface to configure with static IP"
 	default "eth1"
@@ -88,13 +169,6 @@ config BR2_PACKAGE_INIT_SCRIPT_ETH2_IP
 	help
 	  Enter here the IP of the network interface (E.G. eth1) to
 	  configure at bootup.
-
 endif
-
-config BR2_PACKAGE_INIT_SCRIPT_NET_FORWARD
-	bool "config the eth iface to forward data"
-	default n
-	help
-	  config the eth iface to forward data
 
 endif

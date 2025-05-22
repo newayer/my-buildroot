@@ -2,17 +2,19 @@
 #
 #
 
+REMOTE_ETH1=192.168.2.0
+REMOTE_ETH0=192.168.91.25
+
 start() {
-    printf "Starting net nat: "
-	# route add default gw 192.168.54.1 eth0
-	echo 1 > /proc/sys/net/ipv4/ip_forward
-	# iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE
-	# iptables -I FORWARD -j ACCEPT
+    printf "Starting net forward: "
+    ip route add $(REMOTE_ETH1)/24 via $(REMOTE_ETH0) dev eth0
+    iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT  # 从B到A的转发
+    iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT  # 从A到B的转发
     echo "OK"
 }
 
 stop() {
-    printf "Stopping nat: "
+    printf "Stopping forward: "
     echo "OK"
 }
 
