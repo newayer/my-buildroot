@@ -1,0 +1,17 @@
+#!/bin/sh
+# /etc/init.d/S99router
+
+# 创建网桥
+brctl addbr br-lan
+brctl addif br-lan eth1 wlan0
+ifconfig br-lan 192.168.1.1 netmask 255.255.255.0 up
+
+# 启动无线
+ifconfig wlan0 up
+hostapd -B /etc/hostapd.conf
+
+# 启用IP转发
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# 加载防火墙规则
+iptables-restore < /etc/iptables.rules
