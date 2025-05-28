@@ -2,4 +2,4 @@ config BR2_PACKAGE_AIC8800DC
 	bool "kernel-module-aic8800dc"
 	depends on BR2_LINUX_KERNEL
 	help
-	  rv1106 luckfox ultra w demo wifi kernel module.
+	  rk3506 demo wifi kernel module.
