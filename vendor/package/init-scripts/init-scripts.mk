@@ -112,6 +112,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_INIT_SCRIPT_DAEMON_WIFI),y)
 define INSTALL_DAEMON_INIT_SYSV
+	sed -i '/wpa_conf/d' $(TARGET_DIR)/etc/network/interfaces
+	sed -i 's%iface wlan0.*%&\n  wpa_conf /etc/wpa_supplicant.conf%g' $(TARGET_DIR)/etc/network/interfaces
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/wifi/S99daemon-wifi $(TARGET_DIR)/etc/init.d/S99daemon-wifi
 	$(INSTALL) -m 755 -D $(INIT_SCRIPTS_PKGDIR)files/wifi/daemon-wifi.sh $(TARGET_DIR)/usr/sbin/daemon-wifi.sh
 endef
