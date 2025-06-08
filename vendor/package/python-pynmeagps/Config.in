@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYNMEAGPS
+	bool "python-pynmeagps"
+	help
+	  NMEA protocol parser and generator.
+
+	  https://github.com/semuconsulting/pynmeagps
