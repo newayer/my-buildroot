@@ -5,7 +5,7 @@
 
 start() {
     printf "Starting can0: "
-    ip link set can0 type can bitrate 250000 restart-ms 1000
+    ip link set can0 type can bitrate 250000 dbitrate 3000000 fd on
     ip link set can0 up
     cansend can0 2A8#1025C53AD17EFF9B
     echo "OK"
