@@ -51,6 +51,9 @@ config BR2_STORAGE_DEFAULT
 
 config BR2_STORAGE_RS422
 	bool "storage for rs422"
+
+config BR2_STORAGE_K300
+	bool "storage for k300"
 endchoice
 endif
 
