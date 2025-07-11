@@ -37,7 +37,7 @@ endif
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_ACU),y)
 
 WORKSITE_D_DEPENDENCIES = c-periphery
-WORKSITE_D_SUBDIR=gateway/acu
+WORKSITE_D_SUBDIR=gateway/acu/linux
 
 endif
 
