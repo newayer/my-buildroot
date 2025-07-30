@@ -41,6 +41,11 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_IOT_FORWARD),y)
 WORKSITE_D_DEPENDENCIES = python3
 WORKSITE_D_SUBDIR=gateway/python/iot_forward
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_SAT),y)
+
+WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_SUBDIR=gateway/python/sat
+
 endif
 
 $(eval $(cmake-package))

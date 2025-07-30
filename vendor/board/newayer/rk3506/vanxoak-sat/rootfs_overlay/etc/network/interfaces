@@ -5,7 +5,14 @@ auto eth0
 iface eth0 inet dhcp
 
 auto eth1
-iface eth1 inet dhcp
+iface eth1 inet static
+    address 192.168.0.2
+    netmask 255.255.255.0
+
+auto eth1:1
+iface eth1:1 inet static
+    address 10.24.171.68
+    netmask 255.255.255.240
 
 auto br-lan
 iface br-lan inet static
