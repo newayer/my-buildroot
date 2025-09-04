@@ -46,6 +46,11 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_SAT),y)
 WORKSITE_D_DEPENDENCIES = python3
 WORKSITE_D_SUBDIR=gateway/python/sat
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_TRACKER),y)
+
+WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_SUBDIR=gateway/python/tracker
+
 endif
 
 $(eval $(cmake-package))

@@ -43,6 +43,9 @@ config BR2_PACKAGE_WORKSITE_D_IOT_FORWARD
 config BR2_PACKAGE_WORKSITE_D_SAT
 	bool "worksite-d for sat portable app"
 
+config BR2_PACKAGE_WORKSITE_D_TRACKER
+	bool "worksite-d for paver app"
+
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE
