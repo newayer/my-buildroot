@@ -25,6 +25,9 @@ choice
 config BR2_PACKAGE_WORKSITE_D_PAVER
 	bool "worksite-d for paver app"
 
+config BR2_PACKAGE_WORKSITE_D_RTK
+	bool "worksite-d for rtk app"
+
 config BR2_PACKAGE_WORKSITE_D_UAV
 	bool "worksite-d for uav app"
 
