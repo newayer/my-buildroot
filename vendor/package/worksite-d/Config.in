@@ -49,6 +49,9 @@ config BR2_PACKAGE_WORKSITE_D_SAT
 config BR2_PACKAGE_WORKSITE_D_TRACKER
 	bool "worksite-d for paver app"
 
+config BR2_PACKAGE_WORKSITE_D_ANTL4
+	bool "worksite-d for ant l4 app"
+
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE
