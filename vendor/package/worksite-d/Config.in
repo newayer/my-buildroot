@@ -52,6 +52,9 @@ config BR2_PACKAGE_WORKSITE_D_TRACKER
 config BR2_PACKAGE_WORKSITE_D_ANTL4
 	bool "worksite-d for ant l4 app"
 
+config BR2_PACKAGE_WORKSITE_D_KU768
+	bool "worksite-d for ku768 app"
+
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE
