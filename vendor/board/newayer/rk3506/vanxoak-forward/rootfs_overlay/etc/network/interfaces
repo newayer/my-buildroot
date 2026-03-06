@@ -1,0 +1,9 @@
+auto lo
+iface lo inet loopback
+
+auto br0
+iface br0 inet static
+    address 192.168.91.23
+    netmask 255.255.255.0
+    pre-up /usr/bin/bridge-setup.sh
+    post-down /usr/bin/bridge-cleanup.sh
