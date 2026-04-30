@@ -14,6 +14,6 @@ tune2fs -m 5  $dst
 echo "resize2fs -M $dst"
 resize2fs -M $dst
 
-cp vendor/board/newayer/rk3506/parameter_emmc.txt $BINARIES_DIR/parameter.txt
+cp vendor/board/newayer/rk3576/parameter_emmc.txt $BINARIES_DIR/parameter.txt
 
-./vendor/board/newayer/rk3506/mk-updateimg.sh
+./vendor/board/newayer/rk3576/mk-updateimg.sh
