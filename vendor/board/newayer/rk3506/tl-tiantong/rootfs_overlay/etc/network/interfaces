@@ -1,0 +1,19 @@
+auto lo
+iface lo inet loopback
+
+iface eth0 inet static
+    address 192.168.11.1
+    netmask 255.255.255.0
+
+auto eth1
+iface eth1 inet dhcp
+
+auto br-lan
+iface br-lan inet static
+    bridge_ports eth1 wlan0
+    address 192.168.1.1
+    netmask 255.255.255.0
+    pre-up brctl addbr br-lan
+    up brctl addif br-lan eth1
+    up ifconfig eth1 up
+    up ifconfig wlan0 up
