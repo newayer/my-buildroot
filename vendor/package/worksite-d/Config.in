@@ -55,6 +55,8 @@ config BR2_PACKAGE_WORKSITE_D_ANTL4
 config BR2_PACKAGE_WORKSITE_D_KU768
 	bool "worksite-d for ku768 app"
 
+config BR2_PACKAGE_WORKSITE_D_RADAR
+	bool "worksite-d for radar app"
 endchoice
 
 if BR2_PACKAGE_WORKSITE_D_STORAGE

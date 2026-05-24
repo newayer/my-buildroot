@@ -68,6 +68,11 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_KU768),y)
 WORKSITE_D_DEPENDENCIES = python3
 WORKSITE_D_SUBDIR=gateway/python/ku768
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_RADAR),y)
+
+WORKSITE_D_DEPENDENCIES = python3
+WORKSITE_D_SUBDIR=gateway/python/radar
+
 endif
 
 $(eval $(cmake-package))
