@@ -22,7 +22,6 @@ BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y
 BR2_ROOTFS_MERGED_USR=y
 BR2_TARGET_GENERIC_ROOT_PASSWD="Xt1234%"
 BR2_TARGET_SERIAL_SHELL_GETTY=y
-# BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW is not set
 BR2_SYSTEM_DHCP="wlan0"
 BR2_ROOTFS_OVERLAY="vendor/board/newayer/common/rootfs_overlay vendor/board/newayer/rk3506/tl-radar/rootfs_overlay"
 BR2_ROOTFS_POST_BUILD_SCRIPT="vendor/board/newayer/common/post-build.sh"
