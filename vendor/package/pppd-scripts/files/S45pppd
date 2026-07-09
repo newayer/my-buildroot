@@ -1,26 +1,86 @@
 #!/bin/sh
 #
-# pppd Starts pppd.
-#
+
+PID_FILE="/var/run/pppd.pid"
+LOCK_DIR="/var/run/pppd/lock"
+
+is_running() {
+    if [ -f "$PID_FILE" ]; then
+        pid=$(cat "$PID_FILE" 2>/dev/null)
+        if kill -0 "$pid" 2>/dev/null; then
+            return 0
+        else
+            rm -f "$PID_FILE"
+            return 1
+        fi
+    fi
+
+    pgrep -x "pppd" >/dev/null 2>&1
+}
 
 start() {
+    if is_running; then
+        echo "pppd is already running."
+        return 1
+    fi
+
     mkdir -p /opt/logs
-    printf "Starting pppd: "
-    /usr/bin/pon ppp_options >> /opt/logs/main_error.log 2>&1
-    touch /var/lock/pppd
-    echo "OK"
+    mkdir -p "$LOCK_DIR"
+
+    echo -n "Starting pppd: "
+    /usr/sbin/pppd call ppp_options > /opt/logs/pppd.log 2>&1 &
+    sleep 1
+    if is_running; then
+        echo "OK (PID: $(cat $PID_FILE 2>/dev/null))"
+    else
+        echo "FAILED - check /opt/logs/pppd.log for details"
+        return 1
+    fi
 }
 
 stop() {
-    printf "Stopping pppd: "
-    /usr/bin/poff >> /opt/logs/main_error.log 2>&1
-    rm -f /var/lock/pppd
-    echo "OK"
+    echo -n "Stopping pppd: "
+    if ! is_running; then
+        echo "not running."
+        return 0
+    fi
+
+    pid=$(cat "$PID_FILE" 2>/dev/null)
+    if [ -n "$pid" ] && kill -TERM "$pid" 2>/dev/null; then
+        for i in 1 2 3 4 5; do
+            if ! kill -0 "$pid" 2>/dev/null; then
+                echo "OK"
+                rm -f "$PID_FILE"
+                return 0
+            fi
+            sleep 1
+        done
+        kill -KILL "$pid" 2>/dev/null
+        echo "Killed forcefully"
+        rm -f "$PID_FILE"
+    else
+        killall pppd 2>/dev/null
+        echo "Killed via killall"
+    fi
+
+    rm -f /var/lock/pppd 2>/dev/null
+    return 0
+}
+
+status() {
+    if is_running; then
+        pid=$(cat "$PID_FILE" 2>/dev/null || pgrep -x "pppd" | head -1)
+        echo "pppd is running (PID: $pid)"
+        return 0
+    else
+        echo "pppd is not running"
+        return 1
+    fi
 }
 
 restart() {
     stop
-    sleep 3
+    sleep 2
     start
 }
 
@@ -34,9 +94,13 @@ case "$1" in
     restart|reload)
         restart
         ;;
+    status)
+        status
+        ;;
     *)
-        echo "Usage: $0 {start|stop|restart}"
+        echo "Usage: $0 {start|stop|restart|status}"
         exit 1
+        ;;
 esac
 
 exit $?
