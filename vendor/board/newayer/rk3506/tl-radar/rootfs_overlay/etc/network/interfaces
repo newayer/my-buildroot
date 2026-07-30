@@ -1,0 +1,16 @@
+auto lo
+iface lo inet loopback
+
+auto wlan0
+iface wlan0 inet dhcp
+  wpa_conf /etc/wpa_supplicant.conf
+  pre-up /etc/network/nfs_check
+  wait-delay 15
+  hostname $(hostname)
+
+auto br0
+iface br0 inet static
+    address 192.168.10.234
+    netmask 255.255.255.0
+    pre-up /usr/bin/bridge-setup.sh
+    post-down /usr/bin/bridge-cleanup.sh
