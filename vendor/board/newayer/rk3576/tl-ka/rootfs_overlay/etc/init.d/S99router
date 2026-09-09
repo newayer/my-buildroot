@@ -1,0 +1,86 @@
+#!/bin/sh
+
+# 初始化脚本：配置Modem访问路由和桥接
+# 文件位置: /etc/init.d/S99router
+
+start() {
+    echo "Starting Modem routing and bridge setup..."
+
+    # 启动无线
+    ifconfig wlan0 up
+    hostapd -B /etc/hostapd.conf
+
+    # 1. 启用IP转发
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
+    # 2. 清除现有规则
+    iptables -F
+    iptables -t nat -F
+    iptables -X
+    iptables -t nat -X
+
+    # 3. 设置默认策略
+    iptables -P FORWARD DROP
+
+    # 4. 配置NAT转发规则
+    ## 允许从桥接接口(br-lan)到eth1的转发
+    iptables -A FORWARD -i br-lan -o eth1 -j ACCEPT
+    iptables -A FORWARD -i eth1 -o br-lan -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+    ## 设置源地址转换
+    iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
+
+    # 5. 添加静态路由
+    ip route add 192.168.0.0/24 dev eth1
+    ip route add 10.24.171.240/28 dev eth1
+
+    # 6. 启用桥接接口
+    ifup br-lan
+
+    echo "Network setup completed:"
+    echo " - Bridge br-lan (eth0+wlan0) for LAN"
+    echo " - eth1 with dual IPs for Modem access"
+}
+
+stop() {
+    echo "Stopping network routing..."
+    # 清除iptables规则
+    iptables -F
+    iptables -t nat -F
+    iptables -X
+    iptables -t nat -X
+
+    # 重置默认策略
+    iptables -P FORWARD ACCEPT
+
+    # 禁用IP转发
+    echo 0 > /proc/sys/net/ipv4/ip_forward
+
+    # 关闭桥接接口
+    ifdown br-lan
+
+    echo "Network routing stopped"
+}
+
+restart() {
+    stop
+    sleep 2
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit 0
