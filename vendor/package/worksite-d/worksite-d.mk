@@ -11,22 +11,22 @@ WORKSITE_D_SITE_METHOD = git
 ifeq ($(BR2_PACKAGE_WORKSITE_D_PAVER),y)
 
 WORKSITE_D_DEPENDENCIES = python3 c-periphery
-WORKSITE_D_SUBDIR=gateway/python/paver
+WORKSITE_D_SUBDIR=linux/py-paver
 
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_UAV),y)
 
 WORKSITE_D_DEPENDENCIES = python3
-WORKSITE_D_SUBDIR=gateway/python/uav
+WORKSITE_D_SUBDIR=linux/py-uav
 
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_TIANTONG),y)
 
 WORKSITE_D_DEPENDENCIES = python3
-WORKSITE_D_SUBDIR=gateway/python/tiantong
+WORKSITE_D_SUBDIR=linux/py-tiantong
 
 else ifeq ($(BR2_PACKAGE_WORKSITE_D_STORAGE),y)
 
 WORKSITE_D_DEPENDENCIES = c-periphery
-WORKSITE_D_SUBDIR=gateway/storage
+WORKSITE_D_SUBDIR=linux/c-storage
 ifeq ($(BR2_STORAGE_RS422),y)
 WORKSITE_D_CONF_OPTS += -DENABLE_RS422=ON
 endif
