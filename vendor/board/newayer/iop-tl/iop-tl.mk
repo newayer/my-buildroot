@@ -1,2 +1,2 @@
-LINUX_OVERRIDE_SRCDIR = $(TOPDIR)/../my-kernel
-UBOOT_OVERRIDE_SRCDIR = $(TOPDIR)/../my-uboot
+LINUX_OVERRIDE_SRCDIR = $(TOPDIR)/../kernel-imx6ull
+UBOOT_OVERRIDE_SRCDIR = $(TOPDIR)/../uboot-imx6ull
