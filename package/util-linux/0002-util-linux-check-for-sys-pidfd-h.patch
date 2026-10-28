@@ -1,0 +1,22 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -342,6 +342,7 @@ AC_CHECK_HEADERS([ \
+ 	sys/mkdev.h \
+ 	sys/mount.h \
+ 	sys/param.h \
++	sys/pidfd.h \
+ 	sys/prctl.h \
+ 	sys/resource.h \
+ 	sys/sendfile.h \
+--- a/include/pidfd-utils.h
++++ b/include/pidfd-utils.h
+@@ -4,8 +4,11 @@
+ #ifdef HAVE_SYS_SYSCALL_H
+ # include <sys/syscall.h>
+ # if defined(SYS_pidfd_send_signal) && defined(SYS_pidfd_open)
++#  ifdef HAVE_SYS_PIDFD_H
++#   include <sys/pidfd.h>
++#  endif
+ #  include <sys/types.h>
+ 
+ #  ifndef HAVE_PIDFD_SEND_SIGNAL

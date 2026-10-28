@@ -99,5 +99,7 @@ endef
 
 HOST_GETTEXT_GNU_POST_INSTALL_HOOKS += HOST_GETTEXT_GNU_ADD_ABOUT_NLS
 
+HOST_GETTEXT_GNU_MAKE_OPTS += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

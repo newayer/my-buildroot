@@ -82,7 +82,7 @@ endef
 define HOST_SQUASHFS_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) \
 		CC="$(HOSTCC)" \
-		EXTRA_CFLAGS="$(HOST_CFLAGS)" \
+		EXTRA_CFLAGS="$(HOST_CFLAGS) -std=gnu17" \
 		EXTRA_LDFLAGS="$(HOST_LDFLAGS)" \
 		$(HOST_SQUASHFS_MAKE_ARGS) \
 		-C $(@D)/squashfs-tools/
