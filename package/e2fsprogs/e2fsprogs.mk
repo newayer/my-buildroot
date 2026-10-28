@@ -99,5 +99,39 @@ define HOST_E2FSPROGS_REMOVE_COMPILE_ET
 endef
 HOST_E2FSPROGS_POST_INSTALL_HOOKS += HOST_E2FSPROGS_REMOVE_COMPILE_ET
 
+HOST_E2FSPROGS_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
+define HOST_E2FSPROGS_CREATE_MISSING_DIRS
+	mkdir -p $(HOST_DIR)/etc
+	mkdir -p $(HOST_DIR)/include/et
+	mkdir -p $(HOST_DIR)/include/ss
+	mkdir -p $(HOST_DIR)/include/e2p
+	mkdir -p $(HOST_DIR)/include/ext2fs
+	mkdir -p $(HOST_DIR)/share/et
+	mkdir -p $(HOST_DIR)/share/ss
+	mkdir -p $(HOST_DIR)/share/e2p
+endef
+HOST_E2FSPROGS_PRE_INSTALL_HOOKS += HOST_E2FSPROGS_CREATE_MISSING_DIRS
+
+define E2FSPROGS_CREATE_STAGING_DIRS
+	mkdir -p $(STAGING_DIR)/usr/include/et
+	mkdir -p $(STAGING_DIR)/usr/include/ss
+	mkdir -p $(STAGING_DIR)/usr/include/e2p
+	mkdir -p $(STAGING_DIR)/usr/include/ext2fs
+	mkdir -p $(STAGING_DIR)/usr/share/et
+	mkdir -p $(STAGING_DIR)/usr/share/ss
+endef
+E2FSPROGS_PRE_INSTALL_STAGING_HOOKS += E2FSPROGS_CREATE_STAGING_DIRS
+
+define E2FSPROGS_CREATE_TARGET_DIRS
+	mkdir -p $(TARGET_DIR)/usr/include/et
+	mkdir -p $(TARGET_DIR)/usr/include/ss
+	mkdir -p $(TARGET_DIR)/usr/include/e2p
+	mkdir -p $(TARGET_DIR)/usr/include/ext2fs
+	mkdir -p $(TARGET_DIR)/usr/share/et
+	mkdir -p $(TARGET_DIR)/usr/share/ss
+endef
+E2FSPROGS_PRE_INSTALL_TARGET_HOOKS += E2FSPROGS_CREATE_TARGET_DIRS
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

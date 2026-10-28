@@ -45,5 +45,7 @@ endef
 
 HOST_GAWK_POST_INSTALL_HOOKS += HOST_GAWK_CREATE_SYMLINK
 
+HOST_GAWK_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
