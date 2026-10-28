@@ -35,5 +35,7 @@ ifeq ($(BR2_PACKAGE_GMP_STATIC),y)
 GMP_CONF_OPTS += --enable-static
 endif
 
+HOST_GMP_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

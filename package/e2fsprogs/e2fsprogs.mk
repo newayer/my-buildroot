@@ -103,5 +103,7 @@ define HOST_E2FSPROGS_REMOVE_COMPILE_ET
 endef
 HOST_E2FSPROGS_POST_INSTALL_HOOKS += HOST_E2FSPROGS_REMOVE_COMPILE_ET
 
+HOST_E2FSPROGS_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

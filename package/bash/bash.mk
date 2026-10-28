@@ -42,6 +42,9 @@ BASH_CONF_ENV += bash_cv_getenv_redef=yes
 endif
 endif
 
+BASH_CONF_ENV += CFLAGS_FOR_BUILD="$(HOST_CFLAGS) -std=gnu17"
+BASH_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -std=gnu17"
+
 define BASH_REMOVE_UNUSED_FILES
 	rm -f $(TARGET_DIR)/bin/bashbug
 endef
