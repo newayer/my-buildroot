@@ -34,5 +34,7 @@ else
 GMP_CONF_OPTS += --disable-cxx
 endif
 
+HOST_GMP_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

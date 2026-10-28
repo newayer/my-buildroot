@@ -300,6 +300,9 @@ endif
 
 UTIL_LINUX_POST_INSTALL_TARGET_HOOKS += UTIL_LINUX_GETTY_SYMLINK
 
+HOST_UTIL_LINUX_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -std=gnu17"
+HOST_UTIL_LINUX_AUTORECONF = YES
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 

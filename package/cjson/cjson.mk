@@ -31,4 +31,6 @@ else
 CJSON_CONF_OPTS += -DENABLE_CJSON_UTILS=OFF
 endif
 
+CJSON_CONF_OPTS += -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+
 $(eval $(cmake-package))
