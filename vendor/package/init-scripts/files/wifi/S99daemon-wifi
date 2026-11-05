@@ -1,36 +1,39 @@
 #!/bin/sh
+PIDFILE="/var/run/daemon-wifi.pid"
 
 start() {
     echo -n "Start WIFI daemons: "
     /usr/sbin/daemon-wifi.sh &
+    echo $! >"$PIDFILE"
     echo "OK"
 }
 
 stop() {
     echo -n "Stop WIFI daemons: "
-    kill -9 `pidof daemon-wifi.sh` > /dev/null 2>&1
+    if [ -f "$PIDFILE" ]; then
+        kill "$(cat $PIDFILE)" 2>/dev/null
+        sleep 1
+        kill -9 "$(cat $PIDFILE)" 2>/dev/null
+        rm -f "$PIDFILE"
+    else
+        killall daemon-wifi.sh 2>/dev/null
+    fi
     echo "OK"
 }
 
 restart() {
-    echo -n "restart WIFI daemons: "
     stop
     start
 }
 
 case "$1" in
-  start)
-     start
-     ;;
-  stop)
-     stop
-     ;;
-  restart|reload)
-     restart
-     ;;
-  *)
-     echo "Usage: $0 {start|stop|restart}"
-     exit 1
+    start) start ;;
+    stop) stop ;;
+    restart | reload) restart ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
 esac
 
 exit $?
