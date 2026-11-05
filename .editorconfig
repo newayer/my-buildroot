@@ -35,3 +35,14 @@ indent_size = tab
 
 [*.adoc]
 trim_trailing_whitespace = false
+
+[*.{sh,bash}]
+indent_style = space
+indent_size = 4
+switch_case_indent = true
+
+[S*]
+indent_style = space
+indent_size = 4
+switch_case_indent = true
+
