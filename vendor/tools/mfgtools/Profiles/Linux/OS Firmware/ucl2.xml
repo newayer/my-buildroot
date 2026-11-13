@@ -1,68 +1,67 @@
 <UCL>
   <CFG>
-    <STATE name="BootStrap" dev="MX6SL" vid="15A2" pid="0063"/>
-    <STATE name="BootStrap" dev="MX6D" vid="15A2" pid="0061"/>
-    <STATE name="BootStrap" dev="MX6Q" vid="15A2" pid="0054"/>
-    <STATE name="BootStrap" dev="MX6SX" vid="15A2" pid="0071"/>
-    <STATE name="BootStrap" dev="MX6UL" vid="15A2" pid="007D"/>
-    <STATE name="BootStrap" dev="MX7D" vid="15A2" pid="0076"/>
+    <STATE name="BootStrap" dev="MX6UL" vid="15A2" pid="0080"/>
     <STATE name="Updater"   dev="MSC" vid="066F" pid="37FF"/>
   </CFG>
 
-  <LIST name="NAND Flash" desc="Choose NAND as media">
-	<CMD state="BootStrap" type="boot" body="BootStrap" file ="firmware/u-boot.imx" ifdev="MX6UL">Loading U-boot</CMD>
-		
-	<CMD state="BootStrap" type="load" file="firmware/zImage" address="0x80800000"
-		loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6SL MX6SX MX7D MX6UL">Loading Kernel.</CMD>
+  <!-- ============================================================
+       eMMC 整盘烧录：SOM-TLIMX6U-32GE4GD-I-A2.0
+       4G eMMC + 512MB DDR3
+       使用预生成的 sdcard.img 整盘 dd 到 /dev/mmcblk1
+       ============================================================ -->
+  <LIST name="SOM-TLIMX6U-32GE4GD-I-A2.0" desc="4G eMMC + 512MB DDR3 (整盘镜像)">
+    <!-- BootStrap：加载临时系统到 DDR -->
+    <CMD state="BootStrap" type="boot" body="BootStrap" file="firmware/u-boot_emmc.imx" ifdev="MX6UL">Loading U-boot</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/zImage_emmc" address="0x80800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Kernel.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/%initramfs1%" address="0x83800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Initramfs.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/imx6ul-14x14-evk_emmc.dtb" address="0x83000000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading device tree.</CMD>
+    <CMD state="BootStrap" type="jump">Jumping to OS image.</CMD>
 
-	<CMD state="BootStrap" type="load" file="firmware/fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot" address="0x83800000"
-		loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6SL MX6SX MX7D MX6UL">Loading Initramfs.</CMD>
+    <!-- Updater 1：写 U-Boot 到 eMMC boot0 硬件分区 -->
+    <CMD state="Updater" type="push" body="$ echo 0 > /sys/block/mmcblk%mmc%boot0/force_ro">access boot partition 1</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/u-boot.imx" ifdev="MX6UL">Sending u-boot.imx</CMD>
+    <CMD state="Updater" type="push" body="$ dd if=$FILE of=/dev/mmcblk%mmc%boot0 bs=512 seek=2">write U-Boot to eMMC boot0</CMD>
+    <CMD state="Updater" type="push" body="$ echo 1 > /sys/block/mmcblk%mmc%boot0/force_ro">re-enable read-only access</CMD>
+    <CMD state="Updater" type="push" body="$ mmc bootpart enable 1 1 /dev/mmcblk%mmc%">enable boot partition 1</CMD>
 
-	<CMD state="BootStrap" type="load" file="files/imx6ul-14x14-evk-a6g2c-wifi-256m.dtb" address="0x83000000"
-		loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading device tree.</CMD>
+    <!-- Updater 2：整盘写入 sdcard.img -->
+    <CMD state="Updater" type="push" body="send" file="files/linux/sdcard.img">Sending full disk image</CMD>
+    <CMD state="Updater" type="push" body="$ dd if=$FILE of=/dev/mmcblk%mmc% bs=1M conv=fsync">Writing full disk image</CMD>
 
-	<CMD state="BootStrap" type="jump" > Jumping to OS image. </CMD>
+    <CMD state="Updater" type="push" body="$ echo Update Complete!">Done</CMD>
+  </LIST>
 
-	<!--burn the uboot to NAND: -->	
-	<CMD state="Updater" type="push" body="send" file="firmware/kobs-ng" ifdev="MX6UL">Sending kobs-ng</CMD>
-	<CMD state="Updater" type="push" body="$ mkdir -p /dev/bin/">Mkdir /dev/bin</CMD>
-	<CMD state="Updater" type="push" body="$ cp $FILE /dev/bin/kobs-ng">cp kobs-ng</CMD>
-	<CMD state="Updater" type="push" body="$ chmod a+x /dev/bin/kobs-ng">chmod kobs-ng</CMD>
-	<CMD state="Updater" type="push" body="$ mount -t debugfs debugfs /sys/kernel/debug">Mount debugfs</CMD>
-	<CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_uboot% 0 0">Erasing Boot partition</CMD>
-	<CMD state="Updater" type="push" body="send" file="files/u-boot.imx" ifdev="MX6UL">Sending u-boot.bin</CMD>
-	<CMD state="Updater" type="push" body="$ /dev/bin/kobs-ng init -x -v --chip_0_device_path=/dev/mtd%part_uboot% $FILE">Flashing Bootloader</CMD>
+  <!-- ============================================================
+       单独更新 Kernel / DTB
+       只挂载 boot 分区，覆盖 zImage 和 dtb，不碰分区表和 rootfs
+       ============================================================ -->
+  <LIST name="Update-Kernel-DTB-Only" desc="仅更新 Kernel 和 DTB 到 boot 分区">
+    <!-- BootStrap：与整盘烧录保持一致 -->
+    <CMD state="BootStrap" type="boot" body="BootStrap" file="firmware/u-boot_emmc.imx" ifdev="MX6UL">Loading U-boot</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/zImage_emmc" address="0x80800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Kernel.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/%initramfs1%" address="0x83800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Initramfs.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/imx6ul-14x14-evk_emmc.dtb" address="0x83000000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading device tree.</CMD>
+    <CMD state="BootStrap" type="jump">Jumping to OS image.</CMD>
 
-	<!--burn the dtb to NAND: -->
-	<CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_dtb% 0 0">Erasing dtb partition</CMD>
-	<CMD state="Updater" type="push" body="send" file="files/imx6ul-14x14-evk-a6g2c-wifi-256m.dtb" ifdev="MX6UL">Sending Device Tree file</CMD>
-	<CMD state="Updater" type="push" body="$ nandwrite -p /dev/mtd%part_dtb% $FILE">Flashing dtb</CMD>
+    <!-- Updater：挂载 boot 分区，覆盖文件 -->
+    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/boot">Create mount point</CMD>
+    <CMD state="Updater" type="push" body="$ mount -t vfat /dev/mmcblk%mmc%p1 /mnt/boot">Mount boot partition</CMD>
 
-	<!--burn the kernel to NAND: -->
-	<CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_kernel% 0 0">Erasing Kernel partition</CMD>
-	<CMD state="Updater" type="push" body="send"  file="files/zImage" ifdev="MX6UL">Sending and writting kernel</CMD>
-	<CMD state="Updater" type="push" body="$ nandwrite -p /dev/mtd%part_kernel% $FILE">Flashing Kernel</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/zImage">Sending new zImage</CMD>
+    <CMD state="Updater" type="push" body="$ cp $FILE /mnt/boot/zImage">Update zImage</CMD>
 
-	<!--burn the rootfs to NAND: -->
-	<CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_rootfs% 0 0">Erasing rootfs partition</CMD>
-	<CMD state="Updater" type="push" body="$ ubiformat /dev/mtd%part_rootfs%"/>
-	<CMD state="Updater" type="push" body="$ ubiattach /dev/ubi_ctrl -m %part_rootfs%">Attaching UBI partition</CMD>
-	<CMD state="Updater" type="push" body="$ ubimkvol /dev/ubi0 -N rootfs -m"/>
-	<CMD state="Updater" type="push" body="$ mkdir -p /mnt/mtd%part_rootfs%"/>
-	<CMD state="Updater" type="push" body="$ mount -t ubifs ubi0:rootfs /mnt/mtd%part_rootfs%"/>
-	<CMD state="Updater" type="push" body="pipe tar -jxv -C /mnt/mtd%part_rootfs%" file="files/rootfs.tar.bz2" ifdev="MX6UL MX7D">Sending and writting rootfs</CMD>
-	<CMD state="Updater" type="push" body="frf">Finishing rootfs write</CMD>
-	<CMD state="Updater" type="push" body="$ umount /mnt/mtd%part_rootfs%">Unmounting rootfs partition</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/my-imx6ull-emmc-iop.dtb">Sending new dtb</CMD>
+    <CMD state="Updater" type="push" body="$ cp $FILE /mnt/boot/imx6ul-14x14-evk.dtb">Update dtb</CMD>
 
-	<!-- formate /opt -->
-    <CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_opt% 0 0">Flash opt partition</CMD>
-	<CMD state="Updater" type="push" body="$ ubiformat /dev/mtd%part_opt%">Ubiformat opt partition</CMD>
- 	<CMD state="Updater" type="push" body="$ ubiattach /dev/ubi_ctrl -m %part_opt% -d 1">Ubiattach opt partition</CMD>
-	<CMD state="Updater" type="push" body="$ ubimkvol /dev/ubi1 -N opt -m">Ubimkvol opt partition</CMD>
-	<CMD state="Updater" type="push" body="$ mkdir /opt"/>
-	<CMD state="Updater" type="push" body="$ mount -t ubifs ubi1_0 /opt">Mount opt partition</CMD>
-	<CMD state="Updater" type="push" body="$ umount /opt">Umount opt partition</CMD>
-	<CMD state="Updater" type="push" body="$ echo Update Complete!">Done</CMD>
+    <CMD state="Updater" type="push" body="$ sync">Sync filesystem</CMD>
+    <CMD state="Updater" type="push" body="$ umount /mnt/boot">Unmount boot partition</CMD>
+    <CMD state="Updater" type="push" body="$ echo Update Complete!">Done</CMD>
   </LIST>
 
 </UCL>
