@@ -64,4 +64,39 @@
     <CMD state="Updater" type="push" body="$ echo Update Complete!">Done</CMD>
   </LIST>
 
+  <LIST name="SOM-TLIMX6U-2GN2GD-I-A2.0" desc="256MB NAND + 256MB DDR3">
+    <!-- BootStrap：加载临时系统 -->
+    <CMD state="BootStrap" type="boot" body="BootStrap" file="firmware/u-boot_nand.imx" ifdev="MX6UL">Loading U-boot</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/zImage_nand" address="0x80800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Kernel.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/%initramfs%" address="0x83800000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading Initramfs.</CMD>
+    <CMD state="BootStrap" type="load" file="firmware/imx6ul-14x14-evk_nand.dtb" address="0x83000000"
+        loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE" ifdev="MX6UL">Loading device tree.</CMD>
+    <CMD state="BootStrap" type="jump">Jumping to OS image.</CMD>
+
+    <!-- Updater：分步烧录 -->
+    <!-- 1. 擦除并写 U-Boot 到 mtd0 -->
+    <CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_uboot% 0 0">Erasing uboot partition</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/u-boot.imx" ifdev="MX6UL">Sending u-boot_nand.imx</CMD>
+    <CMD state="Updater" type="push" body="$ kobs-ng init -x -v --chip_0_device_path=/dev/mtd%part_uboot% $FILE">Flashing uboot with kobs-ng</CMD>
+
+    <!-- 2. 擦除并写 kernel 到 mtd1 -->
+    <CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_kernel% 0 0">Erasing kernel partition</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/zImage">Sending zImage</CMD>
+    <CMD state="Updater" type="push" body="$ nandwrite -p /dev/mtd%part_kernel% -p $FILE">Flashing kernel</CMD>
+
+    <!-- 3. 擦除并写 dtb 到 mtd2 -->
+    <CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_dtb% 0 0">Erasing dtb partition</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/my-imx6ull-nand-iop.dtb">Sending dtb</CMD>
+    <CMD state="Updater" type="push" body="$ nandwrite -p /dev/mtd%part_dtb% -p $FILE">Flashing dtb</CMD>
+
+    <!-- 4. 擦除并写 rootfs UBI 到 mtd3 -->
+    <CMD state="Updater" type="push" body="$ flash_erase /dev/mtd%part_rootfs% 0 0">Erasing rootfs partition</CMD>
+    <CMD state="Updater" type="push" body="send" file="files/linux/rootfs.ubi">Sending rootfs.ubi</CMD>
+    <CMD state="Updater" type="push" body="$ ubiformat /dev/mtd%part_rootfs% -f $FILE -y">Flashing UBI rootfs</CMD>
+
+    <CMD state="Updater" type="push" body="$ echo Update Complete!">Done</CMD>
+  </LIST>
+
 </UCL>
