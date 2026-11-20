@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -fr $BINARIES_DIR/rootfs.img && ln -sf rootfs.ext2 $BINARIES_DIR/rootfs.img
+rm -fr $BINARIES_DIR/rootfs.img && ln -sf rootfs.ext4 $BINARIES_DIR/rootfs.img
 
 dst=$BINARIES_DIR/rootfs.img
 
