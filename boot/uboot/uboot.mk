@@ -428,7 +428,7 @@ define UBOOT_INSTALL_IMAGES_CMDS
 #		$(UBOOT_DIR)/tools/mkenvimage -s $(BR2_TARGET_UBOOT_RK_ENV_SIZE) -p 0x0 -o $(BINARIES_DIR)/env.img $(BR2_TARGET_UBOOT_RK_ENV_FILE)
 #	)
 	$(if $(BR2_TARGET_UBOOT_RK),
-		cp -dpf $(@D)/*_spl_loader_*.bin $(BINARIES_DIR)/MiniLoaderAll.bin
+		cp -dpf $(@D)/*_loader_*.bin $(BINARIES_DIR)/MiniLoaderAll.bin
 	)
 	$(if $(BR2_TARGET_UBOOT_FORMAT_NAND),
 		cp -dpf $(@D)/u-boot.sb $(BINARIES_DIR))
