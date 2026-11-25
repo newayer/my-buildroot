@@ -1,0 +1,63 @@
+config BR2_PACKAGE_WORKSITE_D
+	bool "worksite-d"
+	help
+	  Add worksite-d project to rootfs.
+
+if BR2_PACKAGE_WORKSITE_D
+
+comment "Worksite-d Parameters"
+
+config BR2_PACKAGE_WORKSITE_D_URL
+	string "URL of custom repository"
+
+config BR2_PACKAGE_WORKSITE_D_VERSION
+	string "Custom git repository version"
+	help
+	  Revision to use in the typical format used by
+	  Git E.G. a sha id, a tag
+
+choice
+	prompt "worksite-d sub project"
+	default BR2_PACKAGE_WORKSITE_D_UAV
+	help
+	  Select which sub project to enable
+
+config BR2_PACKAGE_WORKSITE_D_PAVER
+	bool "worksite-d for paver app"
+
+config BR2_PACKAGE_WORKSITE_D_UAV
+	bool "worksite-d for uav app"
+
+config BR2_PACKAGE_WORKSITE_D_STORAGE
+	bool "worksite-d for storage app"
+
+config BR2_PACKAGE_WORKSITE_D_TIANTONG
+	bool "worksite-d for tiantong app"
+
+config BR2_PACKAGE_WORKSITE_D_ACU
+	bool "worksite-d for acu app"
+
+config BR2_PACKAGE_WORKSITE_D_IOP
+	bool "worksite-d for iop app"
+
+endchoice
+
+if BR2_PACKAGE_WORKSITE_D_STORAGE
+choice
+	prompt "storage project options"
+	default BR2_STORAGE_DEFAULT
+	help
+	  Select which sub project to enable
+
+config BR2_STORAGE_DEFAULT
+	bool "storage default"
+
+config BR2_STORAGE_RS422
+	bool "storage for rs422"
+
+config BR2_STORAGE_K300
+	bool "storage for k300"
+endchoice
+endif
+
+endif # BR2_PACKAGE_WORKSITE_D

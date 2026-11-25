@@ -1,0 +1,51 @@
+#!/bin/sh
+
+start() {
+    echo -n "Start ntp: "
+
+    hwclock -s
+    for i in {1..6}
+    do
+        rdate -s time.nist.gov > /dev/null 2>&1
+        if [ $? = 0 ] ; then
+            hwclock -w
+	    echo "OK"
+	    break
+        fi
+	echo -n "."
+	if [ $i -eq 6 ]; then
+            echo "FAILED"
+	else
+            sleep 1
+        fi
+    done
+}
+
+stop() {
+    echo -n "Stop ntp: "
+    echo "OK"
+}
+
+restart() {
+    echo -n "restart ntp: "
+    stop
+    start
+}
+
+case "$1" in
+  start)
+     start
+     ;;
+  stop)
+     stop
+     ;;
+  restart|reload)
+     restart
+     ;;
+  *)
+     echo "Usage: $0 {start|stop|restart}"
+     exit 1
+esac
+
+exit $?
+

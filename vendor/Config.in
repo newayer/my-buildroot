@@ -1,0 +1,4 @@
+menu "newayer extendsions"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/worksite-d/Config.in"
+    source "$BR2_EXTERNAL_NEWAYER_PATH/package/init-scripts/Config.in"
+endmenu

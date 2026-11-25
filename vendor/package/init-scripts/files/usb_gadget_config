@@ -1,0 +1,15 @@
+#usb_mtp_en
+usb_adb_en
+#usb_ums_en
+ums_block=/userdata/ums_shared.img
+ums_block_size=0
+ums_block_type=fat
+ums_block_auto_mount=off
+ums_ro=0
+#usb_ntb_en
+#usb_acm_en
+#usb_uac1_en
+#usb_uac2_en
+#usb_uvc_en
+#usb_rndis_en
+#usb_hid_en

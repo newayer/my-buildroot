@@ -1,0 +1,16 @@
+services:
+   buildroot-2017.02-compile:
+      build: ./
+      image: 'buildroot-2017.02-compile-ubuntu16.04'
+      container_name: buildroot-2017.02-compile
+      restart: always
+      tty: true
+      privileged: true
+      ports:
+        - 2017:22
+      environment:
+        - TZ=Asia/Shanghai
+      volumes:
+        - ~/buildroot:/home/newayer/buildroot
+        - ~/worksite-d:/home/newayer/worksite-d
+        - ~/.gitconfig:/home/newayer/.gitconfig:ro
