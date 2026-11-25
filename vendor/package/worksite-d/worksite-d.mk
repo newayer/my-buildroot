@@ -39,6 +39,11 @@ else ifeq ($(BR2_PACKAGE_WORKSITE_D_ACU),y)
 WORKSITE_D_DEPENDENCIES = c-periphery
 WORKSITE_D_SUBDIR=acu/linux/ins
 
+else ifeq ($(BR2_PACKAGE_WORKSITE_D_IOP),y)
+
+WORKSITE_D_DEPENDENCIES = c-periphery
+WORKSITE_D_SUBDIR=linux/c-iop
+
 endif
 
 $(eval $(cmake-package))
