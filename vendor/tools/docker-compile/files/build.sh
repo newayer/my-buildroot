@@ -15,7 +15,7 @@ apt -y upgrade
 # Buildroot 2023.02 / 2024.02 在 Ubuntu 22.04 上所需的基础依赖
 apt -y install sed make binutils build-essential diffutils gcc g++ bash \
     patch gzip bzip2 perl tar cpio unzip rsync file bc findutils wget \
-    ncurses-dev python3
+    ncurses-dev python3 device-tree-compiler
 
 # 可选但建议安装的辅助工具（git、flex、bison 等有时会被个别包用到）
 apt -y install git flex bison libssl-dev vim
