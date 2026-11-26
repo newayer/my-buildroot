@@ -3,6 +3,7 @@ services:
       build: ./
       image: 'buildroot-2017.02-compile-ubuntu16.04'
       container_name: buildroot-2017.02-compile
+      hostname: ubuntu-1604
       restart: always
       tty: true
       privileged: true
