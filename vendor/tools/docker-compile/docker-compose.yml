@@ -1,0 +1,17 @@
+services:
+   buildroot-2023.02-compile:
+      build: ./
+      image: 'buildroot-2023.02-compile-ubuntu22.04'
+      container_name: buildroot-2023.02-compile
+      hostname: ubuntu-2204
+      restart: always
+      tty: true
+      privileged: true
+      ports:
+        - 2023:22
+      environment:
+        - TZ=Asia/Shanghai
+      volumes:
+        - ~/buildroot:/home/newayer/buildroot
+        - ~/worksite-d:/home/newayer/worksite-d
+        - ~/.gitconfig:/home/newayer/.gitconfig:ro
